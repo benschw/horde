@@ -1,13 +1,10 @@
 #!/bin/bash
 
-# edit `/etc/systemd/system/multi-user.target.wants/docker.service` to contain:
-# `ExecStart=/usr/bin/docker daemon --dns 172.17.0.1 -H fd://¬`
-# and run `sudo systemctl daemon-reload` and `sudo service docker restart`
 
 kdev_consul() {
-	ip=$(kdev_docker_bridge_ip)
+	ip=$(_bridge_ip)
 
-	kdev_del_stopped consul
+	_delete_stopped consul
 
 	docker run -d \
 		-p 8500:8500 \
@@ -17,11 +14,11 @@ kdev_consul() {
 }
 
 kdev_registrator() {
-	ip=$(kdev_docker_bridge_ip)
+	ip=$(_bridge_ip)
 
-	kdev_del_stopped registrator
+	_delete_stopped registrator
 	
-	kdev_relies_on consul
+	_ensure_running consul
 
 	docker run -d \
 		--name=registrator \
@@ -31,9 +28,9 @@ kdev_registrator() {
 }
 
 kdev_fabio() {
-	ip=$(kdev_docker_bridge_ip)
+	ip=$(_bridge_ip)
 
-	kdev_del_stopped fabio
+	_delete_stopped fabio
 
 	docker run -d \
 		-p 80:9999 \

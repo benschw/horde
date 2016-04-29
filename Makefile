@@ -5,7 +5,7 @@ clean:
 
 build: clean
 	mkdir -p build
-	cat common.sh services.sh fl.sh > build/kdev
+	cat common.sh services.sh fliglio.sh cli.sh > build/kdev
 	chmod +x build/kdev
 
 install:

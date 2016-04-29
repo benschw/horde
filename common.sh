@@ -1,6 +1,6 @@
 #!/bin/bash
 
-kdev_del_stopped(){
+_delete_stopped(){
 	local name=$1
 	local state=$(docker inspect --format "{{.State.Running}}" $name 2>/dev/null)
 
@@ -8,7 +8,7 @@ kdev_del_stopped(){
 		docker rm $name
 	fi
 }
-kdev_relies_on(){
+_ensure_running(){
 	local names=$@
 
 	for name in $names; do
@@ -21,6 +21,17 @@ kdev_relies_on(){
 	done
 }
 
-kdev_docker_bridge_ip(){
+_bridge_ip(){
 	ifconfig | grep -A 1 docker | tail -n 1 | awk '{print substr($2,6)}'
 }
+
+_config_value() {
+	cat ./fl.json | jq -r ".$1"
+}
+
+_hostname() {
+	local name=$(_config_value "name")
+
+	echo $name.fl
+}
+
