@@ -16,7 +16,7 @@ _ensure_running(){
 
 		if [[ "$state" == "false" ]] || [[ "$state" == "" ]]; then
 			echo "$name is not running, starting it for you."
-			kdev_$name
+			_service_$name
 		fi
 	done
 }

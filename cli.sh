@@ -1,8 +1,8 @@
 #!/bin/bash
 
-kdev_help() {
+horde_help() {
 	echo "USAGE:"
-	echo "    kdev command [name]"
+	echo "    horde command [name]"
 	echo
 	echo "COMMANDS:"
 	echo "    up        short hand for \`run\` and \`provision\`"
@@ -20,13 +20,13 @@ kdev_help() {
 	echo "    }"
 }
 
-kdev_up() {
-	kdev_run
+horde_up() {
+	horde_run
 	sleep 3
-	kdev_provision
+	horde_provision
 }
 
-kdev_run() {
+horde_run() {
 	local driver=$(_config_value "driver")
 	local name=$(_config_value "name")
 	local ip=$(_bridge_ip)
@@ -42,13 +42,13 @@ kdev_run() {
 	_${driver}_run
 }
 
-kdev_provision() {
+horde_provision() {
 	local driver=$(_config_value "driver")
 
 	_${driver}_provision
 }
 
-kdev_logs() {
+horde_logs() {
 	name=$1
 	if [ -z ${1+x} ]; then
 		name=$(_config_value "name")
@@ -56,7 +56,7 @@ kdev_logs() {
 	docker logs -f $name
 }
 
-kdev_stop() {
+horde_stop() {
 	name=$1
 	if [ -z ${1+x} ]; then
 		name=$(_config_value "name")
@@ -68,4 +68,4 @@ kdev_stop() {
 ARGS=( "$@" )
 unset ARGS[0]
 
-kdev_$1 "${ARGS[@]}"
+horde_$1 "${ARGS[@]}"

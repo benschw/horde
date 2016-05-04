@@ -5,11 +5,11 @@ clean:
 
 build: clean
 	mkdir -p build
-	cat common.sh services.sh fliglio.sh cli.sh > build/kdev
-	chmod +x build/kdev
+	cat common.sh services.sh fliglio.sh cli.sh > build/horde
+	chmod +x build/horde
 
 install:
-	cp build/kdev /usr/local/bin/kdev
+	cp build/horde /usr/local/bin/horde
 
 
 .PHONY: build
