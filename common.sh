@@ -26,12 +26,12 @@ _bridge_ip(){
 }
 
 _config_value() {
-	cat ./fl.json | jq -r ".$1"
+	cat ./horde.json | jq -r ".$1"
 }
 
 _hostname() {
 	local name=$(_config_value "name")
 
-	echo $name.fl
+	echo $name.horde
 }
 

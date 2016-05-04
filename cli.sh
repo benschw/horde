@@ -37,7 +37,7 @@ horde_run() {
 	_ensure_running registrator
 	_ensure_running fabio
 
-	sudo hostess add $hostname 127.0.0.1
+	sudo hostess add $hostname $ip
 
 	_${driver}_run
 }
@@ -49,7 +49,7 @@ horde_provision() {
 }
 
 horde_logs() {
-	name=$1
+	local name=$1
 	if [ -z ${1+x} ]; then
 		name=$(_config_value "name")
 	fi
@@ -57,7 +57,7 @@ horde_logs() {
 }
 
 horde_stop() {
-	name=$1
+	local name=$1
 	if [ -z ${1+x} ]; then
 		name=$(_config_value "name")
 	fi

@@ -2,23 +2,19 @@
 
 
 _service_consul() {
-	hostname="consul.horde"
-	ip=$(_bridge_ip)
+	local ip=$(_bridge_ip)
 
 	_delete_stopped consul
-
-	sudo hostess add $hostname 127.0.0.1
 
 	docker run -d \
 		-p 8500:8500 \
 		-p "$ip:53:8600/udp" \
-		-e "SERVICE_8500_TAGS=urlprefix-$hostname/" \
 		--name=consul \
 		gliderlabs/consul-server:latest -bootstrap -advertise=$ip -recursor=8.8.8.8
 }
 
 _service_registrator() {
-	ip=$(_bridge_ip)
+	local ip=$(_bridge_ip)
 
 	_delete_stopped registrator
 	
@@ -32,7 +28,7 @@ _service_registrator() {
 }
 
 _service_fabio() {
-	ip=$(_bridge_ip)
+	local ip=$(_bridge_ip)
 
 	_delete_stopped fabio
 
