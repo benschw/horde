@@ -22,7 +22,11 @@ _ensure_running(){
 }
 
 _bridge_ip(){
-	ifconfig | grep -A 1 docker | tail -n 1 | awk '{print substr($2,6)}'
+	if [ -z ${HORDE_IP+x} ]; then
+		ifconfig | grep -A 1 docker | tail -n 1 | awk '{print substr($2,6)}'
+	else 
+		echo $HORDE_IP
+	fi
 }
 
 _config_value() {
