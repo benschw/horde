@@ -1,3 +1,7 @@
+[![Build Status](https://travis-ci.org/benschw/s3-artifacts.svg?branch=master)](https://travis-ci.org/benschw/s3-artifacts)
+
+[downloads](http://dl.fligl.io/#/horde)
+
 # Horde
 
 a local dev paas that uses docker, consul, and fabio
