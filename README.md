@@ -7,6 +7,26 @@
 a local dev paas that uses docker, consul, and fabio
 
 
+## Getting Started 
+make sure you have the dependencies:
+* [hostess](https://github.com/cbednarski/hostess) manages horde application host names in your `/etc/hosts` file.
+* [docker](https://www.docker.com/) manages your horde containers.
+
+
+Create a hello world application
+
+	mkdir httpdocs
+	echo "<?php echo 'Hello Horde';" > httpdocs/index.php
+	echo '{"driver":"fliglio","name":"foo","health":"/"}' > horde.json
+
+Run it
+	
+	horde up
+
+Now head on over to [http://foo.horde/](http://foo.horde/) to see your site.
+Since the container is sharing your project as a volume, you can edit `index.php`
+and see your change immediately by refreshing your browser.
+
 
 ## Configuring an application
 

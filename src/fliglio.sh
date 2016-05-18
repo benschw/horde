@@ -23,15 +23,18 @@ _fliglio_run() {
 }
 
 _fliglio_provision() {
+
 	local name=$(_config_value "name")
 	local docs=$(pwd)
 	local db=$(_config_value "db")
 
-	docker run \
-		-v $docs:/var/www/ \
-		-e "DB_NAME=$db" \
-		-e "MIGRATIONS_PATH=/var/www/migrations" \
-		--link ${name}:localdev \
-		fliglio/local-dev \
-		/usr/local/bin/migrate.sh
+	if [ ! -z "$db"} ]; then
+		docker run \
+			-v $docs:/var/www/ \
+			-e "DB_NAME=$db" \
+			-e "MIGRATIONS_PATH=/var/www/migrations" \
+			--link ${name}:localdev \
+			fliglio/local-dev \
+			/usr/local/bin/migrate.sh
+	fi
 }
