@@ -15,6 +15,7 @@ _fliglio_run() {
 		-e "SERVICE_80_CHECK_HTTP=${health}" \
 		-e "SERVICE_80_NAME=${name}" \
 		-e "SERVICE_80_TAGS=urlprefix-${hostname}/,fliglio" \
+		-e "FLIGLIO_ENV=horde" \
 		-v "${docs}:/var/www/" \
 		--name $name \
 		--dns $ip \
@@ -29,6 +30,7 @@ _fliglio_provision() {
 	docker run \
 		-v $docs:/var/www/ \
 		-e "DB_NAME=$db" \
+		-e "MIGRATIONS_PATH=/var/www/migrations" \
 		--link ${name}:localdev \
 		fliglio/local-dev \
 		/usr/local/bin/migrate.sh
