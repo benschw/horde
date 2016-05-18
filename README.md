@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/benschw/s3-artifacts.svg?branch=master)](https://travis-ci.org/benschw/s3-artifacts)
+[![Build Status](https://travis-ci.org/benschw/horde.svg?branch=master)](https://travis-ci.org/benschw/horde)
 
 [downloads](http://dl.fligl.io/#/horde)
 
