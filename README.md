@@ -28,8 +28,9 @@ In addition, your application's container will host the `httpdocs` directory fro
 
 
 
+#### Other notes
 
-if horde doesn't detect ytour docker bridge ip correctly, set up an environment variable
+if horde doesn't detect your docker bridge ip correctly, set up an environment variable
 declaring it:
 
 
