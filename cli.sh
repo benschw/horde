@@ -65,6 +65,16 @@ horde_stop() {
 }
 
 
+command -v hostess >/dev/null 2>&1 || {
+	echo >&2 "hostess (https://github.com/cbednarski/hostess) is required to manage names.  Aborting.";
+	exit 1;
+}
+command -v docker >/dev/null 2>&1 || {
+	echo >&2 "docker (https://www.docker.com/) is required to manage containers.  Aborting.";
+	exit 1;
+}
+
+
 ARGS=( "$@" )
 unset ARGS[0]
 
