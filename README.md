@@ -28,6 +28,11 @@ Since the container is sharing your project as a volume, you can edit `index.php
 and see your change immediately by refreshing your browser.
 
 
+You can also see your services in [consul](https://www.consul.io/): [http://localhost:8500](http://localhost:8500/ui/#/dc1/services)
+and the routing details provided by [fabio](https://github.com/eBay/fabio): [http://localhost:9998](http://localhost:9998/routes)
+
+## Base Services
+
 ## Configuring an application
 
 Create `horde.json` in your project root and define a `name` and `health` path.
