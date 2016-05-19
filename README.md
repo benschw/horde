@@ -1,6 +1,10 @@
 [![Build Status](https://travis-ci.org/benschw/horde.svg?branch=master)](https://travis-ci.org/benschw/horde)
 
-[downloads](http://dl.fligl.io/#/horde)
+
+[![Download Latest](https://img.shields.io/badge/download-latest-green.svg)](http://dl.fligl.io/artifacts/horde/horde_latest.gz)
+
+[![Releases](https://img.shields.io/badge/download-release-green.svg)](http://dl.fligl.io/#/horde)
+
 
 # Horde
 
