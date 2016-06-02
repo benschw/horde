@@ -28,7 +28,8 @@ _fliglio_provision() {
 	local docs=$(pwd)
 	local db=$(_config_value "db")
 
-	if [ ! -z "$db"} ]; then
+
+	if [[ "$db" != "null" ]]; then
 		docker run \
 			-v $docs:/var/www/ \
 			-e "DB_NAME=$db" \

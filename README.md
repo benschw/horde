@@ -65,3 +65,15 @@ declaring it:
 
 
 	export HORDE_IP='172.17.0.1'
+
+
+to use consul for dns, configure `/etc/default/docker` to use your bridge ip for dns. e.g. with
+
+	DOCKER_OPTS="--dns 172.17.0.1"
+
+
+To specify a custom recorsor dns server (other than the default of 8.8.8.8) set the following env variable
+
+	HORDE_DNS=1.2.3.4
+
+

@@ -3,6 +3,11 @@
 
 _service_consul() {
 	local ip=$(_bridge_ip)
+	local dns=8.8.8.8
+
+	if [ ! -z ${HORDE_DNS} ]; then
+		dns="$HORDE_DNS"
+	fi
 
 	_delete_stopped consul
 
@@ -10,7 +15,7 @@ _service_consul() {
 		-p 8500:8500 \
 		-p "$ip:53:8600/udp" \
 		--name=consul \
-		gliderlabs/consul-server:latest -bootstrap -advertise=$ip -recursor=8.8.8.8
+		gliderlabs/consul-server:latest -bootstrap -advertise=$ip -recursor=$dns
 }
 
 _service_registrator() {
