@@ -1,6 +1,6 @@
 #!/bin/bash
 
-horde_help() {
+horde::cli::help() {
 	echo "USAGE:"
 	echo "    horde command [name]"
 	echo
@@ -20,62 +20,46 @@ horde_help() {
 	echo "    }"
 }
 
-horde_up() {
-	horde_run
+horde::cli::up() {
+	horde::cli::run
 	sleep 3
-	horde_provision
+	horde::cli::provision
 }
 
-horde_run() {
-	local driver=$(_config_value "driver")
-	local name=$(_config_value "name")
-	local ip=$(_bridge_ip)
-	local hostname=$(_hostname)
+horde::cli::run() {
+	local driver=$(horde::config_value "driver")
+	local name=$(horde::config_value "name")
+	local ip=$(horde::bridge_ip)
+	local hostname=$(horde::hostname)
 
-	_delete_stopped $name
+	horde::delete_stopped $name
 
-	_ensure_running registrator
-	_ensure_running fabio
+	horde::ensure_running registrator
+	horde::ensure_running fabio
 
 	sudo hostess add $hostname $ip
 
-	_${driver}_run
+	${driver}::run
 }
 
-horde_provision() {
-	local driver=$(_config_value "driver")
+horde::cli::provision() {
+	local driver=$(horde::config_value "driver")
 
-	_${driver}_provision
+	${driver}::provision
 }
 
-horde_logs() {
+horde::cli::logs() {
 	local name=$1
 	if [ -z ${1+x} ]; then
-		name=$(_config_value "name")
+		name=$(horde::config_value "name")
 	fi
 	docker logs -f $name
 }
 
-horde_stop() {
+horde::cli::stop() {
 	local name=$1
 	if [ -z ${1+x} ]; then
-		name=$(_config_value "name")
+		name=$(horde::config_value "name")
 	fi
 	docker stop $name
 }
-
-
-command -v hostess >/dev/null 2>&1 || {
-	echo >&2 "hostess (https://github.com/cbednarski/hostess) is required to manage names.  Aborting.";
-	exit 1;
-}
-command -v docker >/dev/null 2>&1 || {
-	echo >&2 "docker (https://www.docker.com/) is required to manage containers.  Aborting.";
-	exit 1;
-}
-
-
-ARGS=( "$@" )
-unset ARGS[0]
-
-horde_$1 "${ARGS[@]}"

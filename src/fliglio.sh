@@ -3,11 +3,11 @@
 
 
 
-_fliglio_run() {
-	local ip=$(_bridge_ip)
-	local hostname=$(_hostname)
-	local name=$(_config_value "name")
-	local health=$(_config_value "health")
+fliglio::run() {
+	local ip=$(horde::bridge_ip)
+	local hostname=$(horde::hostname)
+	local name=$(horde::config_value "name")
+	local health=$(horde::config_value "health")
 	local docs=$(pwd)
 
 	docker run -d \
@@ -22,11 +22,11 @@ _fliglio_run() {
 		fliglio/local-dev
 }
 
-_fliglio_provision() {
+fliglio::provision() {
 
-	local name=$(_config_value "name")
+	local name=$(horde::config_value "name")
 	local docs=$(pwd)
-	local db=$(_config_value "db")
+	local db=$(horde::config_value "db")
 
 
 	if [[ "$db" != "null" ]]; then

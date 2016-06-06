@@ -1,15 +1,15 @@
 #!/bin/bash
 
 
-_service_consul() {
-	local ip=$(_bridge_ip)
+horde::service::consul() {
+	local ip=$(horde::bridge_ip)
 	local dns=8.8.8.8
 
 	if [ ! -z ${HORDE_DNS} ]; then
 		dns="$HORDE_DNS"
 	fi
 
-	_delete_stopped consul
+	horde::delete_stopped consul
 
 	docker run -d \
 		-p 8500:8500 \
@@ -18,12 +18,12 @@ _service_consul() {
 		gliderlabs/consul-server:latest -bootstrap -advertise=$ip -recursor=$dns
 }
 
-_service_registrator() {
-	local ip=$(_bridge_ip)
+horde::service::registrator() {
+	local ip=$(horde::bridge_ip)
 
-	_delete_stopped registrator
+	horde::delete_stopped registrator
 	
-	_ensure_running consul
+	horde::ensure_running consul
 
 	docker run -d \
 		--name=registrator \
@@ -32,10 +32,10 @@ _service_registrator() {
 		gliderlabs/registrator:latest -ip $ip consul://localhost:8500
 }
 
-_service_fabio() {
-	local ip=$(_bridge_ip)
+horde::service::fabio() {
+	local ip=$(horde::bridge_ip)
 
-	_delete_stopped fabio
+	horde::delete_stopped fabio
 
 	docker run -d \
 		-p 80:80 \

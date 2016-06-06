@@ -1,6 +1,6 @@
 #!/bin/bash
 
-_delete_stopped(){
+horde::delete_stopped(){
 	local name=$1
 	local state=$(docker inspect --format "{{.State.Running}}" $name 2>/dev/null)
 
@@ -8,7 +8,7 @@ _delete_stopped(){
 		docker rm $name
 	fi
 }
-_ensure_running(){
+horde::ensure_running(){
 	local names=$@
 
 	for name in $names; do
@@ -16,12 +16,12 @@ _ensure_running(){
 
 		if [[ "$state" == "false" ]] || [[ "$state" == "" ]]; then
 			echo "$name is not running, starting it for you."
-			_service_$name
+			horde::service::$name
 		fi
 	done
 }
 
-_bridge_ip(){
+horde::bridge_ip(){
 	if [ -z ${HORDE_IP+x} ]; then
 		ifconfig | grep -A 1 docker | tail -n 1 | awk '{print substr($2,6)}'
 	else 
@@ -29,13 +29,17 @@ _bridge_ip(){
 	fi
 }
 
-_config_value() {
+horde::config_value() {
 	cat ./horde.json | jq -r ".$1"
 }
 
-_hostname() {
-	local name=$(_config_value "name")
+horde::hostname() {
+	local name=$(horde::config_value "name")
 
 	echo $name.horde
+}
+
+horde::err() {
+	echo "[$(date +'%Y-%m-%dT%H:%M:%S%z')]: $@" >&2
 }
 

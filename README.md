@@ -14,7 +14,7 @@ make sure you have the dependencies:
 * [docker](https://www.docker.com/) manages your horde containers.
 
 
-Create a hello world application
+Create a hello world application (or use the [example](https://github.com/benschw/horde/tree/master/example))
 
 	mkdir httpdocs
 	echo "<?php echo 'Hello Horde';" > httpdocs/index.php
