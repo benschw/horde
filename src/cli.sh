@@ -1,4 +1,7 @@
 #!/bin/bash
+#
+# horde::cli subcommand definitions
+
 
 horde::cli::help() {
 	echo "USAGE:"
@@ -21,45 +24,47 @@ horde::cli::help() {
 }
 
 horde::cli::up() {
-	horde::cli::run
+	horde::cli::run || return 1
 	sleep 3
-	horde::cli::provision
+	horde::cli::provision || return 1
 }
 
 horde::cli::run() {
-	local driver=$(horde::config_value "driver")
-	local name=$(horde::config_value "name")
+	local driver=$(horde::config::get_driver)
+	local name=$(horde::config::get_name)
 	local ip=$(horde::bridge_ip)
 	local hostname=$(horde::hostname)
 
-	horde::delete_stopped $name
+	horde::delete_stopped $name || return 1
 
-	horde::ensure_running registrator
-	horde::ensure_running fabio
+	horde::ensure_running registrator || return 1
+	horde::ensure_running fabio || return 1
 
-	sudo hostess add $hostname $ip
+	if ! sudo hostess add $hostname $ip ; then
+		horde::err "problem configuring hostname '${hostname}'"
+		return 1
+	fi
 
-	${driver}::run
+	${driver}::run || return 1
 }
 
 horde::cli::provision() {
-	local driver=$(horde::config_value "driver")
-
-	${driver}::provision
+	local driver=$(horde::config::get_driver)
+	${driver}::provision || return 1
 }
 
 horde::cli::logs() {
 	local name=$1
 	if [ -z ${1+x} ]; then
-		name=$(horde::config_value "name")
+		name=$(horde::config::get_name)
 	fi
 	docker logs -f $name
 }
 
 horde::cli::stop() {
-	local name=$1
+	local names="$@"
 	if [ -z ${1+x} ]; then
-		name=$(horde::config_value "name")
+		names=( $(horde::config::get_name) )
 	fi
-	docker stop $name
+	docker stop ${names[@]}
 }

@@ -33,6 +33,33 @@ horde::config_value() {
 	cat ./horde.json | jq -r ".$1"
 }
 
+horde::load_driver() {
+	local driver=$(horde::config_value "driver")
+	
+	local fcns=( "run" "provision" )
+
+	for fcn in "${fcns[@]}" ; do
+		if ! horde::fcn_exists "${driver}::${fcn}" ; then
+			horde::err "Invalid driver '${driver}'"
+			horde::err "${driver}::${fcn} not implemented"
+			return 1
+		fi
+	done
+
+	echo $driver
+	return 0
+}
+
+horde::fcn_exists() {
+	local fcn=$1
+	
+	if [ -n "$(type -t $fcn)" ] && [ "$(type -t $fcn)" = "function" ] ; then
+		return 0
+	else
+		return 1
+	fi
+}
+
 horde::hostname() {
 	local name=$(horde::config_value "name")
 
