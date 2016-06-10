@@ -9,16 +9,14 @@ horde::delete_stopped(){
 	fi
 }
 horde::ensure_running(){
-	local names=$@
+	local name=$1
 
-	for name in $names; do
-		local state=$(docker inspect --format "{{.State.Running}}" $name 2>/dev/null)
+	local state=$(docker inspect --format "{{.State.Running}}" $name 2>/dev/null)
 
-		if [[ "$state" == "false" ]] || [[ "$state" == "" ]]; then
-			echo "$name is not running, starting it for you."
-			horde::service::$name
-		fi
-	done
+	if [[ "$state" == "false" ]] || [[ "$state" == "" ]]; then
+		echo "$name is not running, starting"
+		horde::service::$name || return 1
+	fi
 }
 
 horde::bridge_ip(){
@@ -29,39 +27,18 @@ horde::bridge_ip(){
 	fi
 }
 
-horde::config_value() {
-	cat ./horde.json | jq -r ".$1"
-}
+horde::cfg_hostname() {
+	local hostname=$1
+	local ip=$(horde::bridge_ip)
 
-horde::load_driver() {
-	local driver=$(horde::config_value "driver")
-	
-	local fcns=( "run" "provision" )
-
-	for fcn in "${fcns[@]}" ; do
-		if ! horde::fcn_exists "${driver}::${fcn}" ; then
-			horde::err "Invalid driver '${driver}'"
-			horde::err "${driver}::${fcn} not implemented"
-			return 1
-		fi
-	done
-
-	echo $driver
-	return 0
-}
-
-horde::fcn_exists() {
-	local fcn=$1
-	
-	if [ -n "$(type -t $fcn)" ] && [ "$(type -t $fcn)" = "function" ] ; then
-		return 0
-	else
+	if ! sudo hostess add $hostname $ip ; then
+		horde::err "problem configuring hostname '${hostname}'"
 		return 1
 	fi
 }
 
 horde::hostname() {
-	local name=$(horde::config_value "name")
+	local name=$(horde::config::get_name)
 
 	echo $name.horde
 }

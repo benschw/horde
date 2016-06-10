@@ -26,7 +26,7 @@ horde::config::_get_value() {
 horde::config::_load_driver() {
 	local driver=$(horde::config::_get_value "driver")
 	
-	local fcns=( "run" "provision" )
+	local fcns=( "up" )
 
 	for fcn in "${fcns[@]}" ; do
 		if ! horde::config::_fcn_exists "${driver}::${fcn}" ; then
