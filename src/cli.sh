@@ -21,7 +21,6 @@ horde::cli::help() {
 	echo "    {"
 	echo "        \"driver\": \"fliglio\","
 	echo "        \"name\": \"container-name\","
-	echo "        \"health\": \"/path/to/health-check\","
 	echo "        \"db\": \"db_name\""
 	echo "    }"
 }
@@ -82,7 +81,7 @@ horde::cli::register() {
   "Port": $port,
   "Tags":["urlprefix-${hostname}/", "external-app"],
   "Check":{
-    "script": "echo alive",
+    "script": "echo ok",
     "Interval": "5s",
     "timeout": "2s"
   }

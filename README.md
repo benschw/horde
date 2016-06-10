@@ -16,27 +16,31 @@ make sure you have the dependencies:
 
 Create a hello world application (or use the [example](https://github.com/benschw/horde/tree/master/example))
 
-	mkdir httpdocs
-	echo "<?php echo 'Hello Horde';" > httpdocs/index.php
-	echo '{"driver":"fliglio","name":"foo","health":"/"}' > horde.json
+	git clone git@github.com:benschw/horde.git
+	cd horde/example
 
 Run it
 	
 	horde up
 
-Now head on over to [http://foo.horde/](http://foo.horde/) to see your site.
-Since the container is sharing your project as a volume, you can edit `index.php`
+Test it out
+
+	curl http://foo.horde
+
+Since the container is sharing your project as a volume, you can edit `httpdocs/index.php`
 and see your change immediately by refreshing your browser.
 
 
-You can also see your services in [consul](https://www.consul.io/): [http://localhost:8500](http://localhost:8500/ui/#/dc1/services)
-and the routing details provided by [fabio](https://github.com/eBay/fabio): [http://localhost:9998](http://localhost:9998/routes)
+You can also see your services in [consul](https://www.consul.io/): [http://consul.horde/ui](http://consul.horde/ui/#/dc1/services)
+and the routing details provided by [fabio](https://github.com/eBay/fabio): [http://fabio.horde/routes](http://fabio.horde/routes).
+
+If you are using rabbitmq, it's available at [http://rabbitmq.horde](http://rabbitmq.horde).
 
 ## Base Services
 
 ## Configuring an application
 
-Create `horde.json` in your project root and define a `name` and `health` path.
+Create `horde.json` in your project root and define a `driver` and a `name`.
 The name will be used to register your service with consul and the health path
 used to give consul something to verify your application with.
 
@@ -44,6 +48,7 @@ If you are using the "fliglio" `driver`, you may also include a `db` that will b
 created and phynx migrations in the `/migrations` directory will be run.
 In addition, your application's container will host the `httpdocs` directory from your project root.
 
+_you must use the mysql credentials: admin / changeme_
 
 
 `horde.json`
@@ -51,12 +56,11 @@ In addition, your application's container will host the `httpdocs` directory fro
 	{
 	    "driver": "fliglio",
 	    "name": "foo",
-	    "health": "/health",
 	    "db": "foo"
 	}
 
 
-
+Rabbitmq and Chinchilla are also available for fliglio apps (use the rabbitmq creds: guest/guest)
 
 #### Other notes
 

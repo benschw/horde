@@ -12,4 +12,11 @@ rabbitmq:
 chinchilla:
 	docker build -t benschw/horde-chinchilla ./chinchilla/
 
+
+publish:
+	docker push benschw/horde-fliglio
+	docker push benschw/horde-mysql
+	docker push benschw/horde-rabbitmq
+	docker push benschw/horde-chinchilla
+
 .PHONY: fliglio mysql rabbitmq chinchilla
