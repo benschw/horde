@@ -9,7 +9,6 @@ horde::service::consul() {
 	if [ ! -z ${HORDE_DNS} ]; then
 		dns="$HORDE_DNS"
 	fi
-
 	horde::delete_stopped consul || return 1
 
 	horde::cfg_hostname "${hostname}" || return 1
