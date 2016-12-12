@@ -47,6 +47,12 @@ horde::cli::up() {
 	${driver}::up || return 1
 }
 
+horde::cli::restart() {
+
+	horde::cli::stop
+	horde::cli::up
+}
+
 horde::cli::logs() {
 	local name=$1
 	if [ -z ${1+x} ]; then
@@ -55,6 +61,13 @@ horde::cli::logs() {
 	docker logs -f $name
 }
 
+horde::cli::kill() {
+	local names="$@"
+	if [ -z ${1+x} ]; then
+		names=( $(horde::config::get_name) )
+	fi
+	docker kill ${names[@]}
+}
 horde::cli::stop() {
 	local names="$@"
 	if [ -z ${1+x} ]; then

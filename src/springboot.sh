@@ -10,22 +10,23 @@ sb::up() {
 	local image=$(horde::config::get_image)
 
 	local env_file=$(horde::config::get_env_file)
-	if [ "${env_file}" != "" ] ; then
-		env_file="--env-file ${env_file}"
+	local env_file_arg=""
+	if [ "${env_file}" != "null" ] ; then
+		env_file_arg="--env-file ${env_file}"
 	fi
 
 	docker run -d \
-		-P\
+		-P ${env_file_arg} \
 		-e "SERVICE_8080_CHECK_SCRIPT=echo ok" \
 		-e "SERVICE_8080_NAME=${name}" \
 		-e "SERVICE_8080_TAGS=urlprefix-${hostname}/,springboot" \
-		${env_file} \
 		--name "${name}" \
 		--dns "${ip}" \
 		--link consul:consul \
 		--link mysql:mysql \
-		${image} \
+		"${image}" \
 		|| return 1
+	
 
 }
 
@@ -39,7 +40,7 @@ sb_gw::up() {
 	local image=$(horde::config::get_image)
 
 	local env_file=$(horde::config::get_env_file)
-	if [ "${env_file}" != "" ] ; then
+	if [ "${env_file}" != "null" ] ; then
 		env_file="--env-file ${env_file}"
 	fi
 
@@ -53,7 +54,7 @@ sb_gw::up() {
 		--dns "${ip}" \
 		--link consul:consul \
 		--link mysql:mysql \
-		${image} \
+		"${image}" \
 		|| return 1
 
 }
