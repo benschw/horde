@@ -38,6 +38,12 @@ horde::cfg_hostname() {
 }
 
 horde::hostname() {
+	local name=$(horde::config::get_host)
+	if [ horde::config::get_host ] ; then
+		echo $(horde::config::get_host)
+		return
+	fi
+
 	local name=$(horde::config::get_name)
 
 	echo $name.horde

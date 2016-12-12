@@ -6,6 +6,12 @@
 horde::config::get_name() {
 	horde::config::_get_value "name" || return 1
 }
+horde::config::get_host() {
+	horde::config::_get_value "host" || return 1
+}
+horde::config::get_env_file() {
+	horde::config::_get_value "env_file" || return 1
+}
 horde::config::get_health() {
 	horde::config::_get_value "health" || return 1
 }
