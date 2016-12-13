@@ -36,11 +36,6 @@ horde::cli::up() {
 	horde::ensure_running registrator || return 1
 	horde::ensure_running fabio || return 1
 
-	horde::ensure_running chinchilla || return 1
-	
-	if [[ "horde::config::get_db" != "null" ]]; then
-		horde::ensure_running mysql || return 1
-	fi
 
 	horde::cfg_hostname "${hostname}" || return 1
 
