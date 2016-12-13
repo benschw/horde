@@ -8,8 +8,17 @@ fliglio::up() {
 
 	local db=$(horde::config::get_db)
 
+	local env_file=$(horde::config::get_env_file)
+	local env_file_arg=""
+	if [ "${env_file}" != "null" ] ; then
+		env_file_arg="--env-file ${env_file}"
+	fi
+	if [[ "horde::config::get_db" != "null" ]]; then
+		horde::ensure_running mysql || return 1
+	fi
+
 	docker run -d \
-		-P\
+		-P ${env_file_arg} \
 		-e "SERVICE_80_CHECK_SCRIPT=echo ok" \
 		-e "SERVICE_80_NAME=${name}" \
 		-e "SERVICE_80_TAGS=urlprefix-${hostname}/,fliglio" \
