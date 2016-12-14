@@ -50,7 +50,7 @@ sb_gw::up() {
 		-P\
 		-e "SERVICE_8080_CHECK_SCRIPT=echo ok" \
 		-e "SERVICE_8080_NAME=${name}" \
-		-e "SERVICE_8080_TAGS=urlprefix-${hostname}/${name}/,springboot" \
+		-e "SERVICE_8080_TAGS=urlprefix-${hostname}/api/,springboot" \
 		${env_file} \
 		--name "${name}" \
 		--dns "${ip}" \
