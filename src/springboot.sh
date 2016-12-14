@@ -14,6 +14,7 @@ sb::up() {
 	if [ "${env_file}" != "null" ] ; then
 		env_file_arg="--env-file ${env_file}"
 	fi
+
 	horde::ensure_running mysql || return 1
 
 	docker run -d \

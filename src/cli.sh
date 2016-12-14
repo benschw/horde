@@ -8,10 +8,13 @@ horde::cli::help() {
 	echo "    horde command [name]"
 	echo
 	echo "COMMANDS:"
-	echo "    up           start up an app"
+	echo "    up           start up an app (requires horde.json)"
 	echo "    logs [name]  follow the logs for a container (uses horde.json"
 	echo "                 if a name isn't supplied)"
 	echo "    stop [name]  stop a fliglio app (uses horde.json if a name"
+	echo "                 isn't supplied)"
+	echo "    restart      alias for stop and up (requires horde.json)"
+	echo "    kill [name]  kill a fliglio app (uses horde.json if a name"
 	echo "                 isn't supplied)"
 	echo
 	echo "    register name domain port    register an external service with consul"
@@ -21,7 +24,10 @@ horde::cli::help() {
 	echo "    {"
 	echo "        \"driver\": \"fliglio\","
 	echo "        \"name\": \"container-name\","
-	echo "        \"db\": \"db_name\""
+	echo "        \"db\": \"db_name\"",
+	echo "        \"image\": \"docker/image_tag\"",
+	echo "        \"host\": \"hostname_override\"",
+	echo "        \"env_file\": \"env_file/to/inject\""
 	echo "    }"
 }
 
@@ -43,7 +49,6 @@ horde::cli::up() {
 }
 
 horde::cli::restart() {
-
 	horde::cli::stop
 	horde::cli::up
 }

@@ -40,7 +40,6 @@ horde::cfg_hostname() {
 horde::hostname() {
 	local name=$(horde::config::get_host)
 	if [ "${name}" != "null" ] ; then
-		horde::err "hostname '${name}'"
 		echo $name
 		return
 	fi
