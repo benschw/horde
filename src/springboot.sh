@@ -6,7 +6,6 @@ sb::up() {
 	local name=$(horde::config::get_name)
 	local docs=$(pwd)
 
-	local db=$(horde::config::get_db)
 	local image=$(horde::config::get_image)
 
 	local env_file=$(horde::config::get_env_file)
@@ -38,7 +37,6 @@ sb_gw::up() {
 	local name=$(horde::config::get_name)
 	local docs=$(pwd)
 
-	local db=$(horde::config::get_db)
 	local image=$(horde::config::get_image)
 
 	local env_file=$(horde::config::get_env_file)

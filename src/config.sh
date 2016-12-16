@@ -15,9 +15,6 @@ horde::config::get_env_file() {
 horde::config::get_health() {
 	horde::config::_get_value "health" || return 1
 }
-horde::config::get_db() {
-	horde::config::_get_value "db" || return 1
-}
 horde::config::get_image() {
 	horde::config::_get_value "image" || return 1
 }

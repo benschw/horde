@@ -28,6 +28,10 @@ server {
     fastcgi_split_path_info ^(.+?\.php)(/.*)$;
     fastcgi_param HTTPS off;
     fastcgi_param FLIGLIO_ENV local;
+    fastcgi_param MYSQL_PORT_3306_TCP_ADDR null;
+    fastcgi_param MYSQL_USER_NAME null;
+    fastcgi_param MYSQL_PASSWORD null;
+    fastcgi_param DATABASE_NAME null;
   }
 
   # Deny .htaccess file access
