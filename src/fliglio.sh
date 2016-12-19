@@ -1,6 +1,7 @@
 #!/bin/bash
 
 
+
 fliglio::up() {
 	local ip=$(horde::bridge_ip)
 	local hostname=$(horde::hostname)
@@ -19,7 +20,7 @@ fliglio::up() {
 		image="benschw/horde-fliglio"
 
 		local docs=$(pwd)
-		vol_arg="-v \"${docs}:/var/www/\"" 
+		vol_arg="-v ${docs}:/var/www/" 
 	fi
 
 	horde::ensure_running chinchilla || return 1
@@ -32,7 +33,7 @@ fliglio::up() {
 		-P ${env_file_arg} ${vol_arg} \
 		-e "SERVICE_80_CHECK_SCRIPT=echo ok" \
 		-e "SERVICE_80_NAME=${name}" \
-		-e "SERVICE_80_TAGS=urlprefix-${hostname}/,fliglio" \
+		-e "SERVICE_80_TAGS=urlprefix-${hostname}/,horde-fliglio" \
 		-e "FLIGLIO_ENV=horde" \
 		-e "MIGRATIONS_PATH=/var/www/migrations" \
 		--name "${name}" \
@@ -43,3 +44,12 @@ fliglio::up() {
 		|| return 1
 
 }
+
+fliglio::stop() {
+	local name="$1"
+
+	horde::err "custom stop"
+
+	docker stop $name
+}
+

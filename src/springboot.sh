@@ -20,7 +20,7 @@ sb::up() {
 		-P ${env_file_arg} \
 		-e "SERVICE_8080_CHECK_SCRIPT=echo ok" \
 		-e "SERVICE_8080_NAME=${name}" \
-		-e "SERVICE_8080_TAGS=urlprefix-${hostname}/,springboot" \
+		-e "SERVICE_8080_TAGS=urlprefix-${hostname}/,horde-sb" \
 		--name "${name}" \
 		--dns "${ip}" \
 		--link consul:consul \
@@ -48,7 +48,7 @@ sb_gw::up() {
 		-P\
 		-e "SERVICE_8080_CHECK_SCRIPT=echo ok" \
 		-e "SERVICE_8080_NAME=${name}" \
-		-e "SERVICE_8080_TAGS=urlprefix-${hostname}/api/,springboot" \
+		-e "SERVICE_8080_TAGS=urlprefix-${hostname}/api/,horde-sb_gw" \
 		${env_file} \
 		--name "${name}" \
 		--dns "${ip}" \
@@ -71,7 +71,7 @@ sb_gw_web::up() {
 		-P\
 		-e "SERVICE_80_CHECK_SCRIPT=echo ok" \
 		-e "SERVICE_80_NAME=${name}" \
-		-e "SERVICE_80_TAGS=urlprefix-${hostname}/,angular-web" \
+		-e "SERVICE_80_TAGS=urlprefix-${hostname}/,horde-sb_gw_web" \
 		-e "FLIGLIO_ENV=horde" \
 		-v "${docs}/dist:/var/www/httpdocs/" \
 		--name "${name}" \

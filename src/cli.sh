@@ -14,8 +14,6 @@ horde::cli::help() {
 	echo "    stop [name]  stop a fliglio app (uses horde.json if a name"
 	echo "                 isn't supplied)"
 	echo "    restart      alias for stop and up (requires horde.json)"
-	echo "    kill [name]  kill a fliglio app (uses horde.json if a name"
-	echo "                 isn't supplied)"
 	echo
 	echo "    register name domain port    register an external service with consul"
 	echo "    deregister name              deregister an external service"
@@ -61,19 +59,24 @@ horde::cli::logs() {
 	docker logs -f $name
 }
 
-horde::cli::kill() {
-	local names="$@"
-	if [ -z ${1+x} ]; then
-		names=( $(horde::config::get_name) )
-	fi
-	docker kill ${names[@]}
-}
 horde::cli::stop() {
-	local names="$@"
+	local name="$1"
+	local driver=""
+
 	if [ -z ${1+x} ]; then
-		names=( $(horde::config::get_name) )
+		name=( $(horde::config::get_name) )
+		driver=( $(horde::config::get_driver) )
+	else
+		driver=$(horde::identify_driver "$name")
+		echo "Driver identified as $driver"
 	fi
-	docker stop ${names[@]}
+	
+	
+	if horde::util::is_fcn "${driver}::stop"; then
+		$driver::stop "$name"
+	else
+		docker stop $name
+	fi
 }
 horde::cli::register() {
 	local name="$1"
@@ -81,37 +84,15 @@ horde::cli::register() {
 	local port="$3"
 	local ip=$(dig +short "${host}")
 	local hostname="${name}.horde"
+
 	echo "setting $name"
-	
+
 	horde::cfg_hostname "${hostname}" || return 1
 	
-
-	read -r -d '' svc_def << EOF
-{
-  "ID": "${name}",
-  "Name": "${name}",
-  "Address": "${ip}",
-  "Port": $port,
-  "Tags":["urlprefix-${hostname}/", "external-app"],
-  "Check":{
-    "script": "echo ok",
-    "Interval": "5s",
-    "timeout": "2s"
-  }
-}
-EOF
-
-	if ! curl -s -X PUT "http://consul.horde/v1/agent/service/register" -d "${svc_def}" ; then
-		horde::err "problem deregistering ${name} from consul"
-		return 1
-	fi
-		
+	return horde::consul::register $name $ip $port $hostname
 }
 horde::cli::deregister() {
 	local name="$1"
 
-	if ! curl -s -X POST "http://consul.horde/v1/agent/service/deregister/${name}" ; then
-		horde::err "problem registering ${name} in consul"
-		return 1
-	fi
+	return horde::consul::deregister "$name"
 }

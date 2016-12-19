@@ -18,7 +18,7 @@ horde::service::consul() {
 		-p "$ip:53:8600/udp" \
 		--name=consul \
 		-e "SERVICE_8500_CHECK_HTTP=/ui/#/dc1" \
-		-e "SERVICE_8500_TAGS=urlprefix-${hostname}/,service" \
+		-e "SERVICE_8500_TAGS=urlprefix-${hostname}/,horde-service" \
 		gliderlabs/consul-server:latest -bootstrap -advertise=$ip -recursor=$dns || return 1
 	sleep 3
 }
@@ -52,7 +52,7 @@ horde::service::fabio() {
 		-e "registry_consul_addr=${ip}:8500" \
 		-e "proxy_addr=:80" \
 		-e "SERVICE_9998_CHECK_HTTP=/" \
-		-e "SERVICE_9998_TAGS=urlprefix-${hostname}/,service" \
+		-e "SERVICE_9998_TAGS=urlprefix-${hostname}/,horde-service" \
 		--name=fabio \
 		magiconair/fabio || return 1
 }
@@ -103,7 +103,7 @@ horde::service::rabbitmq() {
 		-p 15672 \
 		-e "SERVICE_5672_NAME=${name}" \
 		-e "SERVICE_15672_CHECK_HTTP=/" \
-		-e "SERVICE_15672_TAGS=urlprefix-${hostname}/,service" \
+		-e "SERVICE_15672_TAGS=urlprefix-${hostname}/,horde-service" \
 		--name $name \
 		--dns $ip \
 		benschw/horde-rabbitmq || return 1
