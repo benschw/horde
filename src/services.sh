@@ -64,7 +64,7 @@ horde::service::mysql() {
 	horde::delete_stopped mysql || return 1
 
 	docker run -d \
-		-p 3306 \
+		-p 3306:3306 \
 		-e "SERVICE_3306_NAME=${name}" \
 		--name $name \
 		--dns $ip \
