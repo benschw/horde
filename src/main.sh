@@ -20,6 +20,19 @@ main() {
 		return 1
 	}
 
+	if [ ${HORDE_ENSURE_VBOXNET+x} ]; then
+    	command -v VBoxManage >/dev/null 2>&1 || {
+		    horde::err "VirtualBox (https://www.virtualbox.org/) is required to create consul bridge. Aborting."
+    		return 1
+	    }
+
+	    # Check if bridge exist
+	    is_bridge_ip_available=$(ifconfig | grep -A 1 vboxnet0)
+	    if [ -z ${is_bridge_ip_available} ]; then
+	        VBoxManage hostonlyif create
+	        VBoxManage hostonlyif ipconfig vboxnet0 -ip $HORDE_IP
+	    fi
+	fi
 
 	local args=( "$@" )
 	unset args[0]

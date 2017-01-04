@@ -20,29 +20,7 @@ horde::ensure_running(){
 }
 
 horde::bridge_ip(){
-	if [ -z ${HORDE_IP+x} ]; then
-		ifconfig | grep -A 1 docker | tail -n 1 | awk '{print $2}'
-	else
-	    # Check if bridge is up
-	    is_bridge_ip_available=$(ifconfig | grep -A 1 docker | grep -w ''"${HORDE_IP}"'' | awk '{print $2}')
-	    if [ -z ${is_bridge_ip_available} ]; then
-	        is_bridge_ip_available=$(ifconfig | grep -A 2 vboxnet | grep -w ''"${HORDE_IP}"'' | awk '{print $2}')
-	    fi
-
-	    # Trying to bring bridge up using VBoxManage
-	    vboxmanage=$(command -v VBoxManage 2>/dev/null )
-	    if [[ -z ${is_bridge_ip_available} && vboxmanage ]]; then
-            available_vbox=$(ifconfig | grep vboxnet | grep -v UP | grep -m 1 vboxnet | awk '{print $1}' | sed 's/://g')
-
-            if [ -z ${available_vbox} ]; then
-                available_vbox=$(VBoxManage hostonlyif create)
-            fi
-
-            VBoxManage hostonlyif ipconfig $available_vbox -ip $HORDE_IP
-	    fi
-
-		echo $HORDE_IP
-	fi
+    echo $HORDE_IP
 }
 
 horde::cfg_hostname() {
