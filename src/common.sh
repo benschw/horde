@@ -20,11 +20,7 @@ horde::ensure_running(){
 }
 
 horde::bridge_ip(){
-	if [ -z ${HORDE_IP+x} ]; then
-		ifconfig | grep -A 1 docker | tail -n 1 | awk '{print $2}'
-	else 
-		echo $HORDE_IP
-	fi
+    echo $HORDE_IP
 }
 
 horde::cfg_hostname() {
