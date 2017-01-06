@@ -60,16 +60,29 @@ and see your change immediately by refreshing your browser.
 You can also see your services in [consul](https://www.consul.io/): [http://consul.horde/ui](http://consul.horde/ui/#/dc1/services)
 and the routing details provided by [fabio](https://github.com/eBay/fabio): [http://fabio.horde/routes](http://fabio.horde/routes).
 
-If you are using rabbitmq, it's available at [http://rabbitmq.horde](http://rabbitmq.horde).
 
 ## Base Services
 
-## Configuring an application
+### Fabio
+### Consul
+### Mysql
+use login: admin / changeme
+
+### Rabbitmq
+
+[http://rabbitmq.horde](http://rabbitmq.horde)
+
+use login: guest / guest
+
+### Chinchilla
+
+## Drivers
 
 Create `horde.json` in your project root and define a `driver` and a `name`.
 The name will be used to register your service with consul and the health path
 used to give consul something to verify your application with.
 
+### Fliglio
 If you are using the "fliglio" `driver`, you may also include a `db` that will be
 created and phynx migrations in the `/migrations` directory will be run.
 In addition, your application's container will host the `httpdocs` directory from your project root.
@@ -84,6 +97,10 @@ _you must use the mysql credentials: admin / changeme_
 	    "name": "foo",
 	    "db": "foo"
 	}
+### Springboot
+
+## Configuring an application
 
 
-Rabbitmq and Chinchilla are also available for fliglio apps (use the rabbitmq creds: guest/guest)
+
+
