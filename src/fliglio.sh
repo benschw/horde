@@ -19,7 +19,7 @@ fliglio::up() {
 		image="benschw/horde-fliglio"
 
 		local docs=$(pwd)
-		vol_arg="-v \"${docs}:/var/www/\"" 
+		vol_arg="-v ${docs}:/var/www/" 
 	fi
 
 	horde::ensure_running chinchilla || return 1
