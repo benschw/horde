@@ -99,8 +99,3 @@ _you must use the mysql credentials: admin / changeme_
 	}
 ### Springboot
 
-## Configuring an application
-
-
-
-
