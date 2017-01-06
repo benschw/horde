@@ -64,20 +64,24 @@ Rabbitmq and Chinchilla are also available for fliglio apps (use the rabbitmq cr
 
 #### Other notes
 
-if horde doesn't detect your docker bridge ip correctly, set up an environment variable
-declaring it:
-
-
-	export HORDE_IP='172.17.0.1'
-
-
 to use consul for dns, configure `/etc/default/docker` to use your bridge ip for dns. e.g. with
 
 	DOCKER_OPTS="--dns 172.17.0.1"
 
 
+
+Export your docker bridge ip:
+
+	export HORDE_IP='172.17.0.1'
+
+
 To specify a custom recorsor dns server (other than the default of 8.8.8.8) set the following env variable
 
-	HORDE_DNS=1.2.3.4
+	export HORDE_DNS=1.2.3.4
+
+
+Force the mysql container to publish port 3306 over a specified external port:
+
+	export HORDE_MYSQL_PUBLISH_PORT=3306
 
 
