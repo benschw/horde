@@ -9,11 +9,37 @@ a local dev paas that uses docker, consul, and fabio
 
 
 ## Getting Started 
-make sure you have the dependencies:
+
+### Get Dependencies
+
 * [hostess](https://github.com/cbednarski/hostess) manages horde application host names in your `/etc/hosts` file.
 * [docker](https://www.docker.com/) manages your horde containers.
+* [jq](https://stedolan.github.io/jq/) to work with json output
 
 
+### Configure Docker
+
+Configure `/etc/default/docker` to use consul for DNS by specifying your bridge ip. e.g. with
+
+	DOCKER_OPTS="--dns 172.17.0.1"
+
+### Configure Horde
+
+Specify your bridge ip with an environment variable
+
+	export HORDE_IP='172.17.0.1'
+
+Specify a custom recursor dns server (other than the default of 8.8.8.8) by setting the following env variable
+
+	export HORDE_DNS=1.2.3.4
+
+Force the mysql container to publish port 3306 over a specific external port:
+
+	export HORDE_MYSQL_PUBLISH_PORT=3306
+
+
+### Hello World
+	
 Create a hello world application (or use the [example](https://github.com/benschw/horde/tree/master/example))
 
 	git clone git@github.com:benschw/horde.git
@@ -61,23 +87,3 @@ _you must use the mysql credentials: admin / changeme_
 
 
 Rabbitmq and Chinchilla are also available for fliglio apps (use the rabbitmq creds: guest/guest)
-
-#### Other notes
-
-if horde doesn't detect your docker bridge ip correctly, set up an environment variable
-declaring it:
-
-
-	export HORDE_IP='172.17.0.1'
-
-
-to use consul for dns, configure `/etc/default/docker` to use your bridge ip for dns. e.g. with
-
-	DOCKER_OPTS="--dns 172.17.0.1"
-
-
-To specify a custom recorsor dns server (other than the default of 8.8.8.8) set the following env variable
-
-	HORDE_DNS=1.2.3.4
-
-
