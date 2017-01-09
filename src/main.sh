@@ -26,8 +26,8 @@ main() {
     		return 1
 	    }
 
-	    # Check if bridge exist
-	    is_bridge_ip_available=$(ifconfig | grep -A 1 vboxnet0)
+	    # Check if vboxnet0 exist, if not we create it and assing bridge IP to it
+	    is_bridge_ip_available=$(ifconfig | grep vboxnet0 |  awk '{print $1}')
 	    if [ -z ${is_bridge_ip_available} ]; then
 	        VBoxManage hostonlyif create
 	        VBoxManage hostonlyif ipconfig vboxnet0 -ip $HORDE_IP
