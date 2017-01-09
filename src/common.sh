@@ -20,7 +20,7 @@ horde::ensure_running(){
 }
 
 horde::bridge_ip(){
-    echo $HORDE_IP
+	echo $HORDE_IP
 }
 
 horde::cfg_hostname() {
