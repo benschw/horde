@@ -116,11 +116,6 @@ horde::service::rabbitmq() {
 	sleep 3
 }
 
-#docker stop splunk && docker_rm splunk &&
-# docker run --hostname splunk --name splunk -v $(pwd)/splunk-logs -p 8000:8000 -p 8000:8000 -d -e "SPLUNK_START_ARGS=--accept-license" -e "SPLUNK_USER=root" -e "SPLUNK_ADD=tcp 8000 -sourcetype syslog"
-# --dns "172.20.20.1" --link consul:consul
-# splunk/splunk
-
 horde::service::splunk() {
 	local ip=$(horde::bridge_ip)
 	local name="splunk"
@@ -132,12 +127,6 @@ horde::service::splunk() {
 
 	horde::cfg_hostname "${hostname}" || return 1
 
-#	if [  -z ${HORDE_SPLUNK_PUBLISH_PORT+x} ]; then
-#		port_cfg="8000"
-#	else
-#		port_cfg="${HORDE_SPLUNK_PUBLISH_PORT}:8000"
-#	fi
-
 	docker run -d \
 		-p $port_cfg \
 		-p "8000:8000" \
@@ -147,7 +136,7 @@ horde::service::splunk() {
 		-e "SERVICE_8000_TAGS=urlprefix-${hostname}/,service" \
 		-e "SPLUNK_START_ARGS=--accept-license" \
 		-e "SPLUNK_USER=root" \
-		-e "SPLUNK_ADD=tcp 1514 -sourcetype syslog" \
+		-e "SPLUNK_ADD=tcp 1514 -sourcetype log4j" \
         -v "${logs}/splunk-logs" \
 		--name $name \
 		--dns $ip \
@@ -172,6 +161,4 @@ horde::service::logspout() {
 
 	sleep 5
 }
-#docker_rm logspout &&
-# docker run --name="logspout" --volume=/var/run/docker.sock:/var/run/docker.sock  --link consul:consul gliderlabs/logspout syslog+tcp://splunk.horde:1514
 
