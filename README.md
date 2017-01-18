@@ -37,9 +37,6 @@ Force the mysql container to publish port 3306 over a specific external port:
 
 	export HORDE_MYSQL_PUBLISH_PORT=3306
 
-Force the splunk container to publish port 1514 over a specific external port:
-
-	export HORDE_SPLUNK_PUBLISH_PORT=1514
 	
 ### Hello World
 	
