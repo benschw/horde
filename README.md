@@ -37,7 +37,7 @@ Force the mysql container to publish port 3306 over a specific external port:
 
 	export HORDE_MYSQL_PUBLISH_PORT=3306
 
-
+	
 ### Hello World
 	
 Create a hello world application (or use the [example](https://github.com/benschw/horde/tree/master/example))
