@@ -129,7 +129,7 @@ horde::service::splunk() {
 
 	docker run -d \
 		-p $port_cfg \
-		-p "8000:8000" \
+		-p "8000" \
         -e "SERVICE_1514_CHECK_SCRIPT=echo ok" \
 		-e "SERVICE_8000_NAME=${name}" \
         -e "SERVICE_8000_CHECK_SCRIPT=echo ok" \
@@ -141,6 +141,15 @@ horde::service::splunk() {
 		--name $name \
 		--dns $ip \
 		splunk/splunk || return 1
+
+    mkdir -p ./system/local
+    echo $'[jsvcs_host]\nDEST_KEY = MetaData:Host\nREGEX = <\d+>\d{1}\s{1}\S+\s{1}\S+\s{1}(\S+)\nFORMAT = host::$1' >./system/local/transforms.conf
+    echo $'[source::tcp:1514]\nTRANSFORMS-service=jsvcs_host\nSHOULD_LINEMERGE = false' >./system/local/props.conf
+
+	sleep 5
+
+	docker cp ./system splunk:opt/splunk/etc
+    rm -rf ./system/local
 
 	sleep 5
 }
