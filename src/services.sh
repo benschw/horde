@@ -149,7 +149,7 @@ horde::service::splunk() {
 	sleep 5
 
 	docker cp ./system splunk:opt/splunk/etc
-    rm -rf ./system/local
+	rm -rf ./system/local
 
 	sleep 5
 }
