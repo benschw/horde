@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 sb::up() {
 	local ip=$(horde::bridge_ip)
@@ -14,12 +14,22 @@ sb::up() {
 		env_file_arg="--env-file ${env_file}"
 	fi
 
+    local java_opts_arg=""
+    local remote_debug_port_arg=""
+    local remote_debug_port=$(horde::config::get_remote_debug_port)
+	if [ "${remote_debug_port}" != "null" ] ; then
+		java_opts_arg="-e \"JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,address=${remote_debug_port},server=y,suspend=n\""
+		remote_debug_port_arg="-p ${remote_debug_port}:${remote_debug_port}"
+	fi
+
 	horde::ensure_running mysql || return 1
 
 	horde::ensure_running logspout || return 1
 
 	docker run -d \
 		-P ${env_file_arg} \
+        ${java_opts_arg} \
+        ${remote_debug_port_arg} \
 		-e "SERVICE_8080_CHECK_SCRIPT=echo ok" \
 		-e "SERVICE_8080_NAME=${name}" \
 		-e "SERVICE_8080_TAGS=urlprefix-${hostname}/,springboot" \

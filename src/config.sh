@@ -18,6 +18,9 @@ horde::config::get_health() {
 horde::config::get_image() {
 	horde::config::_get_value "image" || return 1
 }
+horde::config::get_remote_debug_port() {
+	horde::config::_get_value "remote_debug_port" || return 1
+}
 horde::config::get_driver() {
 	horde::config::_load_driver || return 1
 }
