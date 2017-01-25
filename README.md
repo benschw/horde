@@ -33,10 +33,6 @@ Specify a custom recursor dns server (other than the default of 8.8.8.8) by sett
 
 	export HORDE_DNS=1.2.3.4
 
-Force the mysql container to publish port 3306 over a specific external port:
-
-	export HORDE_MYSQL_PUBLISH_PORT=3306
-
 	
 ### Hello World
 	
@@ -53,10 +49,16 @@ Test it out
 
 	curl http://foo.horde
 
-Since the container is sharing your project as a volume, you can edit `httpdocs/index.php`
-and see your change immediately by refreshing your browser.
 
+#### What is running?
 
+`horde up` starts up a set of containers that provide an  ecosystem to run your
+application in, and then runs your application in this ecosystem (bundled in a
+Docker container or its own). Subsequent `horde up` runs on different
+applications will install those applications into this same ecosystem.
+
+The base services are `consul`, `registrator`, and `fabio`.D `registrator`
+(todo: explain the ecosuystem here)
 You can also see your services in [consul](https://www.consul.io/): [http://consul.horde/ui](http://consul.horde/ui/#/dc1/services)
 and the routing details provided by [fabio](https://github.com/eBay/fabio): [http://fabio.horde/routes](http://fabio.horde/routes).
 
@@ -64,13 +66,23 @@ and the routing details provided by [fabio](https://github.com/eBay/fabio): [htt
 ## Base Services
 
 ### Fabio
+[fabio.horde](http://fabio.horde/)
+
 ### Consul
+
+[consul.horde/ui/](http://consul.horde/ui/)
+
 ### Mysql
-use login: admin / changeme
+Use login: admin / changeme
+
+
+Force the mysql container to publish port 3306 over a specific external port:
+
+	export HORDE_MYSQL_PUBLISH_PORT=3306
 
 ### Rabbitmq
 
-[http://rabbitmq.horde](http://rabbitmq.horde)
+[rabbitmq.horde](http://rabbitmq.horde)
 
 use login: guest / guest
 
