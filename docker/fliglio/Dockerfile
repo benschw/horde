@@ -17,6 +17,7 @@ RUN apt-get install -y \
 	memcached \
 	mysql-client \
 	supervisor
+RUN php5enmod mcrypt
 
 RUN sed -i "s/;date.timezone =.*/date.timezone = UTC/" /etc/php5/fpm/php.ini
 RUN sed -i "s/;date.timezone =.*/date.timezone = UTC/" /etc/php5/cli/php.ini
