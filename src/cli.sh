@@ -42,6 +42,9 @@ horde::cli::up() {
 	horde::ensure_running registrator || return 1
 	horde::ensure_running fabio || return 1
 
+	horde::ensure_running vault || return 1
+	horde::ensure_running vaultui || return 1
+
 	${driver}::up || return 1
 }
 
