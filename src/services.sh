@@ -13,7 +13,7 @@ horde::service::vault() {
 		-e VAULT_DEV_ROOT_TOKEN_ID=horde \
 		vault:0.6.5 || return 1
 	sleep 3
-	
+
 	docker run -it \
 		--rm \
 		--link vault:vault \
@@ -47,7 +47,7 @@ horde::service::vaultui() {
 	horde::delete_stopped vaultui || return 1
 
 	horde::cfg_hostname "${hostname}" || return 1
-	
+
 	docker run -d \
 		-p 80 \
 		--name=vaultui \
