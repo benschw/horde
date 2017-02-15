@@ -1,6 +1,54 @@
 #!/bin/bash
 
 
+horde::service::vault() {
+	local ip=$(horde::bridge_ip)
+
+	horde::delete_stopped vault || return 1
+
+	docker run -d \
+		-p 8200:8200 \
+		--name=vault \
+		--cap-add=IPC_LOCK \
+		-e VAULT_DEV_ROOT_TOKEN_ID=horde \
+		vault:0.6.5 || return 1
+	sleep 3
+	
+	docker run -it \
+		--rm \
+		--link vault:vault \
+		-e VAULT_TOKEN=horde \
+		vault:0.6.5  \
+		/bin/sh -c 'VAULT_ADDR=http://$VAULT_PORT_8200_TCP_ADDR:8200 vault auth-enable userpass' \
+		|| return 1
+	docker run -it \
+		--rm \
+		--link vault:vault \
+		-e VAULT_TOKEN=horde \
+		vault:0.6.5  \
+		/bin/sh -c 'VAULT_ADDR=http://$VAULT_PORT_8200_TCP_ADDR:8200 vault write auth/userpass/users/horde \
+			password=horde \
+			policies=admins' \
+		|| return 1
+}
+horde::service::vaultui() {
+	local ip=$(horde::bridge_ip)
+	local hostname="vault-ui.horde"
+
+	horde::delete_stopped vaultui || return 1
+
+	horde::cfg_hostname "${hostname}" || return 1
+	
+	docker run -d \
+		-p 80 \
+		--name=vaultui \
+		-e VAULT_SKIP_VERIFY=true \
+		-e VAULT_ADDR=https://$ip:8200 \
+		-e "SERVICE_80_CHECK_HTTP=/login" \
+		-e "SERVICE_80_TAGS=urlprefix-${hostname}/,service" \
+		nyxcharon/vault-ui:latest || return 1
+}
+
 horde::service::consul() {
 	local ip=$(horde::bridge_ip)
 	local dns=8.8.8.8
