@@ -30,6 +30,15 @@ horde::service::vault() {
 			password=horde \
 			policies=admins' \
 		|| return 1
+	docker run -it \
+		--rm \
+		--link vault:vault \
+		-e VAULT_TOKEN=horde \
+		vault:0.6.5  \
+		/bin/sh -c 'echo '\''{"path":{"*":{"policy":"sudo"}}}'\'' | \
+		    VAULT_ADDR=http://$VAULT_PORT_8200_TCP_ADDR:8200 vault policy-write admins -' \
+		|| return 1
+
 }
 horde::service::vaultui() {
 	local ip=$(horde::bridge_ip)
@@ -42,8 +51,8 @@ horde::service::vaultui() {
 	docker run -d \
 		-p 80 \
 		--name=vaultui \
-		-e VAULT_SKIP_VERIFY=true \
-		-e VAULT_ADDR=https://$ip:8200 \
+		-e VAULT_SKIP_VERIFY=True \
+		-e VAULT_ADDR=http://$ip:8200 \
 		-e "SERVICE_80_CHECK_HTTP=/login" \
 		-e "SERVICE_80_TAGS=urlprefix-${hostname}/,service" \
 		nyxcharon/vault-ui:latest || return 1
