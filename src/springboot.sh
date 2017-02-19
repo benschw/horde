@@ -27,7 +27,7 @@ sb::up() {
 		/bin/sh -c 'apk -v --update --no-cache add jq; \
 					export VAULT_ADDR=http://$VAULT_PORT_8200_TCP_ADDR:8200; \
 					vault auth-enable approle; \
-					echo '\''{"path":{"secret/$APP_NAME":{"policy":"write"}}}'\'' | \
+					echo '\''{"path":{"secret/'\''$APP_NAME'\''":{"policy":"write"}}}'\'' | \
 					vault policy-write $APP_NAME -; \
 					vault write auth/approle/role/$APP_NAME bind_secret_id=true token_ttl=5m token_max_ttl=10m policies=$APP_NAME; \
 					vault read -format=json auth/approle/role/$APP_NAME/role-id | jq .data.role_id > roleId.txt; \
