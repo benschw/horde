@@ -94,6 +94,15 @@ Create `horde.json` in your project root and define a `driver` and a `name`.
 The name will be used to register your service with consul and the health path
 used to give consul something to verify your application with.
 
+### Custom Drivers
+
+add drivers with the naming convention `NAME.driver.sh` to your configured
+`$HORDE_DRIVER_PATH` (defaults to ~/.horde/drivers).
+
+Driver plugins can be anywhere in this directory (so checking out the repo
+you manage your driver plugin(s) in to this directory would work.)
+
+
 ### Fliglio
 If you are using the "fliglio" `driver`, you may also include a `db` that will be
 created and phynx migrations in the `/migrations` directory will be run.
