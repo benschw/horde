@@ -23,7 +23,7 @@ horde::bridge_ip(){
 	echo $HORDE_IP
 }
 
-horde::cfg_hostname() {
+horde::_cfg_hostname() {
 	local hostname=$1
 	local ip=$(horde::bridge_ip)
 
@@ -33,7 +33,7 @@ horde::cfg_hostname() {
 	fi
 }
 
-horde::hostname() {
+horde::_hostname() {
 	local name=$(horde::config::get_host)
 	if [ "${name}" != "null" ] ; then
 		echo $name
@@ -43,6 +43,34 @@ horde::hostname() {
 	local name=$(horde::config::get_name)
 
 	echo $name.horde
+}
+
+horde::configure_hosts() {
+	local postfix=$1
+	local hostname=$(horde::_hostname)
+	local hosts=$(horde::config::get_hosts)
+	local hostsCsv=""
+
+	SAVEIFS=$IFS
+	IFS=$'\n'
+	hosts=($hosts)
+	# Restore IFS
+	IFS=$SAVEIFS
+
+	hosts+=($hostname)
+
+	for var in "${hosts[@]}"
+	do
+		if [ ${#hostsCsv} -gt 0 ]; then 
+			hostsCsv="$hostsCsv, urlprefix-$var$1"
+		else 
+			hostsCsv="urlprefix-$var$1"
+		fi
+
+		horde::_cfg_hostname "${var}" >> /dev/null || return 1
+	done
+
+	echo $hostsCsv
 }
 
 horde::err() {

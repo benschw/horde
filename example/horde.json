@@ -1,1 +1,9 @@
-{"driver":"fliglio","name":"foo","health":"/"}
+{
+	"driver" : "fliglio",
+	"name"   : "foo",
+	"health" : "/",
+	"hosts"  : [
+		"foo.corn",
+		"bar.corn"
+	]
+}

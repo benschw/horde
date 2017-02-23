@@ -27,6 +27,7 @@ horde::cli::help() {
 	echo "        \"db\": \"db_name\"",
 	echo "        \"image\": \"docker/image_tag\"",
 	echo "        \"host\": \"hostname_override\"",
+	echo "        \"hosts\": [\"alias1\"\", \"alias2\""],
 	echo "        \"env_file\": \"env_file/to/inject\""
 	echo "    }"
 }
@@ -35,15 +36,11 @@ horde::cli::up() {
 	local driver=$(horde::config::get_driver)
 	local name=$(horde::config::get_name)
 	local ip=$(horde::bridge_ip)
-	local hostname=$(horde::hostname)
 
 	horde::delete_stopped $name || return 1
 
 	horde::ensure_running registrator || return 1
 	horde::ensure_running fabio || return 1
-
-
-	horde::cfg_hostname "${hostname}" || return 1
 
 	${driver}::up || return 1
 }
