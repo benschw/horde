@@ -20,6 +20,7 @@ sb::up() {
 
 	docker run -d \
 		-P ${env_file_arg} \
+		--expose 5005 \
 		-e "SERVICE_8080_CHECK_SCRIPT=echo ok" \
 		-e "SERVICE_8080_NAME=${name}" \
 		-e "SERVICE_8080_TAGS=urlprefix-${hostname}/,springboot" \
@@ -48,6 +49,7 @@ sb_gw::up() {
 
 	docker run -d \
 		-P\
+		--expose 5005 \
 		-e "SERVICE_8080_CHECK_SCRIPT=echo ok" \
 		-e "SERVICE_8080_NAME=${name}" \
 		-e "SERVICE_8080_TAGS=urlprefix-${hostname}/api/,springboot" \
