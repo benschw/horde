@@ -21,12 +21,26 @@ horde::config::get_image() {
 horde::config::get_driver() {
 	horde::config::_load_driver || return 1
 }
+horde::config::get_hosts() {
+	horde::config::_get_array "hosts" || return 1
+}
 #
 # Private
 #
 
 horde::config::_get_value() {
-	cat ./horde.json | jq -r ".$1"
+	jq -r ".$1" ./horde.json
+}
+
+horde::config::_get_array() {
+	if jq -e 'has("'"$1"'")' ./horde.json > /dev/null; then
+		local SAVEIFS=$IFS
+		# Change IFS to new line. 
+		IFS=$'\n'
+		(jq -r ".$1"' | join("\n")' ./horde.json)
+		# Restore IFS
+		IFS=$SAVEIFS
+	fi
 }
 
 horde::config::_load_driver() {

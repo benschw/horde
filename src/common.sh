@@ -45,6 +45,29 @@ horde::hostname() {
 	echo $name.horde
 }
 
+horde::hosts() {
+	local hostname=$(horde::hostname)
+	local hosts=$(horde::config::get_hosts)
+	local hostsCsv=""
+
+	for var in "${hosts[@]}"
+	do
+		if [ ${#hostsCsv} -gt 0 ]; then 
+			hostsCsv="$hostsCsv, urlprefix-$var/"
+		else 
+			hostsCsv="urlprefix-$var/"
+		fi
+	done
+
+	if [ ${#hostsCsv} -ge 0 ]; then 
+		hostsCsv="$hostsCsv, urlprefix-$hostname"
+	else 
+		hostsCsv="urlprefix-$hostname"
+	fi
+
+	echo $hostsCsv
+}
+
 horde::err() {
 	echo "[$(date +'%Y-%m-%dT%H:%M:%S%z')]: $@" >&2
 }
