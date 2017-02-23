@@ -34,12 +34,7 @@ horde::config::_get_value() {
 
 horde::config::_get_array() {
 	if jq -e 'has("'"$1"'")' ./horde.json > /dev/null; then
-		local SAVEIFS=$IFS
-		# Change IFS to new line. 
-		IFS=$'\n'
-		(jq -r ".$1"' | join("\n")' ./horde.json)
-		# Restore IFS
-		IFS=$SAVEIFS
+		jq -r ".$1"' | join("\n")' ./horde.json
 	fi
 }
 

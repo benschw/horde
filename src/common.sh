@@ -50,6 +50,12 @@ horde::hosts() {
 	local hosts=$(horde::config::get_hosts)
 	local hostsCsv=""
 
+	SAVEIFS=$IFS
+	IFS=$'\n'
+	hosts=($hosts)
+	# Restore IFS
+	IFS=$SAVEIFS
+
 	for var in "${hosts[@]}"
 	do
 		if [ ${#hostsCsv} -gt 0 ]; then 
