@@ -2,7 +2,7 @@
 
 static_web::up() {
 	local ip=$(horde::bridge_ip)
-	local hostname=$(horde::hostname)
+	local hostTags=$(horde::configure_hosts "/")
 	local name=$(horde::config::get_name)
 	local docs=$(pwd)
 
@@ -10,7 +10,7 @@ static_web::up() {
 		-P\
 		-e "SERVICE_80_CHECK_SCRIPT=echo ok" \
 		-e "SERVICE_80_NAME=${name}" \
-		-e "SERVICE_80_TAGS=urlprefix-${hostname}/,static-web" \
+		-e "SERVICE_80_TAGS=${hostTags},static-web" \
 		-v "${docs}:/var/www/" \
 		--name "${name}" \
 		--dns "${ip}" \

@@ -2,7 +2,7 @@
 
 sb::up() {
 	local ip=$(horde::bridge_ip)
-	local hostname=$(horde::hostname)
+	local hostTags=$(horde::configure_hosts "/")
 	local name=$(horde::config::get_name)
 	local docs=$(pwd)
 
@@ -23,7 +23,7 @@ sb::up() {
 		--expose 5005 \
 		-e "SERVICE_8080_CHECK_SCRIPT=echo ok" \
 		-e "SERVICE_8080_NAME=${name}" \
-		-e "SERVICE_8080_TAGS=urlprefix-${hostname}/,springboot" \
+		-e "SERVICE_8080_TAGS=${hostTags},springboot" \
 		--name "${name}" \
 		--dns "${ip}" \
 		--link consul:consul \
@@ -36,7 +36,7 @@ sb::up() {
 
 sb_gw::up() {
 	local ip=$(horde::bridge_ip)
-	local hostname=$(horde::hostname)
+	local hostTags=$(horde::configure_hosts "/api/")
 	local name=$(horde::config::get_name)
 	local docs=$(pwd)
 
@@ -52,7 +52,7 @@ sb_gw::up() {
 		--expose 5005 \
 		-e "SERVICE_8080_CHECK_SCRIPT=echo ok" \
 		-e "SERVICE_8080_NAME=${name}" \
-		-e "SERVICE_8080_TAGS=urlprefix-${hostname}/api/,springboot" \
+		-e "SERVICE_8080_TAGS=${hostTags},springboot" \
 		${env_file} \
 		--name "${name}" \
 		--dns "${ip}" \
@@ -66,7 +66,7 @@ sb_gw::up() {
 
 sb_gw_web::up() {
 	local ip=$(horde::bridge_ip)
-	local hostname=$(horde::hostname)
+	local hostTags=$(horde::configure_hosts "/")
 	local name=$(horde::config::get_name)
 	local docs=$(pwd)
 
@@ -75,7 +75,7 @@ sb_gw_web::up() {
 		-P\
 		-e "SERVICE_80_CHECK_SCRIPT=echo ok" \
 		-e "SERVICE_80_NAME=${name}" \
-		-e "SERVICE_80_TAGS=urlprefix-${hostname}/,angular-web" \
+		-e "SERVICE_80_TAGS=${hostTags},angular-web" \
 		-e "FLIGLIO_ENV=horde" \
 		-v "${docs}/dist:/var/www/httpdocs/" \
 		--name "${name}" \

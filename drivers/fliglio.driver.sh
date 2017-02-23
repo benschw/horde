@@ -3,7 +3,7 @@
 
 fliglio::up() {
 	local ip=$(horde::bridge_ip)
-	local hostname=$(horde::hostname)
+	local hostTags=$(horde::configure_hosts "/")
 	local name=$(horde::config::get_name)
 
 	local env_file=$(horde::config::get_env_file)
@@ -35,7 +35,7 @@ fliglio::up() {
 		-P ${env_file_arg} ${vol_arg} \
 		-e "SERVICE_80_CHECK_SCRIPT=echo ok" \
 		-e "SERVICE_80_NAME=${name}" \
-		-e "SERVICE_80_TAGS=urlprefix-${hostname}/,fliglio" \
+		-e "SERVICE_80_TAGS=${hostTags},fliglio" \
 		-e "FLIGLIO_ENV=horde" \
 		-e "MIGRATIONS_PATH=/var/www/migrations" \
 		--name "${name}" \
@@ -49,7 +49,7 @@ fliglio::up() {
 
 fliglio_gw::up() {
 	local ip=$(horde::bridge_ip)
-	local hostname=$(horde::hostname)
+	local hostTags=$(horde::configure_hosts "/api/")
 	local name=$(horde::config::get_name)
 
 	local env_file=$(horde::config::get_env_file)
@@ -80,7 +80,7 @@ fliglio_gw::up() {
 		-P ${env_file_arg} ${vol_arg} \
 		-e "SERVICE_80_CHECK_SCRIPT=echo ok" \
 		-e "SERVICE_80_NAME=${name}" \
-		-e "SERVICE_80_TAGS=urlprefix-${hostname}/api/,fliglio_gw" \
+		-e "SERVICE_80_TAGS=${hostTags},fliglio_gw" \
 		-e "FLIGLIO_ENV=horde" \
 		-e "MIGRATIONS_PATH=/var/www/migrations" \
 		--name "${name}" \
