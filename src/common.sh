@@ -45,7 +45,8 @@ horde::hostname() {
 	echo $name.horde
 }
 
-horde::hosts() {
+horde::hosts_tags() {
+	local postfix=$1
 	local hostname=$(horde::hostname)
 	local hosts=$(horde::config::get_hosts)
 	local hostsCsv=""
@@ -59,16 +60,16 @@ horde::hosts() {
 	for var in "${hosts[@]}"
 	do
 		if [ ${#hostsCsv} -gt 0 ]; then 
-			hostsCsv="$hostsCsv, urlprefix-$var/"
+			hostsCsv="$hostsCsv, urlprefix-$var$1"
 		else 
-			hostsCsv="urlprefix-$var/"
+			hostsCsv="urlprefix-$var$1"
 		fi
 	done
 
 	if [ ${#hostsCsv} -ge 0 ]; then 
-		hostsCsv="$hostsCsv, urlprefix-$hostname"
+		hostsCsv="$hostsCsv, urlprefix-$hostname$1"
 	else 
-		hostsCsv="urlprefix-$hostname"
+		hostsCsv="urlprefix-$hostname$1"
 	fi
 
 	echo $hostsCsv

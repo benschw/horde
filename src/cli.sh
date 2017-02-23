@@ -27,6 +27,7 @@ horde::cli::help() {
 	echo "        \"db\": \"db_name\"",
 	echo "        \"image\": \"docker/image_tag\"",
 	echo "        \"host\": \"hostname_override\"",
+	echo "        \"hosts\": [\"alias1\"\", \"alias2\""],
 	echo "        \"env_file\": \"env_file/to/inject\""
 	echo "    }"
 }
