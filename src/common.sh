@@ -23,7 +23,7 @@ horde::bridge_ip(){
 	echo $HORDE_IP
 }
 
-horde::_cfg_hostname() {
+horde::cfg_hostname() {
 	local hostname=$1
 	local ip=$(horde::bridge_ip)
 
@@ -67,7 +67,7 @@ horde::configure_hosts() {
 			hostsCsv="urlprefix-$var$1"
 		fi
 
-		horde::_cfg_hostname "${var}" >> /dev/null || return 1
+		horde::cfg_hostname "${var}" >> /dev/null || return 1
 	done
 
 	echo $hostsCsv
