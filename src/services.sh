@@ -72,11 +72,33 @@ horde::service::mysql() {
 	docker run -d \
 		-p $port_cfg \
 		-e "SERVICE_3306_NAME=${name}" \
+		-e "MYSQL_ALLOW_EMPTY_PASSWORD=yes" \
 		--name $name \
 		--dns $ip \
-		benschw/horde-mysql || return 1
+		mysql:5.7 || return 1
 
-	sleep 5
+	echo "Waiting for MySQL to start up"
+	ctr=$((25))
+	secs=$ctr
+	while [ $secs -gt 0 ]; do
+
+		left=$secs
+		while [ $left -gt 0 ]; do
+			echo -n "."
+			: $((left--))
+		done
+		left=$secs
+		while [ $left -lt $ctr ]; do
+			echo -n ' '
+			: $((left++))
+		done
+		echo -ne "\r"
+		sleep 1
+		: $((secs--))
+	done
+	
+	docker run -it --rm --link mysql:mysql mysql:5.7 \
+		sh -c 'exec mysql -h$MYSQL_PORT_3306_TCP_ADDR -u root -e "GRANT ALL ON *.* TO admin@'\''%'\'' IDENTIFIED BY '\''changeme'\'' WITH GRANT OPTION; FLUSH PRIVILEGES"'
 }
 horde::service::chinchilla() {
 	local ip=$(horde::bridge_ip)
