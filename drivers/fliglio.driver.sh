@@ -22,10 +22,12 @@ fliglio::up() {
 		local docs=$(pwd)
 		vol_arg="-v ${docs}:/var/www/" 
 	fi
+	local docs=$(pwd)
+	vol_arg="-v ${docs}:/var/www/" 
 
 	horde::ensure_running chinchilla || return 1
 
-	horde::ensure_running logspout || return 1
+#	horde::ensure_running logspout || return 1
 
 	if [[ "horde::config::get_db" != "null" ]]; then
 		horde::ensure_running mysql || return 1

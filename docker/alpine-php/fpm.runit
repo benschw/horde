@@ -1,0 +1,14 @@
+#! /bin/sh
+
+. /etc/envvars
+
+exec 2>&1 
+set -e
+
+umask 022
+
+
+
+export HOME=/root
+
+exec /usr/local/sbin/php-fpm --nodaemonize --fpm-config /usr/local/etc/php-fpm.d/www.conf

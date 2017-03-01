@@ -1,0 +1,14 @@
+#! /bin/sh
+
+. /etc/envvars
+
+exec 2>&1 
+set -e
+
+umask 022
+
+
+
+export HOME=/root
+
+exec /usr/sbin/nginx -g "daemon off;"

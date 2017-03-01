@@ -1,5 +1,8 @@
 build: fliglio mysql rabbitmq chinchilla
 
+alpine-php:
+	docker build -t alpine-php ./alpine-php
+
 fliglio:
 	docker build -t benschw/horde-fliglio ./fliglio/
 
@@ -19,4 +22,4 @@ publish:
 	docker push benschw/horde-rabbitmq
 	docker push benschw/horde-chinchilla
 
-.PHONY: fliglio mysql rabbitmq chinchilla
+.PHONY: fliglio mysql rabbitmq chinchilla alpine-php

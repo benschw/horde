@@ -1,5 +1,6 @@
 {
 	"driver" : "fliglio",
+    "image"  : "alpine-php",
 	"name"   : "foo",
 	"health" : "/",
 	"hosts"  : [
