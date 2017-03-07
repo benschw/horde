@@ -51,6 +51,23 @@ horde::_hostname() {
 	echo $name.horde
 }
 
+horde::load_services() {
+	local services=$(horde::config::get_services)
+	SAVEIFS=$IFS
+	IFS=$'\n'
+	services=($services)
+	# Restore IFS
+	IFS=$SAVEIFS
+
+	horde::ensure_running consul || return 1
+	horde::ensure_running registrator || return 1
+	horde::ensure_running fabio || return 1
+
+	for svc in "${services[@]}"; do
+		horde::ensure_running "${svc}"
+	done
+}
+
 horde::configure_hosts() {
 	local postfix=$1
 	local hostname=$(horde::_hostname)

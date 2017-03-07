@@ -5,5 +5,10 @@
 	"hosts"  : [
 		"foo.corn",
 		"bar.corn"
+	],
+	"services": [
+		"mysql",
+		"rabbitmq",
+		"chinchilla"
 	]
 }

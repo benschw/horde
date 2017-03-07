@@ -48,8 +48,10 @@ horde::cli::up() {
 
 		horde::delete_stopped $name || return 1
 
+		horde::ensure_running consul || return 1
 		horde::ensure_running registrator || return 1
 		horde::ensure_running fabio || return 1
+		horde::load_services || return 1
 
 		${driver}::up || return 1
 		return 0

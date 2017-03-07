@@ -24,6 +24,9 @@ horde::config::get_driver() {
 horde::config::get_hosts() {
 	horde::config::_get_array "hosts" || return 1
 }
+horde::config::get_services() {
+	horde::config::_get_array "services" || return 1
+}
 #
 # Private
 #
