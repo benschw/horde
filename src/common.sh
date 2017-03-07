@@ -13,9 +13,15 @@ horde::ensure_running(){
 
 	local state=$(docker inspect --format "{{.State.Running}}" $name 2>/dev/null)
 
+	svc="service::${name}"
+	
 	if [[ "$state" == "false" ]] || [[ "$state" == "" ]]; then
-		echo "$name is not running, starting"
-		horde::service::$name || return 1
+		if ! horde::func_exists "${svc}"; then
+			horde::err "Service '${name}' not found"
+			return 1
+		fi
+		echo "Starting $name"
+		$svc || return 1
 	fi
 }
 
@@ -71,6 +77,14 @@ horde::configure_hosts() {
 	done
 
 	echo $hostsCsv
+}
+
+horde::func_exists() {
+	local f=$1
+	if [ -n "$(type -t $f)" ] && [ "$(type -t $f)" = function ]; then
+		return 0
+	fi
+	return 1
 }
 
 horde::err() {

@@ -33,16 +33,28 @@ horde::cli::help() {
 }
 
 horde::cli::up() {
+	local svc_name=$1
+	if [ ! -z "$svc_name" ]; then
+		horde::ensure_running "${svc_name}" || return 1
+		return 0
+	fi
+
 	local driver=$(horde::config::get_driver)
 	local name=$(horde::config::get_name)
 	local ip=$(horde::bridge_ip)
 
-	horde::delete_stopped $name || return 1
+	local state=$(docker inspect --format "{{.State.Running}}" $name 2>/dev/null)
+	if [[ "$state" == "false" ]] || [[ "$state" == "" ]]; then
 
-	horde::ensure_running registrator || return 1
-	horde::ensure_running fabio || return 1
+		horde::delete_stopped $name || return 1
 
-	${driver}::up || return 1
+		horde::ensure_running registrator || return 1
+		horde::ensure_running fabio || return 1
+
+		${driver}::up || return 1
+		return 0
+	fi
+	echo "${name} already running"
 }
 
 horde::cli::restart() {

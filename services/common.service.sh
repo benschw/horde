@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-horde::service::consul() {
+service::consul() {
 	local ip=$(horde::bridge_ip)
 	local dns=8.8.8.8
 	local hostname="consul.horde"
@@ -23,7 +23,7 @@ horde::service::consul() {
 	sleep 3
 }
 
-horde::service::registrator() {
+service::registrator() {
 	local ip=$(horde::bridge_ip)
 
 	horde::delete_stopped registrator || return 1
@@ -38,7 +38,7 @@ horde::service::registrator() {
 		-ip $ip consul://localhost:8500 || return 1
 }
 
-horde::service::fabio() {
+service::fabio() {
 	local ip=$(horde::bridge_ip)
 	local hostname="fabio.horde"
 
@@ -57,7 +57,7 @@ horde::service::fabio() {
 		magiconair/fabio || return 1
 }
 
-horde::service::mysql() {
+service::mysql() {
 	local ip=$(horde::bridge_ip)
 	local name="mysql"
 	local port_cfg=""
@@ -78,7 +78,7 @@ horde::service::mysql() {
 
 	sleep 5
 }
-horde::service::chinchilla() {
+service::chinchilla() {
 	local ip=$(horde::bridge_ip)
 	local name="chinchilla"
 
@@ -95,7 +95,7 @@ horde::service::chinchilla() {
 		benschw/horde-chinchilla || return 1
 }
 
-horde::service::rabbitmq() {
+service::rabbitmq() {
 	local ip=$(horde::bridge_ip)
 	local name="rabbitmq"
 	local hostname="rabbitmq.horde"
@@ -116,7 +116,7 @@ horde::service::rabbitmq() {
 	sleep 3
 }
 
-horde::service::splunk() {
+service::splunk() {
 	local ip=$(horde::bridge_ip)
 	local name="splunk"
 	local hostname="splunk.horde"
@@ -154,7 +154,7 @@ horde::service::splunk() {
 	sleep 5
 }
 
-horde::service::logspout() {
+service::logspout() {
 	local ip=$(horde::bridge_ip)
 	local name="logspout"
 
