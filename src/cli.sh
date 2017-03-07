@@ -58,8 +58,8 @@ horde::cli::up() {
 }
 
 horde::cli::restart() {
-	horde::cli::stop
-	horde::cli::up
+	horde::cli::stop "$@"
+	horde::cli::up "$@"
 }
 
 horde::cli::logs() {
