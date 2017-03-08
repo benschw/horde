@@ -154,20 +154,3 @@ service::splunk() {
 	sleep 5
 }
 
-service::logspout() {
-	local ip=$(horde::bridge_ip)
-	local name="logspout"
-
-	horde::delete_stopped logspout || return 1
-
-	horde::ensure_running splunk || return 1
-
-	docker run -d \
-		--name $name \
-		--dns $ip \
-		-v /var/run/docker.sock:/var/run/docker.sock \
-		gliderlabs/logspout syslog+tcp://$ip:1514 || return 1
-
-	sleep 5
-}
-

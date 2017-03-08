@@ -23,7 +23,7 @@ fliglio::up() {
 		vol_arg="-v ${docs}:/var/www/" 
 	fi
 
-	horde::ensure_running logspout || return 1
+	horde::ensure_running splunk || return 1
 
 	docker run -d \
 		-P ${env_file_arg} ${vol_arg} \
