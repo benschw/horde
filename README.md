@@ -33,7 +33,11 @@ Specify a custom recursor dns server (other than the default of 8.8.8.8) by sett
 
 	export HORDE_DNS=1.2.3.4
 
-	
+
+In addition to consul, registrator, and fabio, you can configure additional services to always start up
+
+	export HORDE_SERVICES=splunk,rabbitmq
+
 ### Hello World
 	
 Create a hello world application (or use the [example](https://github.com/benschw/horde/tree/master/example))
