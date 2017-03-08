@@ -9,6 +9,13 @@ horde::config::get_name() {
 horde::config::get_host() {
 	horde::config::_get_value "host" || return 1
 }
+horde::config::get_env_file_arg() {
+	local env_file=$(horde::config::get_env_file)
+
+	if [ "${env_file}" != "null" ] ; then
+		echo "--env-file ${env_file}"
+	fi
+}
 horde::config::get_env_file() {
 	horde::config::_get_value "env_file" || return 1
 }
@@ -16,7 +23,13 @@ horde::config::get_health() {
 	horde::config::_get_value "health" || return 1
 }
 horde::config::get_image() {
-	horde::config::_get_value "image" || return 1
+	local default="$1"
+	local val=$(horde::config::_get_value "image")
+	if [ "$val" == "null" ]; then
+		echo $default
+	else
+		echo $val
+	fi
 }
 horde::config::get_driver() {
 	horde::config::_load_driver || return 1

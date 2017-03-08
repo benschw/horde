@@ -3,39 +3,27 @@
 
 fliglio::up() {
 	local ip=$(horde::bridge_ip)
-	local hostTags=$(horde::configure_hosts "/")
 	local name=$(horde::config::get_name)
+	local links_arg=$(horde::get_service_links)
+	local env_file_arg=$(horde::config::get_env_file_arg)
+	local image=$(horde::config::get_image "benschw/horde-fliglio")
 
-	local env_file=$(horde::config::get_env_file)
-	local env_file_arg=""
+	local hostTags=$(horde::configure_hosts "/")
+	local docs=$(pwd)
 
-	if [ "${env_file}" != "null" ] ; then
-		env_file_arg="--env-file ${env_file}"
-	fi
-	
 
-	local vol_arg=""
-	local image=$(horde::config::get_image)
-	if [ "${image}" == "null" ] ; then
-		image="benschw/horde-fliglio"
-
-		local docs=$(pwd)
-		vol_arg="-v ${docs}:/var/www/" 
-	fi
-
-	horde::ensure_running splunk || return 1
+	#horde::ensure_running splunk || return 1
 
 	docker run -d \
-		-P ${env_file_arg} ${vol_arg} \
-		-e "SERVICE_80_CHECK_SCRIPT=echo ok" \
+		-P $env_file_arg $links_arg \
+		-v "${docs}:/var/www" \
+		-e "SERVICE_80_CHECK_SCRIPT=true" \
 		-e "SERVICE_80_NAME=${name}" \
 		-e "SERVICE_80_TAGS=${hostTags},fliglio" \
 		-e "FLIGLIO_ENV=horde" \
 		-e "MIGRATIONS_PATH=/var/www/migrations" \
 		--name "${name}" \
 		--dns "${ip}" \
-		--link consul:consul \
-		--link mysql:mysql \
 		"${image}" \
 		|| return 1
 

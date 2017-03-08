@@ -13,8 +13,8 @@ horde::ensure_running(){
 
 	local state=$(docker inspect --format "{{.State.Running}}" $name 2>/dev/null)
 
-	svc="service::${name}"
-	
+	local svc="service::${name}"
+
 	if [[ "$state" == "false" ]] || [[ "$state" == "" ]]; then
 		if ! horde::func_exists "${svc}"; then
 			horde::err "Service '${name}' not found"
@@ -51,7 +51,7 @@ horde::_hostname() {
 	echo $name.horde
 }
 
-horde::load_services() {
+horde::start_services() {
 	local services=$(horde::config::get_services)
 	SAVEIFS=$IFS
 	IFS=$'\n'
@@ -59,13 +59,31 @@ horde::load_services() {
 	# Restore IFS
 	IFS=$SAVEIFS
 
-	horde::ensure_running consul || return 1
-	horde::ensure_running registrator || return 1
-	horde::ensure_running fabio || return 1
+	services=("consul" "${services[@]}")
+	services=("registrator" "${services[@]}")
+	services=("fabio" "${services[@]}")
 
+
+	local links_args=""
 	for svc in "${services[@]}"; do
-		horde::ensure_running "${svc}"
+		horde::ensure_running "${svc}" || return 1
 	done
+}
+horde::get_service_links() {
+	local services=$(horde::config::get_services)
+	SAVEIFS=$IFS
+	IFS=$'\n'
+	services=($services)
+	# Restore IFS
+	IFS=$SAVEIFS
+
+	services=("consul" "${services[@]}")
+
+	local links_args=""
+	for svc in "${services[@]}"; do
+		links_args="${links_args} --link ${svc}:${svc}"
+	done
+	echo $links_args
 }
 
 horde::configure_hosts() {

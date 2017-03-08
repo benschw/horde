@@ -39,6 +39,11 @@ horde::cli::up() {
 		return 0
 	fi
 
+	if [ ! -f ./horde.json ]; then
+		echo "./horde.json not found"
+		return 0
+	fi
+
 	local driver=$(horde::config::get_driver)
 	local name=$(horde::config::get_name)
 	local ip=$(horde::bridge_ip)
@@ -48,10 +53,7 @@ horde::cli::up() {
 
 		horde::delete_stopped $name || return 1
 
-		horde::ensure_running consul || return 1
-		horde::ensure_running registrator || return 1
-		horde::ensure_running fabio || return 1
-		horde::load_services || return 1
+		horde::start_services || return 1
 
 		${driver}::up || return 1
 		return 0
