@@ -15,9 +15,12 @@ build: clean
 
 install:
 	cp build/horde /usr/local/bin/horde
-	mkdir -p $(HOME)/.horde/plugins/
-	cp services/*.sh $(HOME)/.horde/plugins/
-	cp drivers/*.sh $(HOME)/.horde/plugins/
+	mkdir -p $(HOME)/.horde/plugins/core/
+	mkdir -p $(HOME)/.horde/plugins/contrib
+	cp services/*.sh $(HOME)/.horde/plugins/core/
+	cp drivers/*.sh $(HOME)/.horde/plugins/core/
+	cp contrib/services/*.sh $(HOME)/.horde/plugins/contrib/
+	cp contrib/drivers/*.sh $(HOME)/.horde/plugins/contrib/
 
 
 .PHONY: build
