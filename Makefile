@@ -16,9 +16,11 @@ build: clean
 install:
 	cp build/horde /usr/local/bin/horde
 	mkdir -p $(HOME)/.horde/plugins/core/
-	mkdir -p $(HOME)/.horde/plugins/contrib
 	cp services/*.sh $(HOME)/.horde/plugins/core/
 	cp drivers/*.sh $(HOME)/.horde/plugins/core/
+
+contrib-install:
+	mkdir -p $(HOME)/.horde/plugins/contrib
 	cp contrib/services/*.sh $(HOME)/.horde/plugins/contrib/
 	cp contrib/drivers/*.sh $(HOME)/.horde/plugins/contrib/
 
