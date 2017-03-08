@@ -9,6 +9,8 @@ service::splunk() {
 
 	horde::delete_stopped splunk || return 1
 
+	horde::ensure_running logspout || return 1
+
 	horde::cfg_hostname "${hostname}" || return 1
 
 	docker run -d \
@@ -44,7 +46,6 @@ service::logspout() {
 
 	horde::delete_stopped logspout || return 1
 
-	horde::ensure_running splunk || return 1
 
 	docker run -d \
 		--name $name \
