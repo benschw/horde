@@ -39,6 +39,11 @@ horde::config::get_hosts() {
 }
 horde::config::get_services() {
 	horde::config::_get_array "services" || return 1
+	local svc=""
+	echo $HORDE_SERVICES | sed -n 1'p' | tr ',' '\n' | while read svc; do
+    	echo $svc
+	done
+
 }
 #
 # Private

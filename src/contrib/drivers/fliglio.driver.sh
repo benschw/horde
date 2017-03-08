@@ -11,17 +11,12 @@ fliglio::up() {
 	local hostTags=$(horde::configure_hosts "/")
 	local docs=$(pwd)
 
-
-	#horde::ensure_running splunk || return 1
-
 	docker run -d \
 		-P $env_file_arg $links_arg \
 		-v "${docs}:/var/www" \
 		-e "SERVICE_80_CHECK_SCRIPT=true" \
 		-e "SERVICE_80_NAME=${name}" \
 		-e "SERVICE_80_TAGS=${hostTags},fliglio" \
-		-e "FLIGLIO_ENV=horde" \
-		-e "MIGRATIONS_PATH=/var/www/migrations" \
 		--name "${name}" \
 		--dns "${ip}" \
 		"${image}" \
