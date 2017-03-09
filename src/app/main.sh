@@ -16,3 +16,7 @@ for f in $(find "${plugin_path}" -name "*.driver.sh"); do
 	source $f
 done
 
+
+
+app "$@" || exit 1
+

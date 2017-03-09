@@ -45,9 +45,6 @@ fliglio_gw::up() {
 		vol_arg="-v ${docs}:/var/www/" 
 	fi
 
-	horde::ensure_running chinchilla || return 1
-
-	horde::ensure_running logspout || return 1
 
 	if [[ "horde::config::get_db" != "null" ]]; then
 		horde::ensure_running mysql || return 1

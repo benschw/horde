@@ -1,56 +1,5 @@
 #!/bin/bash
 
-horde::delete_stopped(){
-	local name=$1
-	local state=$(docker inspect --format "{{.State.Running}}" $name 2>/dev/null)
-
-	if [[ "$state" == "false" ]]; then
-		docker rm $name
-	fi
-}
-horde::ensure_running(){
-	local name=$1
-
-	local state=$(docker inspect --format "{{.State.Running}}" $name 2>/dev/null)
-
-	local svc="service::${name}"
-
-	if [[ "$state" == "false" ]] || [[ "$state" == "" ]]; then
-		if ! horde::func_exists "${svc}"; then
-			horde::err "Service '${name}' not found"
-			return 1
-		fi
-		echo "Starting $name"
-		$svc || return 1
-	fi
-}
-
-horde::bridge_ip(){
-	echo $HORDE_IP
-}
-
-horde::cfg_hostname() {
-	local hostname=$1
-	local ip=$(horde::bridge_ip)
-
-	if ! sudo hostess add $hostname $ip ; then
-		horde::err "problem configuring hostname '${hostname}'"
-		return 1
-	fi
-}
-
-horde::_hostname() {
-	local name=$(horde::config::get_host)
-	if [ "${name}" != "null" ] ; then
-		echo $name
-		return
-	fi
-
-	local name=$(horde::config::get_name)
-
-	echo $name.horde
-}
-
 horde::start_services() {
 	local services=$(horde::config::get_services)
 	SAVEIFS=$IFS
@@ -66,7 +15,7 @@ horde::start_services() {
 
 	local links_args=""
 	for svc in "${services[@]}"; do
-		horde::ensure_running "${svc}" || return 1
+		horde::service::ensure_running "${svc}" || return 1
 	done
 }
 horde::get_service_links() {
@@ -113,6 +62,33 @@ horde::configure_hosts() {
 
 	echo $hostsCsv
 }
+
+horde::bridge_ip(){
+	echo $HORDE_IP
+}
+
+horde::cfg_hostname() {
+	local hostname=$1
+	local ip=$(horde::bridge_ip)
+
+	if ! sudo hostess add $hostname $ip ; then
+		horde::err "problem configuring hostname '${hostname}'"
+		return 1
+	fi
+}
+
+horde::_hostname() {
+	local name=$(horde::config::get_host)
+	if [ "${name}" != "null" ] ; then
+		echo $name
+		return
+	fi
+
+	local name=$(horde::config::get_name)
+
+	echo $name.horde
+}
+
 
 horde::func_exists() {
 	local f=$1

@@ -5,11 +5,15 @@ clean:
 
 build: clean
 	mkdir -p build
-	cat src/common.sh \
-		src/config.sh \
-		src/cli.sh \
-		src/pluginmgr.sh \
-		src/main.sh \
+	cat src/app/common.sh \
+		src/app/lib/service.sh \
+		src/app/config.sh \
+		src/app/cli/cli.sh \
+		src/app/cli/help.sh \
+		src/app/cli/consul_register.sh \
+		src/app/cli/up.sh \
+		src/app/app.sh \
+		src/app/main.sh \
 		> build/horde
 	chmod +x build/horde
 

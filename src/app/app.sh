@@ -1,9 +1,7 @@
 #!/bin/bash
 
 
-
-main() {
-
+app() {
 
 	command -v hostess >/dev/null 2>&1 || {
 		horde::err  "hostess (https://github.com/cbednarski/hostess) is required to manage names. Aborting."
@@ -33,7 +31,7 @@ main() {
 	        VBoxManage hostonlyif ipconfig vboxnet0 -ip $HORDE_IP
 	    fi
 	fi
-
+	
 	local args=( "$@" )
 	unset args[0]
 
@@ -45,12 +43,10 @@ main() {
 			horde::err "Fatal Error. Exiting"
 			return 1
 		fi
-
 	else
 		horde::err "Invalid subcommand '${1}'"
 	fi
 
 }
 
-main "$@" || exit 1
 

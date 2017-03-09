@@ -14,9 +14,6 @@ sb::up() {
 		env_file_arg="--env-file ${env_file}"
 	fi
 
-	horde::ensure_running mysql || return 1
-
-	horde::ensure_running splunk || return 1
 
 	docker run -d \
 		-P ${env_file_arg} \

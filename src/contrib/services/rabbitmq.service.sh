@@ -7,7 +7,7 @@ service::rabbitmq() {
 	local name="rabbitmq"
 	local hostname="rabbitmq.horde"
 
-	horde::delete_stopped rabbitmq || return 1
+	horde::service::delete_stopped rabbitmq || return 1
 
 	horde::cfg_hostname "${hostname}" || return 1
 

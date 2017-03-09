@@ -7,9 +7,9 @@ service::splunk() {
     local logs=$(pwd)
 	local port_cfg="1514:1514"
 
-	horde::delete_stopped splunk || return 1
+	horde::service::delete_stopped splunk || return 1
 
-	horde::ensure_running logspout || return 1
+	horde::service::ensure_running logspout || return 1
 
 	horde::cfg_hostname "${hostname}" || return 1
 
@@ -44,7 +44,7 @@ service::logspout() {
 	local ip=$(horde::bridge_ip)
 	local name="logspout"
 
-	horde::delete_stopped logspout || return 1
+	horde::service::delete_stopped logspout || return 1
 
 
 	docker run -d \
