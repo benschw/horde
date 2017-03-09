@@ -1,6 +1,21 @@
 #!/bin/bash
 
 
+mac_bridge_setup() {
+	command -v VBoxManage >/dev/null 2>&1 || {
+		horde::err "VirtualBox (https://www.virtualbox.org/) is required to create consul bridge. Aborting."
+		return 1
+	}
+
+	# Check if vboxnet0 exist, if not we create it and assing bridge IP to it
+	is_bridge_ip_available=$(ifconfig | grep vboxnet0 |  awk '{print $1}')
+	if [ -z ${is_bridge_ip_available} ]; then
+		VBoxManage hostonlyif create
+		VBoxManage hostonlyif ipconfig vboxnet0 -ip $HORDE_IP
+	fi
+}
+
+
 app() {
 
 	command -v hostess >/dev/null 2>&1 || {
@@ -19,17 +34,7 @@ app() {
 	}
 
 	if [ ${HORDE_ENSURE_VBOXNET+x} ]; then
-    	command -v VBoxManage >/dev/null 2>&1 || {
-		    horde::err "VirtualBox (https://www.virtualbox.org/) is required to create consul bridge. Aborting."
-    		return 1
-	    }
-
-	    # Check if vboxnet0 exist, if not we create it and assing bridge IP to it
-	    is_bridge_ip_available=$(ifconfig | grep vboxnet0 |  awk '{print $1}')
-	    if [ -z ${is_bridge_ip_available} ]; then
-	        VBoxManage hostonlyif create
-	        VBoxManage hostonlyif ipconfig vboxnet0 -ip $HORDE_IP
-	    fi
+		mac_bridge_setup
 	fi
 	
 	local args=( "$@" )

@@ -38,7 +38,12 @@ horde::config::get_hosts() {
 	horde::config::_get_array "hosts" || return 1
 }
 horde::config::get_services() {
+	echo consul
+	echo registrator
+	echo fabio
+
 	horde::config::_get_array "services" || return 1
+	
 	local svc=""
 	echo $HORDE_SERVICES | sed -n 1'p' | tr ',' '\n' | while read svc; do
     	echo $svc

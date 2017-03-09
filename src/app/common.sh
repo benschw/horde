@@ -8,11 +8,6 @@ horde::start_services() {
 	# Restore IFS
 	IFS=$SAVEIFS
 
-	services=("consul" "${services[@]}")
-	services=("registrator" "${services[@]}")
-	services=("fabio" "${services[@]}")
-
-
 	local links_args=""
 	for svc in "${services[@]}"; do
 		horde::service::ensure_running "${svc}" || return 1
@@ -26,11 +21,14 @@ horde::get_service_links() {
 	# Restore IFS
 	IFS=$SAVEIFS
 
-	services=("consul" "${services[@]}")
-
 	local links_args=""
+	local mode=""
 	for svc in "${services[@]}"; do
-		links_args="${links_args} --link ${svc}:${svc}"
+		#can't link to registrator because it uses --net=host
+		mode=$(docker inspect --format "{{.HostConfig.NetworkMode}}" $svc 2>/dev/null)
+		if [[ "$mode" != "host" ]]; then
+			links_args="${links_args} --link ${svc}:${svc}"
+		fi
 	done
 	echo $links_args
 }
