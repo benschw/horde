@@ -64,3 +64,13 @@ horde::container::is_running() {
 }
 
 
+horde::container::exists() {
+	local name=$1
+	local state=$(docker inspect --format "{{.State.Running}}" $name 2>/dev/null)
+
+	if [[ "$state" == "" ]]; then
+		return 1
+	fi
+}
+
+

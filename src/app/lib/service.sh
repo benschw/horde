@@ -4,8 +4,10 @@
 horde::service::delete_stopped(){
 	local name=$1
 
-	if ! horde::container::is_running "$name"; then
-		docker rm $name
+	if horde::container::exists "$name"; then
+		if ! horde::container::is_running "$name"; then
+			docker rm $name
+		fi
 	fi
 }
 

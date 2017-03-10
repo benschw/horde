@@ -16,7 +16,7 @@ static_web::up() {
 		--dns "${ip}" \
 		-P $env_file_arg $links_arg \
 		-v "${docs}:/var/www" \
-		-e "SERVICE_80_CHECK_SCRIPT=echo ok" \
+		-e "SERVICE_80_CHECK_SCRIPT=\"true\"" \
 		-e "SERVICE_80_NAME=${name}" \
 		-e "SERVICE_80_TAGS=${hostTags},static-web" \
 		"${image}" \

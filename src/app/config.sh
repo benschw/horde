@@ -4,24 +4,24 @@
 #
 
 horde::config::get_name() {
-	horde::config::_get_value "name" || return 1
+	horde::json::value "name" || return 1
 }
 horde::config::get_host() {
-	horde::config::_get_value "host" || return 1
+	horde::json::value "host" || return 1
 }
 horde::config::get_env_file() {
-	horde::config::_get_value "env_file" || return 1
+	horde::json::value "env_file" || return 1
 }
 horde::config::get_driver() {
 	horde::config::_load_driver || return 1
 }
 horde::config::get_health() {
-	horde::config::_get_value "health" || return 1
+	horde::json::value "health" || return 1
 }
 
 horde::config::get_image() {
 	local default="$1"
-	local val=$(horde::config::_get_value "image")
+	local val=$(horde::json::value "image")
 	if [ "$val" == "null" ]; then
 		echo $default
 	else
@@ -39,7 +39,7 @@ horde::config::get_hosts() {
 	local name=$(horde::config::get_name)
 
 	echo $name.horde
-	horde::config::_get_array "hosts" || return 1
+	horde::json::array "hosts" || return 1
 }
 
 horde::config::get_services() {
@@ -47,7 +47,7 @@ horde::config::get_services() {
 	echo registrator
 	echo fabio
 
-	horde::config::_get_array "services" || return 1
+	horde::json::array "services" || return 1
 	
 	local svc=""
 	echo $HORDE_SERVICES | sed -n 1'p' | tr ',' '\n' | while read svc; do
@@ -59,18 +59,9 @@ horde::config::get_services() {
 # Private
 #
 
-horde::config::_get_value() {
-	jq -r ".$1" ./horde.json
-}
-
-horde::config::_get_array() {
-	if jq -e 'has("'"$1"'")' ./horde.json > /dev/null; then
-		jq -r ".$1"' | join("\n")' ./horde.json
-	fi
-}
 
 horde::config::_load_driver() {
-	local driver=$(horde::config::_get_value "driver")
+	local driver=$(horde::json::value "driver")
 	
 	local fcns=( "up" )
 
