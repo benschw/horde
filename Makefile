@@ -6,14 +6,14 @@ clean:
 build: clean
 	mkdir -p build
 	cat src/app/lib/json.sh \
+		src/app/lib/hosts.sh \
 		src/app/lib/container.sh \
 		src/app/lib/service.sh \
 		src/app/common.sh \
 		src/app/config.sh \
-		src/app/cli/cli.sh \
 		src/app/cli/help.sh \
+		src/app/cli/run.sh \
 		src/app/cli/consul_register.sh \
-		src/app/cli/up.sh \
 		src/app/app.sh \
 		src/app/main.sh \
 		> build/horde

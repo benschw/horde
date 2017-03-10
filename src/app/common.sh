@@ -1,33 +1,28 @@
 #!/bin/bash
 
-horde::configure_hosts() {
-	local hosts=("$@")
-
-	for var in "${hosts[@]}"; do
-		horde::cfg_hostname "${var}" >> /dev/null || return 1
-	done
-}
-
 horde::bridge_ip(){
 	echo $HORDE_IP
 }
-
-horde::cfg_hostname() {
-	local hostname=$1
-	local ip=$(horde::bridge_ip)
-
-	if ! sudo hostess add $hostname $ip ; then
-		horde::err "problem configuring hostname '${hostname}'"
-		return 1
-	fi
-}
-
 horde::func_exists() {
 	local f=$1
 	if [ -n "$(type -t $f)" ] && [ "$(type -t $f)" = function ]; then
 		return 0
 	fi
 	return 1
+}
+
+horde::valid_driver() {
+	local driver="$1"
+	
+	local fcns=( "up" )
+
+	for fcn in "${fcns[@]}" ; do
+		if ! horde::func_exists "${driver}::${fcn}" ; then
+			horde::err "Invalid driver '${driver}'"
+			horde::err "${driver}::${fcn} not implemented"
+			return 1
+		fi
+	done
 }
 
 horde::err() {

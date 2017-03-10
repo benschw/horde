@@ -6,7 +6,7 @@ horde::cli::help() {
 	echo "    horde command [name]"
 	echo
 	echo "COMMANDS:"
-	echo "    up           start up an app (requires horde.json)"
+	echo "    run          start up an app (requires horde.json)"
 	echo "    logs [name]  follow the logs for a container (uses horde.json"
 	echo "                 if a name isn't supplied)"
 	echo "    stop [name]  stop a fliglio app (uses horde.json if a name"

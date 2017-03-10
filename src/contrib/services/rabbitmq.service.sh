@@ -9,7 +9,7 @@ service::rabbitmq() {
 
 	horde::service::delete_stopped rabbitmq || return 1
 
-	horde::cfg_hostname "${hostname}" || return 1
+	horde::hosts::configure_hosts "${hostname}" || return 1
 
 	docker run -d \
 		-p 5672 \

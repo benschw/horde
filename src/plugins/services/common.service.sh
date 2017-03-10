@@ -11,7 +11,7 @@ service::consul() {
 	fi
 	horde::service::delete_stopped consul || return 1
 
-	horde::cfg_hostname "${hostname}" || return 1
+	horde::hosts::configure_hosts "${hostname}" || return 1
 
 	docker run -d \
 		-p 8500:8500 \
@@ -44,7 +44,7 @@ service::fabio() {
 
 	horde::service::delete_stopped fabio || return 1
 
-	horde::cfg_hostname "${hostname}" || return 1
+	horde::hosts::configure_hosts "${hostname}" || return 1
 
 	docker run -d \
 		-p 80:80 \

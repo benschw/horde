@@ -20,7 +20,10 @@ horde::container::_build_links_string() {
 
 
 horde::container::get_env_file_arg() {
-	local env_file=$(horde::config::get_env_file)
+	horde::container::_get_env_file_arg $(horde::config::get_env_file)
+}
+horde::container::_get_env_file_arg() {
+	local env_file=$1
 
 	if [ "${env_file}" != "null" ] ; then
 		echo "--env-file ${env_file}"

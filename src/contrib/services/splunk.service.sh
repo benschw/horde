@@ -11,7 +11,7 @@ service::splunk() {
 
 	horde::service::ensure_running logspout || return 1
 
-	horde::cfg_hostname "${hostname}" || return 1
+	horde::hosts::configure_hosts "${hostname}" || return 1
 
 	docker run -d \
 		-p $port_cfg \

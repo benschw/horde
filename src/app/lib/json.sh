@@ -1,16 +1,18 @@
 #/bin/bash
 
 horde::json::value() {
-	local key=$1
+	local file="$1"
+	local key="$2"
 
-	jq -r ".$key" ./horde.json
+	jq -r ".$key" "$file"
 }
 
 horde::json::array() {
-	local key=$1
+	local file="$1"
+	local key="$2"
 
-	if jq -e 'has("'"$key"'")' ./horde.json > /dev/null; then
-		jq -r ".$1"' | join("\n")' ./horde.json
+	if jq -e 'has("'"$key"'")' $file > /dev/null; then
+		jq -r ".$key"' | join("\n")' "$file"
 	fi
 }
 

@@ -12,7 +12,7 @@ horde::service::delete_stopped(){
 }
 
 horde::service::ensure_running(){
-	local names=( "$@" )
+	local names=("$@")
 	local name=""
 
 	for name in "${names[@]}"; do

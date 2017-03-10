@@ -8,7 +8,7 @@ mac_bridge_setup() {
 	}
 
 	# Check if vboxnet0 exist, if not we create it and assing bridge IP to it
-	is_bridge_ip_available=$(ifconfig | grep vboxnet0 |  awk '{print $1}')
+	is_bridge_ip_available=$(ifconfig | grep vboxnet0 | awk '{print $1}')
 	if [ -z ${is_bridge_ip_available} ]; then
 		VBoxManage hostonlyif create
 		VBoxManage hostonlyif ipconfig vboxnet0 -ip $HORDE_IP
