@@ -1,13 +1,5 @@
 #!/bin/bash
 
-horde::start_services() {
-	local services=("$@")
-
-	local links_args=""
-	for svc in "${services[@]}"; do
-		horde::service::ensure_running "${svc}" || return 1
-	done
-}
 horde::configure_hosts() {
 	local hosts=("$@")
 
@@ -29,7 +21,6 @@ horde::cfg_hostname() {
 		return 1
 	fi
 }
-
 
 horde::func_exists() {
 	local f=$1

@@ -26,7 +26,7 @@ horde::cli::up() {
 
 		horde::service::delete_stopped $name || return 1
 
-		horde::start_services $(horde::config::get_services) || return 1
+		horde::service::ensure_running $(horde::config::get_services) || return 1
 		horde::configure_hosts $(horde::config::get_hosts) || return 1
 
 		${driver}::up || return 1
