@@ -5,8 +5,9 @@ clean:
 
 build: clean
 	mkdir -p build
-	cat src/app/common.sh \
+	cat src/app/lib/container.sh \
 		src/app/lib/service.sh \
+		src/app/common.sh \
 		src/app/config.sh \
 		src/app/cli/cli.sh \
 		src/app/cli/help.sh \

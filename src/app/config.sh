@@ -9,19 +9,16 @@ horde::config::get_name() {
 horde::config::get_host() {
 	horde::config::_get_value "host" || return 1
 }
-horde::config::get_env_file_arg() {
-	local env_file=$(horde::config::get_env_file)
-
-	if [ "${env_file}" != "null" ] ; then
-		echo "--env-file ${env_file}"
-	fi
-}
 horde::config::get_env_file() {
 	horde::config::_get_value "env_file" || return 1
+}
+horde::config::get_driver() {
+	horde::config::_load_driver || return 1
 }
 horde::config::get_health() {
 	horde::config::_get_value "health" || return 1
 }
+
 horde::config::get_image() {
 	local default="$1"
 	local val=$(horde::config::_get_value "image")
@@ -31,12 +28,20 @@ horde::config::get_image() {
 		echo $val
 	fi
 }
-horde::config::get_driver() {
-	horde::config::_load_driver || return 1
-}
+
 horde::config::get_hosts() {
+	local name=$(horde::config::get_host)
+	if [ "${name}" != "null" ] ; then
+		echo $name
+		return
+	fi
+
+	local name=$(horde::config::get_name)
+
+	echo $name.horde
 	horde::config::_get_array "hosts" || return 1
 }
+
 horde::config::get_services() {
 	echo consul
 	echo registrator
@@ -70,7 +75,7 @@ horde::config::_load_driver() {
 	local fcns=( "up" )
 
 	for fcn in "${fcns[@]}" ; do
-		if ! horde::config::_fcn_exists "${driver}::${fcn}" ; then
+		if ! horde::func_exists "${driver}::${fcn}" ; then
 			horde::err "Invalid driver '${driver}'"
 			horde::err "${driver}::${fcn} not implemented"
 			return 1
@@ -81,12 +86,3 @@ horde::config::_load_driver() {
 	return 0
 }
 
-horde::config::_fcn_exists() {
-	local fcn=$1
-	
-	if [ -n "$(type -t $fcn)" ] && [ "$(type -t $fcn)" = "function" ] ; then
-		return 0
-	else
-		return 1
-	fi
-}

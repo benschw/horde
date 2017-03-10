@@ -3,23 +3,21 @@
 
 horde::service::delete_stopped(){
 	local name=$1
-	local state=$(docker inspect --format "{{.State.Running}}" $name 2>/dev/null)
 
-	if [[ "$state" == "false" ]]; then
+	if ! horde::container::is_running "$name"; then
 		docker rm $name
 	fi
 }
+
 horde::service::ensure_running(){
 	local names=( "$@" )
 	local name=""
 
 	for name in "${names[@]}"; do
+		if ! horde::container::is_running "$name"; then
 
-		local state=$(docker inspect --format "{{.State.Running}}" $name 2>/dev/null)
+			local svc="service::${name}"
 
-		local svc="service::${name}"
-
-		if [[ "$state" == "false" ]] || [[ "$state" == "" ]]; then
 			if ! horde::func_exists "${svc}"; then
 				horde::err "Service '${name}' not found"
 				return 1
