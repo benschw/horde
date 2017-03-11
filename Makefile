@@ -15,7 +15,7 @@ build: clean
 		src/app/util.sh \
 		src/app/config.sh \
 		src/app/cli/help.sh \
-		src/app/cli/subcommands.sh \
+		src/app/cli/sub_commands.sh \
 		src/app/main.sh \
 		> build/horde
 	chmod +x build/horde
