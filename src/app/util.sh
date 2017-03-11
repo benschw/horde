@@ -1,5 +1,15 @@
 #!/bin/bash
 
+horde::cmd_exists() {
+	local cli="$1"
+	local error_msg="$2"
+
+	command -v "$cli" >/dev/null 2>&1 || {
+		horde::msg "$error_msg"
+		return 1
+	}
+}
+
 horde::func_exists() {
 	local f=$1
 	if [ -n "$(type -t $f)" ] && [ "$(type -t $f)" = function ]; then
@@ -9,10 +19,10 @@ horde::func_exists() {
 }
 
 horde::err() {
-	echo "[$(date +'%Y-%m-%dT%H:%M:%S%z')]: $@" >&2
+	echo "ERROR: $@" >&2
 }
 
-horde::debug() {
+horde::msg() {
 	echo $@ >&2
 }
 

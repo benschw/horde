@@ -1,4 +1,7 @@
 #!/bin/bash
+horde::cli::help() {
+	horde::cli::_get_usage
+}
 
 horde::cli::up() {
 	local svc_names=("$@")
@@ -13,7 +16,18 @@ horde::cli::run() {
 		return 0
 	fi
 
-	horde::driver::run || return 1
+	if [ ! -f ./horde.json ]; then
+		echo "./horde.json not found"
+		return 1
+	fi
+
+	local driver=$(horde::config::get_driver)
+	local name=$(horde::config::get_name)
+
+	horde::service::ensure_running $(horde::config::get_services) || return 1
+	horde::hosts::configure_hosts $(horde::config::get_hosts) || return 1
+
+	horde::driver::run "$driver" "$name" || return 1
 }
 
 horde::cli::restart() {
@@ -43,4 +57,16 @@ horde::cli::stop() {
 		names=( $(horde::config::get_name) )
 	fi
 	docker stop "${names[@]}"
+}
+
+horde::cli::register() {
+	local name="$1"
+	local host="$2"
+	local port="$3"
+	horde::consul::register "$name" "$host" "$port"
+}
+
+horde::cli::deregister() {
+	local name="$1"
+	horde::consul::deregister "$name"
 }

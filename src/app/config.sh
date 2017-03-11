@@ -19,10 +19,24 @@ horde::config::get_driver() {
 	horde::config::_get_value "driver" "$1" || return 1
 }
 horde::config::get_hosts() {
+	local name=$(horde::config::get_name)
+	if [ "${name}" != "null" ] ; then
+		horde::config::get_host "${name}.horde"
+	fi
+
 	horde::config::_get_array "hosts"
 }
 horde::config::get_services() {
+	echo consul
+	echo registrator
+	echo fabio
+
 	horde::config::_get_array "services"
+	
+	local svc=""
+	echo $HORDE_SERVICES | sed -n 1'p' | tr ',' '\n' | while read svc; do
+    	echo $svc
+	done
 }
 
 #_

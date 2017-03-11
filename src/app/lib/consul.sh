@@ -1,6 +1,6 @@
 #!/bin/bash
 
-horde::cli::register() {
+horde::consul::register() {
 	local name="$1"
 	local host="$2"
 	local port="$3"
@@ -8,7 +8,7 @@ horde::cli::register() {
 	local hostname="${name}.horde"
 	echo "setting $name"
 	
-	horde::cfg_hostname "${hostname}" || return 1
+	horde::hosts::configure_hosts "${hostname}" || return 1
 	
 
 	read -r -d '' svc_def << EOF
@@ -27,18 +27,19 @@ horde::cli::register() {
 EOF
 
 	if ! curl -s -X PUT "http://consul.horde/v1/agent/service/register" -d "${svc_def}" ; then
-		horde::err "problem deregistering ${name} from consul"
+		horde::msg "problem deregistering ${name} from consul"
 		return 1
 	fi
 }
 
 
 
-horde::cli::deregister() {
+horde::consul::deregister() {
 	local name="$1"
 
 	if ! curl -s -X POST "http://consul.horde/v1/agent/service/deregister/${name}" ; then
-		horde::err "problem registering ${name} in consul"
+		horde::msg "problem registering ${name} in consul"
 		return 1
 	fi
 }
+

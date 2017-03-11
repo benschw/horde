@@ -1,23 +1,11 @@
 #!/bin/bash
 
-
-
 main() {
+	horde::cmd_exists "hostess" "hostess (https://github.com/cbednarski/hostess) is required to manage names. Aborting." || return 1
+	horde::cmd_exists "docker" "docker (https://www.docker.com/) is required to manage containers. Aborting." || return 1
+	horde::cmd_exists "jq" "jq (https://stedolan.github.io/jq/) is required for parsing json. Aborting." || return 1
 
-	command -v hostess >/dev/null 2>&1 || {
-		horde::debug  "hostess (https://github.com/cbednarski/hostess) is required to manage names. Aborting."
-		return 1
-	}
-
-	command -v docker >/dev/null 2>&1 || {
-		horde::debug "docker (https://www.docker.com/) is required to manage containers. Aborting."
-		return 1
-	}
-
-	command -v jq >/dev/null 2>&1 || {
-		horde::debug "jq (https://stedolan.github.io/jq/) is required for parsing json. Aborting."
-		return 1
-	}
+	horde::plugin_mgr::load "$HOME/.horde/plugins"
 
 	horde::net::ensure_osx_vboxnet && horde::net::osx_vboxnet_setup
 	
@@ -33,9 +21,9 @@ main() {
 			return 1
 		fi
 	else
-		horde::err "Invalid subcommand '${1}'"
+		horde::msg "Unknown subcommand '${1}'"
 	fi
 
 }
 
-
+main "$@" || exit 1

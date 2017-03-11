@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-horde::cli::help() {
+horde::cli::_get_usage() {
 	echo "USAGE:"
 	echo "    horde command [name]"
 	echo
