@@ -2,7 +2,7 @@
 
 
 fliglio::up() {
-	local ip=$(horde::bridge_ip)
+	local ip=$(horde::net::bridge_ip)
 	local name=$(horde::config::get_name)
 	local links_arg=$(horde::get_service_links)
 	local env_file_arg=$(horde::config::get_env_file_arg)
@@ -25,7 +25,7 @@ fliglio::up() {
 }
 
 fliglio_gw::up() {
-	local ip=$(horde::bridge_ip)
+	local ip=$(horde::net::bridge_ip)
 	local hostTags=$(horde::configure_hosts "/api/")
 	local name=$(horde::config::get_name)
 

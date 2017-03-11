@@ -2,7 +2,7 @@
 
 
 service::chinchilla() {
-	local ip=$(horde::bridge_ip)
+	local ip=$(horde::net::bridge_ip)
 	local name="chinchilla"
 
 	horde::service::delete_stopped chinchilla || return 1

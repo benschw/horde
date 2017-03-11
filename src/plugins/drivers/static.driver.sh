@@ -1,7 +1,7 @@
 #!/bin/bash
 
 static_web::up() {
-	local ip=$(horde::bridge_ip)
+	local ip=$(horde::net::bridge_ip)
 	local name=$(horde::config::get_name)
 
 	local image=$(horde::config::get_image "benschw/horde-fliglio")

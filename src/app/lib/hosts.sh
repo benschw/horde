@@ -2,7 +2,7 @@
 
 horde::hosts::configure_hosts() {
 	local hosts=("$@")
-	local ip=$(horde::bridge_ip)
+	local ip=$(horde::net::bridge_ip)
 
 	for host in "${hosts[@]}"; do
 		horde::hosts::_configure_host "$ip" "$host" || return 1

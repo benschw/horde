@@ -1,7 +1,7 @@
 #!/bin/bash
 
 sb::up() {
-	local ip=$(horde::bridge_ip)
+	local ip=$(horde::net::bridge_ip)
 	local hostTags=$(horde::configure_hosts "/")
 	local name=$(horde::config::get_name)
 	local docs=$(pwd)
@@ -32,7 +32,7 @@ sb::up() {
 }
 
 sb_gw::up() {
-	local ip=$(horde::bridge_ip)
+	local ip=$(horde::net::bridge_ip)
 	local hostTags=$(horde::configure_hosts "/api/")
 	local name=$(horde::config::get_name)
 	local docs=$(pwd)
@@ -62,7 +62,7 @@ sb_gw::up() {
 
 
 sb_gw_web::up() {
-	local ip=$(horde::bridge_ip)
+	local ip=$(horde::net::bridge_ip)
 	local hostTags=$(horde::configure_hosts "/")
 	local name=$(horde::config::get_name)
 	local docs=$(pwd)

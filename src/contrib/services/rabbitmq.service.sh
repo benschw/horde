@@ -3,7 +3,7 @@
 
 
 service::rabbitmq() {
-	local ip=$(horde::bridge_ip)
+	local ip=$(horde::net::bridge_ip)
 	local name="rabbitmq"
 	local hostname="rabbitmq.horde"
 

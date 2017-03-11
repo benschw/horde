@@ -2,13 +2,10 @@
 
 
 service::consul() {
-	local ip=$(horde::bridge_ip)
-	local dns=8.8.8.8
+	local ip=$(horde::net::bridge_ip)
+	local dns=$(horde::net::default_dns)
 	local hostname="consul.horde"
 
-	if [ ! -z ${HORDE_DNS} ]; then
-		dns="$HORDE_DNS"
-	fi
 	horde::service::delete_stopped consul || return 1
 
 	horde::hosts::configure_hosts "${hostname}" || return 1
@@ -24,7 +21,7 @@ service::consul() {
 }
 
 service::registrator() {
-	local ip=$(horde::bridge_ip)
+	local ip=$(horde::net::bridge_ip)
 
 	horde::service::delete_stopped registrator || return 1
 	
@@ -39,7 +36,7 @@ service::registrator() {
 }
 
 service::fabio() {
-	local ip=$(horde::bridge_ip)
+	local ip=$(horde::net::bridge_ip)
 	local hostname="fabio.horde"
 
 	horde::service::delete_stopped fabio || return 1

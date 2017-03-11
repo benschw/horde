@@ -20,7 +20,7 @@ horde::cli::run() {
 
 	local driver=$(horde::config::get_driver)
 	local name=$(horde::config::get_name)
-	local ip=$(horde::bridge_ip)
+	local ip=$(horde::net::bridge_ip)
 
 	if horde::container::is_running "$name"; then
 		echo "$name already running"

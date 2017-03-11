@@ -3,7 +3,7 @@
 
 
 service::mysql() {
-	local ip=$(horde::bridge_ip)
+	local ip=$(horde::net::bridge_ip)
 	local name="mysql"
 	local port_cfg=""
 

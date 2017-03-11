@@ -1,7 +1,7 @@
 #!/bin/bash
 
 service::splunk() {
-	local ip=$(horde::bridge_ip)
+	local ip=$(horde::net::bridge_ip)
 	local name="splunk"
 	local hostname="splunk.horde"
     local logs=$(pwd)
@@ -41,7 +41,7 @@ service::splunk() {
 }
 
 service::logspout() {
-	local ip=$(horde::bridge_ip)
+	local ip=$(horde::net::bridge_ip)
 	local name="logspout"
 
 	horde::service::delete_stopped logspout || return 1

@@ -6,6 +6,7 @@ clean:
 build: clean
 	mkdir -p build
 	cat src/app/lib/json.sh \
+		src/app/lib/net.sh \
 		src/app/lib/hosts.sh \
 		src/app/lib/container.sh \
 		src/app/lib/service.sh \
