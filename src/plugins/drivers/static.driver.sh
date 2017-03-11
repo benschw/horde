@@ -5,9 +5,9 @@ static_web::up() {
 	local name=$(horde::config::get_name)
 
 	local image=$(horde::config::get_image "benschw/horde-fliglio")
-	local hostTags=$(horde::container::get_host_tags "/")
-	local links_arg=$(horde::container::get_service_links)
-	local env_file_arg=$(horde::container::get_env_file_arg)
+	local hostTags=$(horde::driver::get_host_tags "/")
+	local links_arg=$(horde::driver::get_service_links)
+	local env_file_arg=$(horde::driver::get_env_file_arg)
 
 	local docs=$(pwd)
 

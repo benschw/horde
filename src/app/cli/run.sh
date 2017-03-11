@@ -13,26 +13,7 @@ horde::cli::run() {
 		return 0
 	fi
 
-	if [ ! -f ./horde.json ]; then
-		echo "./horde.json not found"
-		return 1
-	fi
-
-	local driver=$(horde::config::get_driver)
-	local name=$(horde::config::get_name)
-	local ip=$(horde::net::bridge_ip)
-
-	if horde::container::is_running "$name"; then
-		echo "$name already running"
-		return 0
-	fi
-
-	horde::service::delete_stopped $name || return 1
-
-	horde::service::ensure_running $(horde::config::get_services) || return 1
-	horde::hosts::configure_hosts $(horde::config::get_hosts) || return 1
-
-	${driver}::up || return 1
+	horde::driver::run || return 1
 }
 
 horde::cli::restart() {
@@ -55,6 +36,7 @@ horde::cli::kill() {
 	fi
 	docker kill "${names[@]}"
 }
+
 horde::cli::stop() {
 	local names=("$@")
 	if [ "${#names[@]}" -eq 0 ]; then
