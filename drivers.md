@@ -18,9 +18,10 @@ customize how your application runs.
 ### driver
 
 
-Add drivers with the naming convention `NAME.driver.sh` to your configured
-`$HORDE_PLUGIN_PATH` (defaults to ~/.horde/plugins). They should implement a
-single function named like:
+In addition to the provided `static_web` driver, you can add custom drivers by
+creating a shell script (following the naming convention: `NAME.driver.sh`) in
+your configured `HORDE_PLUGIN_PATH` (defaults to ~/.horde/plugins). Each driver
+should implement a single function named like:
 
 	drivers::custom_name() {
 		container::call run -d --name custom_name me/custom_image
