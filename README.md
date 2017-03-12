@@ -23,6 +23,7 @@ The main components of `horde` are [service plugins](#service-plugins) and [driv
 	* [Configuration](#configuration)
 		* [Linux](#linux)
 		* [OS X](#os-x)
+# [Hello World](#hello-world)
 * [Service Plugins](#service-plugins)
 	* [Core Services](#core-services)
 	* [Contrib Services](#contrib-services)
@@ -30,33 +31,6 @@ The main components of `horde` are [service plugins](#service-plugins) and [driv
 * [Driver Plugins](#driver-plugins)
 	* [horde.json file reference](#hordejson-file-reference)
 	* [Custom Drivers](#custom-drivers)
-
-### Hello World
-	
-Create a hello world application (or use the [example](https://github.com/benschw/horde/tree/master/example))
-
-	git clone https://github.com/benschw/horde.git
-	cd horde/example
-
-Run it
-	
-	horde run
-
-Test it out
-
-	curl http://foo.horde
-
-
-#### What is running?
-
-
-The base services are `consul`, `registrator`, and `fabio`.
-`registrator` watches as you start up new applications and registers them with consul.
-`fabio` watches `consul` and sets up routes to your applications.
-
-Once you've run an application with horde, you can see its discovery details
-at [http://consul.horde/ui](http://consul.horde/ui/#/dc1/services)
-and its routing details at [http://fabio.horde/routes](http://fabio.horde/routes).
 
 
 ## Install
@@ -126,6 +100,33 @@ By default, consul will recurse DNS requests to google (8.8.8.8) but you can spe
 custom recursor dns server by setting the following env variable:
 
 	export HORDE_DNS=1.2.3.4
+
+### Hello World
+	
+Create a hello world application (or use the [example](https://github.com/benschw/horde/tree/master/example))
+
+	git clone https://github.com/benschw/horde.git
+	cd horde/example
+
+Run it
+	
+	horde run
+
+Test it out
+
+	curl http://foo.horde
+
+
+#### What is running?
+
+
+The base services are `consul`, `registrator`, and `fabio`.
+`registrator` watches as you start up new applications and registers them with consul.
+`fabio` watches `consul` and sets up routes to your applications.
+
+Once you've run an application with horde, you can see its discovery details
+at [http://consul.horde/ui](http://consul.horde/ui/#/dc1/services)
+and its routing details at [http://fabio.horde/routes](http://fabio.horde/routes).
 
 
 # Service Plugins
