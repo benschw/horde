@@ -20,9 +20,15 @@ The main components of `horde` are [services](services.md) and [drivers](drivers
 	* [Install](#install)
 	* [Dependencies](#dependencies)
 	* [Configuration](#configuration)
+		* [Linux](#linux)
+		* [OS X](#os-x)
 * [Service Plugins](#service-plugins)
+	* [Core Services](#core-services)
+	* [Contrib Services](#contrib-services)
+	* [Custom Services](#custom-services)
 * [Driver Plugins](#driver-plugins)
-
+	* [horde.json file reference](#hordejson-file-reference)
+	* [Custom Drivers](#custom-drivers)
 
 ### Hello World
 	
@@ -121,8 +127,9 @@ custom recursor dns server by setting the following env variable:
 	export HORDE_DNS=1.2.3.4
 
 
-## Service Plugins
+# Service Plugins
 
+## Core Services
 ### Fabio
 [fabio.horde](http://fabio.horde/)
 
@@ -130,6 +137,7 @@ custom recursor dns server by setting the following env variable:
 
 [consul.horde/ui/](http://consul.horde/ui/)
 
+## Contrib Services
 ### Mysql
 Use login: admin / changeme
 
@@ -145,6 +153,28 @@ Force the mysql container to publish port 3306 over a specific external port (e.
 Use login: guest / guest
 
 ### Chinchilla
+
+### Splunk
+
+[splunk.horde](http://splunk.horde)
+
+## Custom Services
+
+In addition to the provided _core_ and _contrib_ services, you can add custom services by
+creating a shell script (following the naming convention: `NAME.service.sh`) in
+your configured `HORDE_PLUGIN_PATH` (defaults to ~/.horde/plugins). Each service
+should implement a single function named like:
+
+	services::custom_name() {
+		container::call run -d --name custom_name my/custom_image
+	}
+
+Service plugins can be anywhere in the configured plugin path (so cloning the repo
+in which you manage your plugin(s) into this directory would work fine.)
+
+Look at the provided services (`~/.horde/plugins/core/common.service.sh`)
+as a model for creating your. Notice the helper functions that help you build up a
+docker command that integrates well with the `horde` ecosystem.
 
 
 # Driver Plugins
@@ -162,29 +192,14 @@ In addition to these, there are other properties you can set in order to
 customize how your application runs.
 
 
-## horde.json
+## horde.json File Reference
 
 ### driver
 
 
-In addition to the provided `static_web` driver, you can add custom drivers by
-creating a shell script (following the naming convention: `NAME.driver.sh`) in
-your configured `HORDE_PLUGIN_PATH` (defaults to ~/.horde/plugins). Each driver
-should implement a single function named like:
+Specify your driver in the `horde.json` config. Horde comes with a `static_web` driver included,
+but you can add your own with [custom plugin drivers](#custom-drivers).
 
-	drivers::custom_name() {
-		container::call run -d --name custom_name my/custom_image
-	}
-
-Driver plugins can be anywhere in the configured plugin path (so checking out the repo
-you manage your driver plugin(s) in to this directory would work fine.)
-
-Look at the provided `static_web` driver (`~/.horde/plugins/core/static_web.driver.sh`)
-as a model for creating your own opinionated drivers. Notice the helper functions
-that help you build up a docker command that integrates well with the `horde` ecosystem.
-
-
-Specify your driver in the `horde.json` config as follows:
 	{
 		...
 		"driver": "static_web",
@@ -266,5 +281,23 @@ default http://_name_.horde or http://_host_.
 	}
 
 
+
+## Custom Drivers
+
+In addition to the provided `static_web` driver, you can add custom drivers by
+creating a shell script (following the naming convention: `NAME.driver.sh`) in
+your configured `HORDE_PLUGIN_PATH` (defaults to ~/.horde/plugins). Each driver
+should implement a single function named like:
+
+	drivers::custom_name() {
+		container::call run -d --name custom_name my/custom_image
+	}
+
+Driver plugins can be anywhere in the configured plugin path (so cloning the repo
+in which you manage your plugin(s) into this directory would work fine.)
+
+Look at the provided `static_web` driver (`~/.horde/plugins/core/static_web.driver.sh`)
+as a model for creating your own opinionated drivers. Notice the helper functions
+that help you build up a docker command that integrates well with the `horde` ecosystem.
 
 
