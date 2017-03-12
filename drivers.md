@@ -76,7 +76,7 @@ path to a file containing environment variables you would like injected into you
 
 #### image
 
-If your driver doesn't have a default image, or if you ould like to override it, specify
+If your driver doesn't have a default image, or if you would like to override it, specify
 a docker image string here.
 
 	{
