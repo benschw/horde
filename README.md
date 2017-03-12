@@ -17,8 +17,8 @@ The main components of `horde` are [service plugins](#service-plugins) and [driv
 ## Table of Contents
 
 * [Install Horde](#install-install)
-	* [Install](#install)
 	* [Dependencies](#dependencies)
+	* [Install](#install)
 	* [Configuration](#configuration)
 		* [Linux](#linux)
 		* [OS X](#os-x)
@@ -33,6 +33,13 @@ The main components of `horde` are [service plugins](#service-plugins) and [driv
 
 
 ## Install Horde
+
+### Dependencies
+
+* [hostess](https://github.com/cbednarski/hostess) manages horde application host names in your `/etc/hosts` file.
+* [docker](https://www.docker.com/) manages your horde containers.
+* [jq](https://stedolan.github.io/jq/) to work with json output
+
 ### Install
 
 Build and install horde from source
@@ -48,12 +55,6 @@ And if your want to install the _contrib_ plugins:
 
 Now you have the cli tool installed. Continue on this page to make sure your system
 is configured and you have the necessary dependencies.
-
-### Dependencies
-
-* [hostess](https://github.com/cbednarski/hostess) manages horde application host names in your `/etc/hosts` file.
-* [docker](https://www.docker.com/) manages your horde containers.
-* [jq](https://stedolan.github.io/jq/) to work with json output
 
 
 ### Configuration
