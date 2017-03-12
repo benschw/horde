@@ -8,10 +8,10 @@
 `horde` is a local dev paas that uses docker, consul, and fabio to help make
 managing a development platform easy.
 
-The main components of `horde` are [services](#service-plugins) and [drivers](#driver-plugins):
+The main components of `horde` are [service plugins](#service-plugins) and [driver plugins](#driver-plugins):
 
-* [Services](#service-plugins) help to manage shared services like consul, mysql, and rabbitmq.
-* [Drivers](#driver-plugins) provide a way to express the conventions your application services follow 
+* [Service Plugins](#service-plugins) help to manage shared services like consul, mysql, and rabbitmq.
+* [Driver Plugins](#driver-plugins) provide a way to express the conventions your application services follow 
   and to run them in a consistent and unified way.
 
 
