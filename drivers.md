@@ -103,7 +103,9 @@ default http://_name_.horde or http://_host_.
 
 An array of services your application depends on. Other than `consul`, `registrator`, and `fabio`
 (and whatever you might have set in `HORDE_SERVICES`), if your application needs any other services
-(such as `mysql`) here is the place to specify it
+(such as `mysql`) here is the place to specify them.
+
+These services will also be linked to your application service.
 
 	{
 		...
