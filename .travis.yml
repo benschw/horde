@@ -11,6 +11,17 @@ deploy:
     bucket: dl.fligl.io
     skip_cleanup: true
     local-dir: build/latest
+    upload-dir: artifacts/horde/v1
+    acl: public_read
+    on:
+      branch: refactor
+  - provider: s3
+    access_key_id: AKIAJWN36CZNBCQXFFTQ
+    secret_access_key:
+      secure: "h3M8o6jNQs8kZR57U4H49PLUbbKirW/+mdBl//wRQUTIUeI1mn4sWKs5o5EHBYybUwmQ2ZNKI7s51axbwXrfcobopa21RhXfkJ6mTDiP16b7wcgUKlnaDNvaTCSBv+0xZjBzB7gfsa1vDi2H+Gb5O6wB3IRgHe6L7fEC0x2BTwnpzznETG5upVSmg6u/SGW3YRSXY0zbUeDeLg656A1hNQCsdN47SP7Bap/CABJn+77HlruWBlOyE2Vfd3pgeW/ASWaOxEgiix79LK5FFyDgoiN9/zGp/eXROFCAOZJ9nxGu44yyegIio8eJkfeoBzKuCOrggGQC6l+90svTbrfu6yFJ6nmxyrHEiOsoscybeAIBuxAtjoyrd3S5NVJgRkx8aPrSiMvwmH5f42pswhSE5xY7QJ0VSi0o32JCKUNWs05brsAGg42MViq5D5otua8oqUTYkA+/xjshHAZdidNEbe6dnUk46wZp97w47WpxPhXjza4u9TepvK3qjhKuJgw4D5zTsCI9AtzzHWgYn5QI9OEAI8qWw8fO1zuRSzMWp+IbyjFMSCseS9/4uMZR5pSjkUSNuE01/SZlzTeSqWWhh0q5Kwfp9xLVjniSBiN2k5pZG1T/1ghE2SxD68vQPlK/gUFtjIBl0+ur88VzN1Eev0WtCB2tRmIk2TIAEFsRT7w="
+    bucket: dl.fligl.io
+    skip_cleanup: true
+    local-dir: build/latest
     upload-dir: artifacts/horde
     acl: public_read
   - provider: s3
