@@ -4,6 +4,9 @@ config::is_present() {
 	[ -f ./horde.json ] || return 1
 }
 
+config::get_driver() {
+	config::_get_value "driver" "$1"
+}
 config::get_name() {
 	config::_get_value "name" "$1"
 }
@@ -18,9 +21,6 @@ config::get_env_file() {
 }
 config::get_image() {
 	config::_get_value "image" "$1"
-}
-config::get_driver() {
-	config::_get_value "driver" "$1"
 }
 config::get_hosts() {
 	local name=$(config::get_name)

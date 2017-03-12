@@ -1,4 +1,20 @@
 
+## Install
+
+Build and install horde from source
+
+	git clone https://github.com/benschw/horde.git
+	cd horde
+	make build install
+	
+And if your want to install the _contrib_ plugins:
+
+	make contrib-install
+
+
+Now you have the cli tool installed. Continue on this page to make sure your system
+is configured and you have the necessary dependencies.
+
 ## Dependencies
 
 * [hostess](https://github.com/cbednarski/hostess) manages horde application host names in your `/etc/hosts` file.
