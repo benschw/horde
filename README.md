@@ -23,7 +23,7 @@ The main components of `horde` are [service plugins](#service-plugins) and [driv
 	* [Configuration](#configuration)
 		* [Linux](#linux)
 		* [OS X](#os-x)
-* [Hello World](#hello-world)
+* [Your First Application](#your-first-application)
 * [Service Plugins](#service-plugins)
 	* [Core Services](#core-services)
 	* [Contrib Services](#contrib-services)
@@ -101,7 +101,7 @@ custom recursor dns server by setting the following env variable:
 
 	export HORDE_DNS=1.2.3.4
 
-### Hello World
+### Your First Application
 	
 Create a hello world application (or use the [example](https://github.com/benschw/horde/tree/master/example))
 
