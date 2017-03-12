@@ -1,7 +1,8 @@
 # Drivers
 
-A json config file named `horde.json` should be placed in your project's root directory.
-This will drive what a `horde run` command does.
+A json config file named `horde.json` should be placed in each application service
+project's root directory. This will configure `horde` when run from the project's
+root.
 
 At a bare minimum, this config file should define a `driver` and a `name`. The `driver`
 will specify how your application should be run, and the `name` will be used to
