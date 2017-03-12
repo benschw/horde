@@ -24,7 +24,7 @@ your configured `HORDE_PLUGIN_PATH` (defaults to ~/.horde/plugins). Each driver
 should implement a single function named like:
 
 	drivers::custom_name() {
-		container::call run -d --name custom_name me/custom_image
+		container::call run -d --name custom_name my/custom_image
 	}
 
 Driver plugins can be anywhere in the configured plugin path (so checking out the repo
@@ -34,7 +34,8 @@ Look at the provided `static_web` driver (`~/.horde/plugins/core/static_web.driv
 as a model for creating your own opinionated drivers. Notice the helper functions
 that help you build up a docker command that integrates well with the `horde` ecosystem.
 
-	
+
+Specify your driver in the `horde.json` config as follows:
 	{
 		...
 		"driver": "static_web",
@@ -44,7 +45,7 @@ that help you build up a docker command that integrates well with the `horde` ec
 #### name
 
 This property is used as your application's container name in docker, its service name
-in consul, and by default is used to generate a host name for your app.
+in consul, and by default is used to generate a host name for your app (http://_name_.horde).
 
 	{
 		...
