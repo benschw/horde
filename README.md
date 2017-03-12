@@ -14,10 +14,9 @@ The main components of `horde` are [service plugins](#service-plugins) and [driv
 * [Driver Plugins](#driver-plugins) provide a way to express the conventions your application services follow 
   and to run them in a consistent and unified way.
 
+## Table of Contents
 
-## Getting Started 
-
-* [Install & Setup](#install)
+* [Install Horde](#install-install)
 	* [Install](#install)
 	* [Dependencies](#dependencies)
 	* [Configuration](#configuration)
@@ -33,7 +32,8 @@ The main components of `horde` are [service plugins](#service-plugins) and [driv
 	* [Custom Drivers](#custom-drivers)
 
 
-## Install
+## Install Horde
+### Install
 
 Build and install horde from source
 
@@ -56,9 +56,9 @@ is configured and you have the necessary dependencies.
 * [jq](https://stedolan.github.io/jq/) to work with json output
 
 
-## Configuration
+### Configuration
 
-### Linux
+#### Linux
 
 Specify your machine's `docker0` bridge ip with an environment variable
 
@@ -74,7 +74,7 @@ custom recursor dns server by setting the following env variable:
 
 	export HORDE_DNS=1.2.3.4
 
-### OS X
+#### OS X
 
 Specify your machine's `vboxnet0` bridge ip with an environment variable
 
@@ -101,7 +101,7 @@ custom recursor dns server by setting the following env variable:
 
 	export HORDE_DNS=1.2.3.4
 
-### Your First Application
+## Your First Application
 	
 Create a hello world application (or use the [example](https://github.com/benschw/horde/tree/master/example))
 
@@ -117,7 +117,7 @@ Test it out
 	curl http://foo.horde
 
 
-#### What is running?
+### What is running?
 
 
 The base services are `consul`, `registrator`, and `fabio`.
@@ -129,18 +129,18 @@ at [http://consul.horde/ui](http://consul.horde/ui/#/dc1/services)
 and its routing details at [http://fabio.horde/routes](http://fabio.horde/routes).
 
 
-# Service Plugins
+## Service Plugins
 
-## Core Services
-### Fabio
+### Core Services
+#### Fabio
 [fabio.horde](http://fabio.horde/)
 
-### Consul
+#### Consul
 
 [consul.horde/ui/](http://consul.horde/ui/)
 
-## Contrib Services
-### Mysql
+### Contrib Services
+#### Mysql
 Use login: admin / changeme
 
 
@@ -148,19 +148,19 @@ Force the mysql container to publish port 3306 over a specific external port (e.
 
 	export HORDE_MYSQL_PUBLISH_PORT=3307
 
-### Rabbitmq
+#### Rabbitmq
 
 [rabbitmq.horde](http://rabbitmq.horde)
 
 Use login: guest / guest
 
-### Chinchilla
+#### Chinchilla
 
-### Splunk
+#### Splunk
 
 [splunk.horde](http://splunk.horde)
 
-## Custom Services
+### Custom Services
 
 In addition to the provided _core_ and _contrib_ services, you can add custom services by
 creating a shell script (following the naming convention: `NAME.service.sh`) in
@@ -179,7 +179,7 @@ as a model for creating your. Notice the helper functions that help you build up
 docker command that integrates well with the `horde` ecosystem.
 
 
-# Driver Plugins
+## Driver Plugins
 
 A json config file named `horde.json` should be placed in each application service
 project's root directory. This will configure `horde` when run from the project's
@@ -194,9 +194,9 @@ In addition to these, there are other properties you can set in order to
 customize how your application runs.
 
 
-## horde.json File Reference
+### horde.json File Reference
 
-### driver
+#### driver
 
 
 Specify your driver in the `horde.json` config. Horde comes with a `static_web` driver included,
@@ -284,7 +284,7 @@ default http://_name_.horde or http://_host_.
 
 
 
-## Custom Drivers
+### Custom Drivers
 
 In addition to the provided `static_web` driver, you can add custom drivers by
 creating a shell script (following the naming convention: `NAME.driver.sh`) in
