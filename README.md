@@ -19,6 +19,7 @@ The main components of `horde` are [service plugins](#service-plugins) and [driv
 * [Install Horde](#install-install)
 	* [Dependencies](#dependencies)
 	* [Install](#install)
+		* [Build Horde From Source](#build-horde-from-source)
 	* [Configuration](#configuration)
 		* [Linux](#linux)
 		* [OS X](#os-x)
@@ -67,7 +68,8 @@ The main components of `horde` are [service plugins](#service-plugins) and [driv
 	tar -C ~/.horde/plugins -xvf horde-plugins-contrib_latest.tar.gz
 
 
-_You can also build horde from source:_
+#### Build Horde From Source
+
 
 	git clone https://github.com/benschw/horde.git
 	cd horde
