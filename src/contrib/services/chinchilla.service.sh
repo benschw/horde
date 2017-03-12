@@ -5,7 +5,7 @@ services::chinchilla() {
 	local ip=$(net::bridge_ip)
 	local name="chinchilla"
 
-	service::delete_stopped chinchilla || return 1
+	container::delete_stopped chinchilla || return 1
 
 	service::ensure_running rabbitmq || return 1
 	service::ensure_running consul || return 1

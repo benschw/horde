@@ -19,14 +19,16 @@ container::is_running() {
 	return 0
 }
 
-container::exists() {
+container::delete_stopped(){
 	local name=$1
-	local state=$(docker inspect --format "{{.State.Running}}" $name 2>/dev/null)
 
-	if [[ "$state" == "" ]]; then
-		return 1
+	if container::_exists "$name"; then
+		if ! container::is_running "$name"; then
+			docker rm $name
+		fi
 	fi
 }
+
 
 container::build_links_string() {
 	local services=("$@")
@@ -77,3 +79,13 @@ container::_get_network_mode() {
 	local svc=$1
 	docker inspect --format "{{.HostConfig.NetworkMode}}" $svc 2>/dev/null
 }
+
+container::_exists() {
+	local name=$1
+	local state=$(docker inspect --format "{{.State.Running}}" $name 2>/dev/null)
+
+	if [[ "$state" == "" ]]; then
+		return 1
+	fi
+}
+

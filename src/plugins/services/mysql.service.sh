@@ -7,7 +7,8 @@ services::mysql() {
 	local name="mysql"
 	local port_cfg=""
 
-	service::delete_stopped mysql || return 1
+	container::delete_stopped mysql || return 1
+
 	if [  -z ${HORDE_MYSQL_PUBLISH_PORT+x} ]; then
 		port_cfg="3306"
 	else

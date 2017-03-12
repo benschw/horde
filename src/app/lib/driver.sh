@@ -2,6 +2,8 @@
 
 
 driver::run() {
+	local driver="$1"
+	local name="$2"
 	
 	if container::is_running "$name"; then
 		echo "$name already running"
@@ -10,7 +12,7 @@ driver::run() {
 
 	driver::_is_valid "$driver" || return 1
 	
-	service::delete_stopped $name || return 1
+	container::delete_stopped $name || return 1
 
 	drivers::${driver}::up || return 1
 }

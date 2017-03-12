@@ -8,7 +8,7 @@ consul::register() {
 	local hostname="${name}.horde"
 	echo "setting $name"
 	
-	hosts::configure "${hostname}" || return 1
+	net::configure_hosts "${hostname}" || return 1
 	
 
 	read -r -d '' svc_def << EOF

@@ -7,11 +7,11 @@ services::splunk() {
     local logs=$(pwd)
 	local port_cfg="1514:1514"
 
-	service::delete_stopped splunk || return 1
+	container::delete_stopped splunk || return 1
 
 	service::ensure_running logspout || return 1
 
-	hosts::configure "${hostname}" || return 1
+	net::configure_hosts "${hostname}" || return 1
 
 	container::run \
 		-d \
@@ -45,7 +45,7 @@ services::logspout() {
 	local ip=$(net::bridge_ip)
 	local name="logspout"
 
-	service::delete_stopped logspout || return 1
+	container::delete_stopped logspout || return 1
 
 
 	container::run \

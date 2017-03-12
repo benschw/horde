@@ -6,9 +6,9 @@ services::consul() {
 	local dns=$(net::default_dns)
 	local hostname="consul.horde"
 
-	service::delete_stopped consul || return 1
+	container::delete_stopped consul || return 1
 
-	hosts::configure "${hostname}" || return 1
+	net::configure_hosts "${hostname}" || return 1
 
 	container::run \
 		-d \
@@ -24,7 +24,7 @@ services::consul() {
 services::registrator() {
 	local ip=$(net::bridge_ip)
 
-	service::delete_stopped registrator || return 1
+	container::delete_stopped registrator || return 1
 	
 	service::ensure_running consul || return 1
 
@@ -41,9 +41,9 @@ services::fabio() {
 	local ip=$(net::bridge_ip)
 	local hostname="fabio.horde"
 
-	service::delete_stopped fabio || return 1
+	container::delete_stopped fabio || return 1
 
-	hosts::configure "${hostname}" || return 1
+	net::configure_hosts "${hostname}" || return 1
 
 	container::run \
 		-d \

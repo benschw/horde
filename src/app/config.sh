@@ -1,5 +1,11 @@
 #!/bin/bash
 
+config::is_present() {
+	if [ ! -f ./horde.json ]; then
+		return 1
+	fi
+}
+
 config::get_name() {
 	config::_get_value "name" "$1"
 }

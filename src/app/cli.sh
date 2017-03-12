@@ -13,18 +13,15 @@ cli::run() {
 		return 0
 	fi
 
-	if [ ! -f ./horde.json ]; then
-		echo "./horde.json not found"
+	if ! config::is_present ; then
+		util::msg "./horde.json not found"
 		return 1
 	fi
 
-	local driver=$(config::get_driver)
-	local name=$(config::get_name)
-
 	service::ensure_running $(config::get_services) || return 1
-	hosts::configure $(config::get_hosts) || return 1
+	net::configure_hosts $(config::get_hosts) || return 1
 
-	driver::run "$driver" "$name" || return 1
+	driver::run $(config::get_driver) $(config::get_name) || return 1
 }
 
 cli::restart() {
@@ -73,14 +70,15 @@ cli::help() {
 	echo "    horde command [name]"
 	echo
 	echo "COMMANDS:"
-	echo "    run          start up an app (requires horde.json)"
-	echo "    logs [name]  follow the logs for a container (uses horde.json"
-	echo "                 if a name isn't supplied)"
-	echo "    stop [name]  stop a fliglio app (uses horde.json if a name"
-	echo "                 isn't supplied)"
-	echo "    restart      alias for stop and up (requires horde.json)"
-	echo "    kill [name]  kill a fliglio app (uses horde.json if a name"
-	echo "                 isn't supplied)"
+	echo "    run [name]      start up an app or service (uses horde.json if a name"
+	echo "                    isn't supplied)"
+	echo "    stop [name]     stop an app or service (uses horde.json if a name"
+	echo "                    isn't supplied)"
+	echo "    restart [name]  alias for stop and up (requires horde.json)"
+	echo "    kill [name]     kill a fliglio app (uses horde.json if a name"
+	echo "                    isn't supplied)"
+	echo "    logs [name]     follow the logs for a container (uses horde.json"
+	echo "                    if a name isn't supplied)"
 	echo
 	echo "    register name domain port    register an external service with consul"
 	echo "    deregister name              deregister an external service"
