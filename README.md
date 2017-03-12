@@ -5,7 +5,7 @@
 
 # Horde
 
-`horde` is a local dev paas that uses docker, consul, and fabio to make managing your development platform easy.
+`horde` is a local dev paas that uses docker, consul, and fabio to make managing a development platform easy.
 
 The main components of `horde` are [services](services.md) and [drivers](drivers.md):
 
