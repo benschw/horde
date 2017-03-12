@@ -42,19 +42,29 @@ The main components of `horde` are [service plugins](#service-plugins) and [driv
 
 ### Install
 
-Build and install horde from source
+1. Install the `horde` cli tool
 
-	git clone https://github.com/benschw/horde.git
-	cd horde
-	make build install
-	
-And if your want to install the _contrib_ plugins:
+	wget http://dl.fligl.io/artifacts/horde/horde_latest.gz
+	gunzip horde_latest.gz
+	chmod +x horde
+	mv horde /usr/local/bin
 
-	make contrib-install
+2. Set up your plugins path
+
+	mkdir -p ~/.horde/plugins/
+
+3. Get the _core_ plugins
+
+	wget http://dl.fligl.io/artifacts/horde/horde-plugins-core_latest.tar.gz
+	tar -C ~/.horde/plugins -xvf horde-plugins-core_latest.tar.gz
+
+4. Get the _contrib_ plugins
+
+	wget http://dl.fligl.io/artifacts/horde/horde-plugins-contrib_latest.tar.gz
+	tar -C ~/.horde/plugins -xvf horde-plugins-contrib_latest.tar.gz
 
 
-Now you have the cli tool installed. Continue on this page to make sure your system
-is configured and you have the necessary dependencies.
+Continue reading to learn how to configure your environment.
 
 
 ### Configuration
