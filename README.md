@@ -5,8 +5,7 @@
 
 # Horde
 
-`horde` is a local dev paas that uses docker, consul, and fabio to facilitate 
-managing a platform.
+`horde` is a local dev paas that uses docker, consul, and fabio to make managing your development platform easy.
 
 The main components of `horde` are [services](services.md) and [drivers](drivers.md):
 
@@ -47,5 +46,5 @@ The base services are `consul`, `registrator`, and `fabio`.
 
 Once you've run an application with horde, you can see its discovery details
 at [http://consul.horde/ui](http://consul.horde/ui/#/dc1/services)
-and the routing details at [http://fabio.horde/routes](http://fabio.horde/routes).
+and its routing details at [http://fabio.horde/routes](http://fabio.horde/routes).
 
