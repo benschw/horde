@@ -9,7 +9,7 @@ will specify how your application should be run, and the `name` will be used to
 register your service with consul and set up a named route to your application
 (http://_name_.horde).
 
-In addition there are other properties you can set to
+In addition to these, there are other properties you can set in order to
 customize how your application runs.
 
 
