@@ -23,7 +23,7 @@ The main components of `horde` are [service plugins](#service-plugins) and [driv
 	* [Configuration](#configuration)
 		* [Linux](#linux)
 		* [OS X](#os-x)
-# [Hello World](#hello-world)
+* [Hello World](#hello-world)
 * [Service Plugins](#service-plugins)
 	* [Core Services](#core-services)
 	* [Contrib Services](#contrib-services)
