@@ -16,9 +16,12 @@ The main components of `horde` are [services](services.md) and [drivers](drivers
 
 ## Getting Started 
 
-* [Install Guide](install.md)
-* [Services](#services)
-* [Drivers](#drivers)
+* [Install & Setup](#install)
+	* [Install](#install)
+	* [Dependencies](#dependencies)
+	* [Configuration](#configuration)
+* [Service Plugins](#service-plugins)
+* [Driver Plugins](#driver-plugins)
 
 
 ### Hello World
@@ -49,9 +52,102 @@ at [http://consul.horde/ui](http://consul.horde/ui/#/dc1/services)
 and its routing details at [http://fabio.horde/routes](http://fabio.horde/routes).
 
 
+## Install
+
+Build and install horde from source
+
+	git clone https://github.com/benschw/horde.git
+	cd horde
+	make build install
+	
+And if your want to install the _contrib_ plugins:
+
+	make contrib-install
 
 
-# Drivers
+Now you have the cli tool installed. Continue on this page to make sure your system
+is configured and you have the necessary dependencies.
+
+### Dependencies
+
+* [hostess](https://github.com/cbednarski/hostess) manages horde application host names in your `/etc/hosts` file.
+* [docker](https://www.docker.com/) manages your horde containers.
+* [jq](https://stedolan.github.io/jq/) to work with json output
+
+
+## Configuration
+
+### Linux
+
+Specify your machine's `docker0` bridge ip with an environment variable
+
+	export HORDE_IP='172.20.20.1'
+
+Configure the docker daemon to use consul for DNS by specifying your machine's
+`docker0` ip. Edit the file `/etc/default/docker` and update the value for `DOCKER_OPTS`:
+
+	DOCKER_OPTS="--dns 172.20.20.1"
+
+By default, consul will recurse DNS requests to google (8.8.8.8) but you can specify a
+custom recursor dns server by setting the following env variable:
+
+	export HORDE_DNS=1.2.3.4
+
+### OS X
+
+Specify your machine's `vboxnet0` bridge ip with an environment variable
+
+	export HORDE_IP='172.20.20.1'
+
+This interface is configurable with the `VBoxManage` command. `horde` can take
+care of syncing it to your `HORDE_IP` if you set the following environment variable:
+
+	export HORDE_ENSURE_VBOX=true
+
+
+Configure the docker daemon to use consul for DNS by specifying your  machine's
+`vboxnet0` ip. Navigate to the docker settings UI, click on _Daemon_, and
+then click on _Advanced_. Specify your machine's ip:
+
+	{
+		"dns": [
+			"172.20.20.1"
+		]
+	}
+	
+By default, consul will recurse DNS requests to google (8.8.8.8) but you can specify a
+custom recursor dns server by setting the following env variable:
+
+	export HORDE_DNS=1.2.3.4
+
+
+## Service Plugins
+
+### Fabio
+[fabio.horde](http://fabio.horde/)
+
+### Consul
+
+[consul.horde/ui/](http://consul.horde/ui/)
+
+### Mysql
+Use login: admin / changeme
+
+
+Force the mysql container to publish port 3306 over a specific external port (e.g. 3307):
+
+	export HORDE_MYSQL_PUBLISH_PORT=3307
+
+### Rabbitmq
+
+[rabbitmq.horde](http://rabbitmq.horde)
+
+Use login: guest / guest
+
+### Chinchilla
+
+
+# Driver Plugins
 
 A json config file named `horde.json` should be placed in each application service
 project's root directory. This will configure `horde` when run from the project's
@@ -138,20 +234,6 @@ a docker image string here.
 		...
 	}
 
-#### hosts
-
-An array of host name aliases. These names will be configured in addition to either the 
-default http://_name_.horde or http://_host_.
-
-	{
-		...
-		"hosts": [
-			"foo.tld",
-			"bar.tld"
-		],
-		...
-	}
-
 #### services
 
 An array of services your application depends on. Other than `consul`, `registrator`, and `fabio`
@@ -169,31 +251,20 @@ These services will also be linked to your application service.
 		...
 	}
 
+#### hosts
+
+An array of host name aliases. These names will be configured in addition to either the 
+default http://_name_.horde or http://_host_.
+
+	{
+		...
+		"hosts": [
+			"foo.tld",
+			"bar.tld"
+		],
+		...
+	}
 
 
 
-## Services
-
-### Fabio
-[fabio.horde](http://fabio.horde/)
-
-### Consul
-
-[consul.horde/ui/](http://consul.horde/ui/)
-
-### Mysql
-Use login: admin / changeme
-
-
-Force the mysql container to publish port 3306 over a specific external port (e.g. 3307):
-
-	export HORDE_MYSQL_PUBLISH_PORT=3307
-
-### Rabbitmq
-
-[rabbitmq.horde](http://rabbitmq.horde)
-
-Use login: guest / guest
-
-### Chinchilla
 
