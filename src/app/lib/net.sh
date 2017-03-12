@@ -19,8 +19,11 @@ net::configure_hosts() {
 	local ip=$(net::bridge_ip)
 
 	for host in "${hosts[@]}"; do
+		if [ ! -z "$HORDE_DEBUG" ]; then
+			io::err "sudo hostess add $host $ip"
+		fi
 		if ! sudo hostess add $host $ip > /dev/null ; then
-			util::err "problem configuring hostname '${host}'"
+			io::err "problem configuring hostname '${host}'"
 			return 1
 		fi
 	done

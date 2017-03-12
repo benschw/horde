@@ -1,6 +1,6 @@
 #!/bin/bash
 
-drivers::static_web::up() {
+drivers::static_web() {
 	local ip=$(net::bridge_ip)
 	local name=$(config::get_name)
 
@@ -12,7 +12,7 @@ drivers::static_web::up() {
 
 	local docs=$(pwd)
 
-	container::run \
+	container::call run \
 		-d \
 		--name "${name}" \
 		--dns "${ip}" \

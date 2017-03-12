@@ -14,13 +14,12 @@ cli::run() {
 	fi
 
 	if ! config::is_present ; then
-		util::msg "./horde.json not found"
+		io::err "./horde.json not found"
 		return 1
 	fi
 
 	service::ensure_running $(config::get_services) || return 1
 	net::configure_hosts $(config::get_hosts) || return 1
-
 	driver::run $(config::get_driver) $(config::get_name) || return 1
 }
 
@@ -34,7 +33,7 @@ cli::logs() {
 	if [ -z ${1+x} ]; then
 		name=$(config::get_name)
 	fi
-	docker logs -f $name
+	container::call logs -f $name
 }
 
 cli::kill() {
@@ -42,7 +41,7 @@ cli::kill() {
 	if [ "${#names[@]}" -eq 0 ]; then
 		names=( $(config::get_name) )
 	fi
-	docker kill "${names[@]}"
+	container::call kill "${names[@]}"
 }
 
 cli::stop() {
@@ -50,7 +49,22 @@ cli::stop() {
 	if [ "${#names[@]}" -eq 0 ]; then
 		names=( $(config::get_name) )
 	fi
-	docker stop "${names[@]}"
+	container::call stop "${names[@]}"
+}
+
+cli::sh() {
+	local name=$1
+	if [ -z ${1+x} ]; then
+		name=$(config::get_name)
+	fi
+	container::call exec -it "$name" /bin/sh || return 1
+}
+cli::bash() {
+	local name=$1
+	if [ -z ${1+x} ]; then
+		name=$(config::get_name)
+	fi
+	container::call exec -it "$name" /bin/bash || return 1
 }
 
 cli::register() {
@@ -67,21 +81,22 @@ cli::deregister() {
 
 cli::help() {
 	echo "USAGE:"
-	echo "    horde command [name]"
+	echo "    horde command [options]"
 	echo
 	echo "COMMANDS:"
-	echo "    run [name]      start up an app or service (uses horde.json if a name"
-	echo "                    isn't supplied)"
-	echo "    stop [name]     stop an app or service (uses horde.json if a name"
-	echo "                    isn't supplied)"
-	echo "    restart [name]  alias for stop and up (requires horde.json)"
-	echo "    kill [name]     kill a fliglio app (uses horde.json if a name"
-	echo "                    isn't supplied)"
-	echo "    logs [name]     follow the logs for a container (uses horde.json"
-	echo "                    if a name isn't supplied)"
-	echo
+	echo "    run [name]                   start up an app or service"
+	echo "    stop [name]                  stop an app or service"
+	echo "    restart [name]               alias for stop and up"
+	echo "    kill [name]                  kill a fliglio app"
+	echo "    logs [name]                  follow the logs for a container"
+	echo "    bash [name]                  exec a bash shell in a running app or container"
+	echo "    sh [name]                    exec as sh shell in a running app or container"
 	echo "    register name domain port    register an external service with consul"
 	echo "    deregister name              deregister an external service"
+	echo "    help                         display this help text and exit"
+	echo
+	echo "    (name can refer to a service or an app. if omitted, the value in"
+	echo "    ./horde.json is used)"
 	echo
 	echo "CONFIG:"
 	echo "    {"

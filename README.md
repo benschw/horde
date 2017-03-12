@@ -10,38 +10,7 @@ a local dev paas that uses docker, consul, and fabio
 
 ## Getting Started 
 
-### Get Dependencies
-
-* [hostess](https://github.com/cbednarski/hostess) manages horde application host names in your `/etc/hosts` file.
-* [docker](https://www.docker.com/) manages your horde containers.
-* [jq](https://stedolan.github.io/jq/) to work with json output
-
-
-### Configure Docker
-
-Configure `/etc/default/docker` to use consul for DNS by specifying your bridge ip. e.g. with
-
-	DOCKER_OPTS="--dns 172.17.0.1"
-
-### Configure Horde
-
-Specify your bridge ip with an environment variable
-
-	export HORDE_IP='172.17.0.1'
-
-Specify a custom recursor dns server (other than the default of 8.8.8.8) by setting the following env variable
-
-	export HORDE_DNS=1.2.3.4
-
-
-In addition to consul, registrator, and fabio, you can configure additional services to always start up
-
-	export HORDE_SERVICES=splunk,rabbitmq
-
-In order to echo out the various `docker` commands being run (useful while developing plugins), enable debug mode:
-
-	HORDE_DEBUG=true horde up
-
+[Configure Your System](install.md)
 
 ### Hello World
 	

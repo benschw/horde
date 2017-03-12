@@ -1,17 +1,18 @@
 #!/bin/bash
 
-container::run() {
-	args=("$@")
+container::call() {
+	local args=("$@")
+
 	if [ ! -z "$HORDE_DEBUG" ]; then
-		util::msg "docker run ${args[@]}"
+		io::err "docker ${args[@]}"
 	fi
 	
-	docker run "${args[@]}" || return 1
+	docker "${args[@]}" || return 1
 }
 
 container::is_running() {
 	local name=$1
-	local state=$(docker inspect --format "{{.State.Running}}" $name 2>/dev/null)
+	local state=$(container::call inspect --format "{{.State.Running}}" $name 2>/dev/null)
 
 	if [[ "$state" == "false" ]] || [[ "$state" == "" ]]; then
 		return 1
@@ -24,11 +25,10 @@ container::delete_stopped(){
 
 	if container::_exists "$name"; then
 		if ! container::is_running "$name"; then
-			docker rm $name
+			container::call rm $name
 		fi
 	fi
 }
-
 
 container::build_links_string() {
 	local services=("$@")
@@ -77,12 +77,12 @@ container::build_host_tags() {
 
 container::_get_network_mode() {
 	local svc=$1
-	docker inspect --format "{{.HostConfig.NetworkMode}}" $svc 2>/dev/null
+	container::call inspect --format "{{.HostConfig.NetworkMode}}" $svc 2>/dev/null
 }
 
 container::_exists() {
 	local name=$1
-	local state=$(docker inspect --format "{{.State.Running}}" $name 2>/dev/null)
+	local state=$(container::call inspect --format "{{.State.Running}}" $name 2>/dev/null)
 
 	if [[ "$state" == "" ]]; then
 		return 1

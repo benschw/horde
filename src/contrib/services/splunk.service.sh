@@ -7,13 +7,11 @@ services::splunk() {
     local logs=$(pwd)
 	local port_cfg="1514:1514"
 
-	container::delete_stopped splunk || return 1
-
 	service::ensure_running logspout || return 1
 
 	net::configure_hosts "${hostname}" || return 1
 
-	container::run \
+	container::call run \
 		-d \
 		-p $port_cfg \
 		-p "8000" \
@@ -35,7 +33,7 @@ services::splunk() {
 
 	sleep 5
 
-	docker cp ./system splunk:opt/splunk/etc
+	container::call cp ./system splunk:opt/splunk/etc
 	rm -rf ./system
 
 	sleep 5
@@ -45,10 +43,7 @@ services::logspout() {
 	local ip=$(net::bridge_ip)
 	local name="logspout"
 
-	container::delete_stopped logspout || return 1
-
-
-	container::run \
+	container::call run \
 		-d \
 		--name $name \
 		--dns $ip \

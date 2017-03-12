@@ -6,11 +6,9 @@ services::consul() {
 	local dns=$(net::default_dns)
 	local hostname="consul.horde"
 
-	container::delete_stopped consul || return 1
-
 	net::configure_hosts "${hostname}" || return 1
 
-	container::run \
+	container::call run \
 		-d \
 		-p 8500:8500 \
 		-p "$ip:53:8600/udp" \
@@ -24,11 +22,9 @@ services::consul() {
 services::registrator() {
 	local ip=$(net::bridge_ip)
 
-	container::delete_stopped registrator || return 1
-	
 	service::ensure_running consul || return 1
 
-	container::run \
+	container::call run \
 		-d \
 		--name=registrator \
 		--net=host \
@@ -41,11 +37,9 @@ services::fabio() {
 	local ip=$(net::bridge_ip)
 	local hostname="fabio.horde"
 
-	container::delete_stopped fabio || return 1
-
 	net::configure_hosts "${hostname}" || return 1
 
-	container::run \
+	container::call run \
 		-d \
 		-p 80:80 \
 		-p 9998:9998 \

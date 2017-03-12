@@ -11,6 +11,7 @@ build: clean
 		src/app/lib/plugin_mgr.sh \
 		src/app/lib/consul.sh \
 		src/app/lib/driver.sh \
+		src/app/lib/io.sh \
 		src/app/lib/util.sh \
 		src/app/cli.sh \
 		src/app/config.sh \

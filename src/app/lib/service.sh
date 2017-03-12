@@ -20,10 +20,11 @@ service::_load() {
 	local svc="services::${name}"
 
 	if ! util::func_exists "${svc}"; then
-		util::err "Service '${name}' not found"
+		io::err "Service '${name}' not found"
 		return 1
 	fi
 
 	echo "Starting $name"
+	container::delete_stopped "$name" || return 1
 	$svc || return 1
 }

@@ -7,11 +7,9 @@ services::rabbitmq() {
 	local name="rabbitmq"
 	local hostname="rabbitmq.horde"
 
-	container::delete_stopped rabbitmq || return 1
-
 	net::configure_hosts "${hostname}" || return 1
 
-	container::run \
+	container::call run \
 		-d \
 		-p 5672 \
 		-p 15672 \

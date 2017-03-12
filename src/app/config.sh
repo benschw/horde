@@ -1,9 +1,7 @@
 #!/bin/bash
 
 config::is_present() {
-	if [ ! -f ./horde.json ]; then
-		return 1
-	fi
+	[ -f ./horde.json ] || return 1
 }
 
 config::get_name() {
