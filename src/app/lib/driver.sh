@@ -1,18 +1,18 @@
 #!/bin/bash
 
 
-horde::driver::run() {
+driver::run() {
 	
-	if horde::container::is_running "$name"; then
+	if container::is_running "$name"; then
 		echo "$name already running"
 		return 0
 	fi
 
-	horde::driver::_is_valid "$driver" || return 1
+	driver::_is_valid "$driver" || return 1
 	
-	horde::service::delete_stopped $name || return 1
+	service::delete_stopped $name || return 1
 
-	${driver}::up || return 1
+	drivers::${driver}::up || return 1
 }
 
 
@@ -20,15 +20,15 @@ horde::driver::run() {
 # Private
 #
 
-horde::driver::_is_valid() {
+driver::_is_valid() {
 	local driver="$1"
 	
 	local fcns=( "up" )
 
 	for fcn in "${fcns[@]}" ; do
-		if ! horde::func_exists "${driver}::${fcn}" ; then
-			horde::err "Invalid driver '${driver}'"
-			horde::err "${driver}::${fcn} not implemented"
+		if ! util::func_exists "drivers::${driver}::${fcn}" ; then
+			util::err "Invalid driver '${driver}'"
+			util::err "${driver}::${fcn} not implemented"
 			return 1
 		fi
 	done

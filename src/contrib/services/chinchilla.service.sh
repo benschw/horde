@@ -1,17 +1,18 @@
 #!/bin/bash
 
 
-service::chinchilla() {
-	local ip=$(horde::net::bridge_ip)
+services::chinchilla() {
+	local ip=$(net::bridge_ip)
 	local name="chinchilla"
 
-	horde::service::delete_stopped chinchilla || return 1
+	service::delete_stopped chinchilla || return 1
 
-	horde::service::ensure_running rabbitmq || return 1
-	horde::service::ensure_running consul || return 1
+	service::ensure_running rabbitmq || return 1
+	service::ensure_running consul || return 1
 
 
-	docker run -d \
+	container::run \
+		-d \
 		--name $name \
 		--dns $ip \
 		--link consul:consul \

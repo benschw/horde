@@ -1,6 +1,15 @@
 #!/bin/bash
 
-horde::container::is_running() {
+container::run() {
+	args=("$@")
+	if [ ! -z "$HORDE_DEBUG" ]; then
+		util::msg "docker run ${args[@]}"
+	fi
+	
+	docker run "${args[@]}" || return 1
+}
+
+container::is_running() {
 	local name=$1
 	local state=$(docker inspect --format "{{.State.Running}}" $name 2>/dev/null)
 
@@ -10,7 +19,7 @@ horde::container::is_running() {
 	return 0
 }
 
-horde::container::exists() {
+container::exists() {
 	local name=$1
 	local state=$(docker inspect --format "{{.State.Running}}" $name 2>/dev/null)
 
@@ -19,14 +28,14 @@ horde::container::exists() {
 	fi
 }
 
-horde::container::build_links_string() {
+container::build_links_string() {
 	local services=("$@")
 
 	local links_args=""
 	local mode=""
 	for svc in "${services[@]}"; do
 		#can't link to registrator because it uses --net=host
-		mode=$(horde::container::_get_network_mode "$svc")
+		mode=$(container::_get_network_mode "$svc")
 		if [[ "$mode" != "host" ]]; then
 			links_args="${links_args} --link ${svc}:${svc}"
 		fi
@@ -34,7 +43,7 @@ horde::container::build_links_string() {
 	echo $links_args
 }
 
-horde::container::build_env_file_arg() {
+container::build_env_file_arg() {
 	local env_file=$1
 
 	if [ "${env_file}" != "null" ] ; then
@@ -42,7 +51,7 @@ horde::container::build_env_file_arg() {
 	fi
 }
 
-horde::container::build_host_tags() {
+container::build_host_tags() {
 	local postfix=$1
 	local hosts=($@)
 	unset hosts[0]
@@ -64,7 +73,7 @@ horde::container::build_host_tags() {
 # Private
 #
 
-horde::container::_get_network_mode() {
+container::_get_network_mode() {
 	local svc=$1
 	docker inspect --format "{{.HostConfig.NetworkMode}}" $svc 2>/dev/null
 }

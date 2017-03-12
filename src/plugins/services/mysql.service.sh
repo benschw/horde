@@ -2,19 +2,20 @@
 
 
 
-service::mysql() {
-	local ip=$(horde::net::bridge_ip)
+services::mysql() {
+	local ip=$(net::bridge_ip)
 	local name="mysql"
 	local port_cfg=""
 
-	horde::service::delete_stopped mysql || return 1
+	service::delete_stopped mysql || return 1
 	if [  -z ${HORDE_MYSQL_PUBLISH_PORT+x} ]; then
 		port_cfg="3306"
 	else
 		port_cfg="${HORDE_MYSQL_PUBLISH_PORT}:3306"
 	fi
 
-	docker run -d \
+	container::run \
+		-d \
 		-p $port_cfg \
 		-e "SERVICE_3306_NAME=${name}" \
 		--name $name \

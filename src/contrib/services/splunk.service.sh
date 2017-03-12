@@ -1,19 +1,20 @@
 #!/bin/bash
 
-service::splunk() {
-	local ip=$(horde::net::bridge_ip)
+services::splunk() {
+	local ip=$(net::bridge_ip)
 	local name="splunk"
 	local hostname="splunk.horde"
     local logs=$(pwd)
 	local port_cfg="1514:1514"
 
-	horde::service::delete_stopped splunk || return 1
+	service::delete_stopped splunk || return 1
 
-	horde::service::ensure_running logspout || return 1
+	service::ensure_running logspout || return 1
 
-	horde::hosts::configure_hosts "${hostname}" || return 1
+	hosts::configure "${hostname}" || return 1
 
-	docker run -d \
+	container::run \
+		-d \
 		-p $port_cfg \
 		-p "8000" \
         -e "SERVICE_1514_CHECK_SCRIPT=echo ok" \
@@ -40,14 +41,15 @@ service::splunk() {
 	sleep 5
 }
 
-service::logspout() {
-	local ip=$(horde::net::bridge_ip)
+services::logspout() {
+	local ip=$(net::bridge_ip)
 	local name="logspout"
 
-	horde::service::delete_stopped logspout || return 1
+	service::delete_stopped logspout || return 1
 
 
-	docker run -d \
+	container::run \
+		-d \
 		--name $name \
 		--dns $ip \
 		-v /var/run/docker.sock:/var/run/docker.sock \

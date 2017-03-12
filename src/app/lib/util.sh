@@ -1,16 +1,16 @@
 #!/bin/bash
 
-horde::cmd_exists() {
+util::cmd_exists() {
 	local cli="$1"
 	local error_msg="$2"
 
 	command -v "$cli" >/dev/null 2>&1 || {
-		horde::msg "$error_msg"
+		util::msg "$error_msg"
 		return 1
 	}
 }
 
-horde::func_exists() {
+util::func_exists() {
 	local f=$1
 	if [ -n "$(type -t $f)" ] && [ "$(type -t $f)" = function ]; then
 		return 0
@@ -18,15 +18,15 @@ horde::func_exists() {
 	return 1
 }
 
-horde::err() {
-	echo "ERROR: $@" >&2
-}
-
-horde::msg() {
+util::msg() {
 	echo $@ >&2
 }
 
-horde::trace() {
+util::err() {
+	echo "ERROR: $@" >&2
+}
+
+util::trace() {
 	echo $@ >&2
 	local i=0
 	local stack=(${FUNCNAME[@]})

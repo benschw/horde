@@ -1,15 +1,10 @@
 #!/bin/bash
 
-horde::bridge_ip(){
-	horde::trace "horde::bridge_ip is deprecated, use horde::net::bridge_ip"
-	horde::net::bridge_ip
-}
-
-horde::net::bridge_ip(){
+net::bridge_ip(){
 	echo $HORDE_IP
 }
 
-horde::net::default_dns() {
+net::default_dns() {
 	local dns=8.8.8.8
 
 	if [ ! -z "$HORDE_DNS" ]; then
@@ -19,7 +14,7 @@ horde::net::default_dns() {
 	echo $dns
 }
 
-horde::net::ensure_osx_vboxnet() {
+net::ensure_osx_vboxnet() {
 	if [ ${HORDE_ENSURE_VBOXNET+x} ]; then
 		return 0
 	else
@@ -27,10 +22,10 @@ horde::net::ensure_osx_vboxnet() {
 	fi
 }
 
-horde::net::osx_vboxnet_setup() {
-	local ip=$(horde::net::bridge_ip)
+net::osx_vboxnet_setup() {
+	local ip=$(net::bridge_ip)
 
-	horde::cmd_exists "VBoxManage" "VirtualBox (https://www.virtualbox.org/) is required to create consul bridge. Aborting." \
+	util::cmd_exists "VBoxManage" "VirtualBox (https://www.virtualbox.org/) is required to create consul bridge. Aborting." \
 		|| return 1
 
 	# Check if vboxnet0 exist, if not we create it and assing bridge IP to it

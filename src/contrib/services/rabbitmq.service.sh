@@ -2,16 +2,17 @@
 
 
 
-service::rabbitmq() {
-	local ip=$(horde::net::bridge_ip)
+services::rabbitmq() {
+	local ip=$(net::bridge_ip)
 	local name="rabbitmq"
 	local hostname="rabbitmq.horde"
 
-	horde::service::delete_stopped rabbitmq || return 1
+	service::delete_stopped rabbitmq || return 1
 
-	horde::hosts::configure_hosts "${hostname}" || return 1
+	hosts::configure "${hostname}" || return 1
 
-	docker run -d \
+	container::run \
+		-d \
 		-p 5672 \
 		-p 15672 \
 		-e "SERVICE_5672_NAME=${name}" \

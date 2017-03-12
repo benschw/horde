@@ -12,10 +12,9 @@ build: clean
 		src/app/lib/plugin_mgr.sh \
 		src/app/lib/consul.sh \
 		src/app/lib/driver.sh \
-		src/app/util.sh \
+		src/app/lib/util.sh \
+		src/app/cli.sh \
 		src/app/config.sh \
-		src/app/cli/help.sh \
-		src/app/cli/sub_commands.sh \
 		src/app/main.sh \
 		> build/horde
 	chmod +x build/horde

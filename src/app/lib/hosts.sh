@@ -1,20 +1,20 @@
 #!/bin/bash
 
-horde::hosts::configure_hosts() {
+hosts::configure() {
 	local hosts=("$@")
-	local ip=$(horde::net::bridge_ip)
+	local ip=$(net::bridge_ip)
 
 	for host in "${hosts[@]}"; do
-		horde::hosts::_configure_host "$ip" "$host" || return 1
+		hosts::_configure "$ip" "$host" || return 1
 	done
 }
 
-horde::hosts::_configure_host() {
+hosts::_configure() {
 	local ip=$1
 	local hostname=$2
 
 	if ! sudo hostess add $hostname $ip > /dev/null ; then
-		horde::err "problem configuring hostname '${hostname}'"
+		util::err "problem configuring hostname '${hostname}'"
 		return 1
 	fi
 }

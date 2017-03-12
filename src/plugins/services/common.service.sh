@@ -1,16 +1,17 @@
 #!/bin/bash
 
 
-service::consul() {
-	local ip=$(horde::net::bridge_ip)
-	local dns=$(horde::net::default_dns)
+services::consul() {
+	local ip=$(net::bridge_ip)
+	local dns=$(net::default_dns)
 	local hostname="consul.horde"
 
-	horde::service::delete_stopped consul || return 1
+	service::delete_stopped consul || return 1
 
-	horde::hosts::configure_hosts "${hostname}" || return 1
+	hosts::configure "${hostname}" || return 1
 
-	docker run -d \
+	container::run \
+		-d \
 		-p 8500:8500 \
 		-p "$ip:53:8600/udp" \
 		--name=consul \
@@ -20,14 +21,15 @@ service::consul() {
 	sleep 3
 }
 
-service::registrator() {
-	local ip=$(horde::net::bridge_ip)
+services::registrator() {
+	local ip=$(net::bridge_ip)
 
-	horde::service::delete_stopped registrator || return 1
+	service::delete_stopped registrator || return 1
 	
-	horde::service::ensure_running consul || return 1
+	service::ensure_running consul || return 1
 
-	docker run -d \
+	container::run \
+		-d \
 		--name=registrator \
 		--net=host \
 		--volume=/var/run/docker.sock:/tmp/docker.sock \
@@ -35,15 +37,16 @@ service::registrator() {
 		-ip $ip consul://localhost:8500 || return 1
 }
 
-service::fabio() {
-	local ip=$(horde::net::bridge_ip)
+services::fabio() {
+	local ip=$(net::bridge_ip)
 	local hostname="fabio.horde"
 
-	horde::service::delete_stopped fabio || return 1
+	service::delete_stopped fabio || return 1
 
-	horde::hosts::configure_hosts "${hostname}" || return 1
+	hosts::configure "${hostname}" || return 1
 
-	docker run -d \
+	container::run \
+		-d \
 		-p 80:80 \
 		-p 9998:9998 \
 		-e "registry_consul_addr=${ip}:8500" \

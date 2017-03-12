@@ -1,6 +1,6 @@
 #!/bin/bash
 
-horde::plugin_mgr::load() {
+plugin_mgr::load() {
 	local plugin_path="$1"
 
 	if [ ${HORDE_PLUGIN_PATH+x} ]; then

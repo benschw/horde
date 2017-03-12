@@ -38,6 +38,11 @@ In addition to consul, registrator, and fabio, you can configure additional serv
 
 	export HORDE_SERVICES=splunk,rabbitmq
 
+In order to echo out the various `docker` commands being run (useful while developing plugins), enable debug mode:
+
+	HORDE_DEBUG=true horde up
+
+
 ### Hello World
 	
 Create a hello world application (or use the [example](https://github.com/benschw/horde/tree/master/example))
