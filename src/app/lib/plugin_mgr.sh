@@ -8,11 +8,11 @@ plugin_mgr::load() {
 	fi
 
 
-	for f in $(find "${plugin_path}" -name "*.service.sh"); do
+	for f in $(find -L "${plugin_path}" -name "*.service.sh"); do
 		source $f
 	done
 
-	for f in $(find "${plugin_path}" -name "*.driver.sh"); do
+	for f in $(find -L "${plugin_path}" -name "*.driver.sh"); do
 		source $f
 	done
 
