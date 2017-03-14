@@ -1,6 +1,6 @@
 #!/bin/bash
 
-drivers::fliglio() {
+drivers::ex() {
 	local ip=$(net::bridge_ip)
 	local name=$(config::get_name)
 
