@@ -52,7 +52,6 @@ main() {
 	fi
 
 	if ! cli::$1 "${args[@]}" ; then
-		io::err "Unknown."
 		return 1
 	fi
 }

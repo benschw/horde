@@ -13,8 +13,8 @@ cli::run() {
 		return 0
 	fi
 
-	if ! config::is_present ; then
-		io::err "./horde.json not found"
+	if ! config::is_valid ; then
+		io::err "./horde.json has bad format or not found"
 		return 1
 	fi
 
@@ -31,6 +31,10 @@ cli::restart() {
 cli::logs() {
 	local name=$1
 	if [ -z ${1+x} ]; then
+		if ! config::is_valid ; then
+			io::err "./horde.json has bad format or not found"
+			return 1
+		fi
 		name=$(config::get_name)
 	fi
 	container::call logs -f $name
@@ -39,6 +43,10 @@ cli::logs() {
 cli::kill() {
 	local names=("$@")
 	if [ "${#names[@]}" -eq 0 ]; then
+		if ! config::is_valid ; then
+			io::err "./horde.json has bad format or not found"
+			return 1
+		fi
 		names=( $(config::get_name) )
 	fi
 	container::call kill "${names[@]}"
@@ -47,6 +55,10 @@ cli::kill() {
 cli::stop() {
 	local names=("$@")
 	if [ "${#names[@]}" -eq 0 ]; then
+		if ! config::is_valid ; then
+			io::err "./horde.json has bad format or not found"
+			return 1
+		fi
 		names=( $(config::get_name) )
 	fi
 	container::call stop "${names[@]}"
@@ -55,6 +67,10 @@ cli::stop() {
 cli::sh() {
 	local name=$1
 	if [ -z ${1+x} ]; then
+		if ! config::is_valid ; then
+			io::err "./horde.json has bad format or not found"
+			return 1
+		fi
 		name=$(config::get_name)
 	fi
 	container::call exec -it "$name" /bin/sh || return 1
@@ -62,6 +78,10 @@ cli::sh() {
 cli::bash() {
 	local name=$1
 	if [ -z ${1+x} ]; then
+		if ! config::is_valid ; then
+			io::err "./horde.json has bad format or not found"
+			return 1
+		fi
 		name=$(config::get_name)
 	fi
 	container::call exec -it "$name" /bin/bash || return 1

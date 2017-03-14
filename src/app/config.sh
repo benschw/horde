@@ -1,7 +1,8 @@
 #!/bin/bash
 
-config::is_present() {
+config::is_valid() {
 	[ -f ./horde.json ] || return 1
+	jq ./horde.json 2&>1 /dev/null || return 1
 }
 
 config::get_driver() {
