@@ -1,9 +1,14 @@
 {
-	"driver" : "fliglio",
+	"driver" : "static_web",
+	"image"  : "bv/ubuntu-lemp",
 	"name"   : "foo",
 	"health" : "/",
 	"hosts"  : [
 		"foo.corn",
 		"bar.corn"
+	],
+	"services": [
+		"mysql",
+		"rabbitmq"
 	]
 }
