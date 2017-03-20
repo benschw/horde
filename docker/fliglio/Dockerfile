@@ -1,4 +1,4 @@
-FROM ubuntu:14.04
+FROM ubuntu:16.04
 
 # Ensure UTF-8
 RUN locale-gen en_US.UTF-8
