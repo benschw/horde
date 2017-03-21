@@ -14,7 +14,7 @@ container::is_running() {
 	local name=$1
 	local state=$(container::call inspect --format "{{.State.Running}}" $name 2>/dev/null)
 
-	if [[ "$state" == "false" ]] || [[ "$state" == "" ]]; then
+	if [[ "$state" == "false" ]] || [[ "$state" == "" ]] || [[ "$state" == "exited" ]]; then
 		return 1
 	fi
 	return 0
