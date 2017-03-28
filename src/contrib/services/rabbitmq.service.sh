@@ -16,9 +16,10 @@ services::rabbitmq() {
 		-e "SERVICE_5672_NAME=${name}" \
 		-e "SERVICE_15672_CHECK_HTTP=/" \
 		-e "SERVICE_15672_TAGS=urlprefix-${hostname}/,service" \
+		--hostname rabbitmq.horde \
 		--name $name \
 		--dns $ip \
-		benschw/horde-rabbitmq || return 1
+		rabbitmq:3.6-management || return 1
 	sleep 3
 }
 
