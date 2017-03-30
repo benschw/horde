@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-service::ensure_running(){
+service::ensure_running() {
 	local names=("$@")
 	local name=""
 
