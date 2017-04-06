@@ -1,6 +1,5 @@
 {
 	"driver" : "static_web",
-	"image"  : "bv/ubuntu-lemp",
 	"name"   : "foo",
 	"health" : "/",
 	"hosts"  : [
