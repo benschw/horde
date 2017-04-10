@@ -20,6 +20,9 @@ config::get_health() {
 config::get_env_file() {
 	config::_get_value "env_file" "$1"
 }
+config::get_secrets_file() {
+	config::_get_value "secrets_file" "$1"
+}
 config::get_image() {
 	config::_get_value "image" "$1"
 }
