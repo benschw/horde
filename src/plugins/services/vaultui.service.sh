@@ -16,7 +16,7 @@ services::vaultui() {
 		-e VAULT_ADDR=http://$ip:8200 \
 		-e "SERVICE_80_CHECK_HTTP=/login" \
 		-e "SERVICE_80_TAGS=urlprefix-${hostname}/,service" \
-		--dns ${ip}
+		--dns ${ip} \
 		nyxcharon/vault-ui:latest || return 1
 
 }
