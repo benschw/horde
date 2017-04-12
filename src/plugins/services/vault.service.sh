@@ -33,5 +33,4 @@ services::vault::cli() {
 		vault:0.6.5  \
 		/bin/sh -c "$cmd" \
 		|| return 1
-
 }
