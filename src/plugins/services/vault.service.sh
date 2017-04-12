@@ -16,30 +16,21 @@ services::vault() {
 		vault:0.6.5 || return 1
 	sleep 3
 
-	docker run -it \
+	services::vault::cli vault auth-enable userpass
+	services::vault::cli vault write auth/userpass/users/horde \
+		password=horde \
+		policies=admins
+	services::vault::cli 'echo "{\"path\":{\"*\":{\"policy\":\"sudo\"}}}" | vault policy-write admins -'
+}
+services::vault::cli() {
+	local args=("$@")
+	local cmd='export VAULT_ADDR=http://$VAULT_PORT_8200_TCP_ADDR:8200; '"${args[@]}"
+	container::call run \
+		-it \
 		--rm \
 		--link vault:vault \
 		-e VAULT_TOKEN=horde \
 		vault:0.6.5  \
-		/bin/sh -c 'VAULT_ADDR=http://$VAULT_PORT_8200_TCP_ADDR:8200 vault auth-enable userpass' \
-		|| return 1
-
-	docker run -it \
-		--rm \
-		--link vault:vault \
-		-e VAULT_TOKEN=horde \
-		vault:0.6.5  \
-		/bin/sh -c 'VAULT_ADDR=http://$VAULT_PORT_8200_TCP_ADDR:8200 vault write auth/userpass/users/horde \
-			password=horde \
-			policies=admins' \
-		|| return 1
-
-	docker run -it \
-		--rm \
-		--link vault:vault \
-		-e VAULT_TOKEN=horde \
-		vault:0.6.5  \
-		/bin/sh -c 'echo '\''{"path":{"*":{"policy":"sudo"}}}'\'' | \
-		    VAULT_ADDR=http://$VAULT_PORT_8200_TCP_ADDR:8200 vault policy-write admins -' \
+		/bin/sh -c "$cmd" \
 		|| return 1
 }
