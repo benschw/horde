@@ -110,7 +110,7 @@ Specify your machine's `vboxnet0` bridge ip with an environment variable
 This interface is configurable with the `VBoxManage` command. `horde` can take
 care of syncing it to your `HORDE_IP` if you set the following environment variable:
 
-	export HORDE_ENSURE_VBOX=true
+	export HORDE_ENSURE_VBOXNET=true
 
 
 Configure the docker daemon to use consul for DNS by specifying your  machine's
