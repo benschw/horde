@@ -13,7 +13,7 @@ services::s3() {
 		--name $name \
 		--dns $ip \
 		--name s3 \
-		-p 9000 \
+		-p 9000:9000 \
 		-e "SERVICE_9000_NAME=${name}" \
 		-e "SERVICE_9000_CHECK_SCRIPT=\"true\"" \
 		-e "SERVICE_9000_TAGS=urlprefix-${hostname}/,service" \

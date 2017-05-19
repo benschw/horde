@@ -27,7 +27,7 @@ services::mysql() {
 services::mysql::create_database() {
 	db_name="$1"
 
-	contianer::call run -it --rm \
+	container::call run -it --rm \
 		--link mysql:mysql \
 		benschw/horde-mysql \
 		sh -c 'exec mysql -h$MYSQL_PORT_3306_TCP_ADDR -u admin -e "CREATE DATABASE IF NOT EXISTS '$dbname'"'

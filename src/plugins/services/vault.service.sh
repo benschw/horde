@@ -16,6 +16,8 @@ services::vault() {
 		vault:0.6.5 || return 1
 	sleep 3
 
+}
+services::vault::horde_user() {
 	services::vault::cli vault auth-enable userpass
 	services::vault::cli vault write auth/userpass/users/horde \
 		password=horde \
