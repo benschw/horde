@@ -115,11 +115,12 @@ care of syncing it to your `HORDE_IP` if you set the following environment varia
 
 Configure the docker daemon to use consul for DNS by specifying your  machine's
 `vboxnet0` ip. Navigate to the docker settings UI, click on _Daemon_, and
-then click on _Advanced_. Specify your machine's ip:
+then click on _Advanced_. Specify your machine's ip (along with a backup like google's):
 
 	{
 		"dns": [
-			"172.20.20.1"
+			"172.20.20.1",
+			"8.8.8.8"
 		]
 	}
 	
