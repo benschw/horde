@@ -12,9 +12,11 @@ services::vault() {
 		--name vault \
 		--cap-add=IPC_LOCK \
 		-e VAULT_DEV_ROOT_TOKEN_ID=horde \
+		-e "SERVICE_TAGS=active" \
 		--dns ${ip} \
 		vault:0.6.5 || return 1
 	sleep 3
+	services::vault::horde_user
 
 }
 services::vault::horde_user() {
