@@ -30,6 +30,6 @@ services::mysql::create_database() {
 	container::call run -it --rm \
 		--link mysql:mysql \
 		benschw/horde-mysql \
-		sh -c 'exec mysql -h$MYSQL_PORT_3306_TCP_ADDR -u admin -pchangeme -e "CREATE DATABASE IF NOT EXISTS '$dbname'"'
+		sh -c 'exec mysql -h$MYSQL_PORT_3306_TCP_ADDR -u admin -pchangeme -e "CREATE DATABASE IF NOT EXISTS '$db_name'"'
 
 }
