@@ -11,6 +11,9 @@ config::get_driver() {
 config::get_name() {
 	config::_get_value "name" "$1"
 }
+config::get_python_entry() {
+	config::_get_value "python_entry" "$1"
+}
 config::get_host() {
 	config::_get_value "host" "$1"
 }
