@@ -25,7 +25,7 @@ services::mysql() {
 }
 
 services::mysql::create_database() {
-	db_name="$1"
+	db_name="${1/-/_}"
 
 	container::call run -it --rm \
 		--link mysql:mysql \
