@@ -13,10 +13,13 @@ services::mysql() {
 		port_cfg="${HORDE_MYSQL_PUBLISH_PORT}:3306"
 	fi
 
+        container::call volume create --name mysql-data
+
 	container::call run \
 		-d \
 		-p $port_cfg \
 		-e "SERVICE_3306_NAME=${name}" \
+		-v mysql-data:/var/lib/mysql \
 		--name $name \
 		--dns $ip \
 		benschw/horde-mysql || return 1
