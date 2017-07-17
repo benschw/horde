@@ -202,7 +202,7 @@ should implement a single function named like:
 Service plugins can be anywhere in the configured plugin path (so cloning the repo
 in which you manage your plugin(s) into this directory would work fine.)
 
-Look at the provided services (`~/.horde/plugins/core/common.service.sh`)
+Look at the provided services (`~/.horde/plugins/core/`)
 as a model for creating your. Notice the helper functions that help you build up a
 docker command that integrates well with the `horde` ecosystem.
 
