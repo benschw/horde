@@ -11,7 +11,7 @@ services::registrator() {
 		--net=host \
 		--volume=/var/run/docker.sock:/tmp/docker.sock \
 		gliderlabs/registrator:latest \
-		-ip $ip consul://localhost:8500 || return 1
+		-ip $ip -cleanup consul://localhost:8500 || return 1
 }
 
 
