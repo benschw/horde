@@ -1,1 +1,13 @@
-{"driver":"fliglio","name":"foo","health":"/"}
+{
+	"driver" : "static_web",
+	"name"   : "foo",
+	"health" : "/",
+	"hosts"  : [
+		"foo.corn",
+		"bar.corn"
+	],
+	"services": [
+		"mysql",
+		"rabbitmq"
+	]
+}

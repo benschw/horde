@@ -17,6 +17,7 @@ RUN apt-get install -y \
 	memcached \
 	mysql-client \
 	supervisor
+RUN php5enmod mcrypt
 
 RUN sed -i "s/;date.timezone =.*/date.timezone = UTC/" /etc/php5/fpm/php.ini
 RUN sed -i "s/;date.timezone =.*/date.timezone = UTC/" /etc/php5/cli/php.ini
@@ -36,8 +37,6 @@ RUN ln -sf /dev/stdout /var/log/nginx/error.log
 
 ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-ADD phinx.php /etc/phinx.php
-ADD migrate.sh /usr/local/bin/migrate.sh
 ADD run.sh /usr/local/bin/run.sh
 
 EXPOSE 80
