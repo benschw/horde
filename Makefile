@@ -39,7 +39,7 @@ install:
 
 contrib-install:
 	mkdir -p $(HOME)/.horde/plugins/contrib
-	cp build/contrib/*.sh $(HOME)/.horde/plugins/core/
+	cp build/contrib/*.sh $(HOME)/.horde/plugins/contrib/
 
 
 .PHONY: build
