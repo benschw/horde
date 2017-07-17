@@ -129,10 +129,6 @@ custom recursor dns server by setting the following env variable:
 
 	export HORDE_DNS=1.2.3.4
 
-By default the MySQL data storage is temporary. The data will be lost every time you restart your computer or restart the docker container. Set this variable to permanently keep MySQL data:
-
-	export HORDE_MYSQL_PERSIST_DATA=true
-
 ## Your First Application
 	
 Create a hello world application (or use the [example](https://github.com/benschw/horde/tree/master/example))
@@ -179,6 +175,10 @@ Use login: admin / changeme
 Force the mysql container to publish port 3306 over a specific external port (e.g. 3307):
 
 	export HORDE_MYSQL_PUBLISH_PORT=3307
+
+By default the MySQL data storage is temporary. The data will be lost every time you restart your computer or restart the docker container. Set this variable to permanently keep MySQL data:
+
+	export HORDE_MYSQL_PERSIST_DATA=true
 
 #### Rabbitmq
 
