@@ -1,15 +1,17 @@
 FROM ubuntu:16.04
 
+ENV DEBIAN_FRONTEND noninteractive
+
 # Ensure UTF-8
+RUN apt-get clean && apt-get update
+RUN apt-get install locales
 RUN locale-gen en_US.UTF-8
 ENV LANG       en_US.UTF-8
 ENV LC_ALL     en_US.UTF-8
 
 
-ENV DEBIAN_FRONTEND noninteractive
 
-RUN apt-get update && \ 
-    apt-get install -y mysql-client-core-5.7 mysql-server-core-5.7 mysql-server-5.7 mysql-client-5.7
+RUN apt-get install -y mysql-client-core-5.7 mysql-server-core-5.7 mysql-server-5.7 mysql-client-5.7
 
 # create admin user (root is stuck on localhost)
 RUN /etc/init.d/mysql start & \
