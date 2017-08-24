@@ -38,6 +38,7 @@ config::get_hosts() {
 	config::_get_array "hosts"
 }
 config::get_services() {
+	echo dnsmasq
 	echo consul
 	echo registrator
 	echo fabio
