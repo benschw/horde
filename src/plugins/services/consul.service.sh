@@ -11,11 +11,11 @@ services::consul() {
 	container::call run \
 		-d \
 		-p 8500:8500 \
-		-p "$ip:53:8600/udp" \
+		-p "$ip:8600:8600/udp" \
 		--name=consul \
 		-e "SERVICE_8500_CHECK_HTTP=/ui/#/dc1" \
 		-e "SERVICE_8500_TAGS=urlprefix-${hostname}/,service" \
-		gliderlabs/consul-server:latest -bootstrap -advertise=$ip -recursor=$dns || return 1
+		gliderlabs/consul-server:latest -bootstrap -advertise=$ip || return 1
 	sleep 3
 }
 

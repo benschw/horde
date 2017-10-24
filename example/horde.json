@@ -7,7 +7,6 @@
 		"bar.corn"
 	],
 	"services": [
-		"mysql",
 		"rabbitmq"
 	]
 }
