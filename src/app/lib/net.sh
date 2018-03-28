@@ -20,11 +20,11 @@ net::configure_hosts() {
 
 	for host in "${hosts[@]}"; do
 		hostonly=$(echo $host | awk -F/ '{print $1}')
-		if ! hostess has $hostonly > /dev/null ; then
+		if ! hostess has $hostOnly > /dev/null ; then
 			if [ ! -z "$HORDE_DEBUG" ]; then
-				io::err "sudo hostess add $hostonly $ip"
+				io::err "sudo hostess add $hostOnly $ip"
 			fi
-			if ! sudo hostess add $hostonly $ip > /dev/null ; then
+			if ! sudo hostess add $hostOnly $ip > /dev/null ; then
 				io::err "problem configuring hostname '${host}'"
 				return 1
 			fi
