@@ -19,7 +19,7 @@ net::configure_hosts() {
 	local ip=$(net::bridge_ip)
 
 	for host in "${hosts[@]}"; do
-		hostonly=$(echo $host | awk -F/ '{print $1}')
+		hostOnly=$(echo $host | awk -F/ '{print $1}')
 		if ! hostess has $hostOnly > /dev/null ; then
 			if [ ! -z "$HORDE_DEBUG" ]; then
 				io::err "sudo hostess add $hostOnly $ip"
