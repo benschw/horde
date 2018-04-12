@@ -14,7 +14,7 @@ cli::run() {
 	fi
 
 	if ! config::is_valid ; then
-		io::err "./horde.json has bad format or not found"
+		io::err "${FUNCNAME[0]} ./horde.json has bad format or not found"
 		return 1
 	fi
 
@@ -32,7 +32,7 @@ cli::logs() {
 	local name=$1
 	if [ -z ${1+x} ]; then
 		if ! config::is_valid ; then
-			io::err "./horde.json has bad format or not found"
+			io::err "${FUNCNAME[0]} ./horde.json has bad format or not found"
 			return 1
 		fi
 		name=$(config::get_name)
@@ -44,7 +44,7 @@ cli::kill() {
 	local names=("$@")
 	if [ "${#names[@]}" -eq 0 ]; then
 		if ! config::is_valid ; then
-			io::err "./horde.json has bad format or not found"
+			io::err "${FUNCNAME[0]} ./horde.json has bad format or not found"
 			return 1
 		fi
 		names=( $(config::get_name) )
@@ -56,7 +56,7 @@ cli::stop() {
 	local names=("$@")
 	if [ "${#names[@]}" -eq 0 ]; then
 		if ! config::is_valid ; then
-			io::err "./horde.json has bad format or not found"
+			io::err "${FUNCNAME[0]} ./horde.json has bad format or not found"
 			return 1
 		fi
 		names=( $(config::get_name) )
@@ -68,7 +68,7 @@ cli::sh() {
 	local name=$1
 	if [ -z ${1+x} ]; then
 		if ! config::is_valid ; then
-			io::err "./horde.json has bad format or not found"
+			io::err "${FUNCNAME[0]} ./horde.json has bad format or not found"
 			return 1
 		fi
 		name=$(config::get_name)
@@ -79,7 +79,7 @@ cli::bash() {
 	local name=$1
 	if [ -z ${1+x} ]; then
 		if ! config::is_valid ; then
-			io::err "./horde.json has bad format or not found"
+			io::err "${FUNCNAME[0]} ./horde.json has bad format or not found"
 			return 1
 		fi
 		name=$(config::get_name)
@@ -123,6 +123,9 @@ cli::help() {
 	echo "        \"driver\": \"static\","
 	echo "        \"name\": \"container-name\""
 	echo "    }"
+	echo
+	echo "    (to use an alternate horde definition, use HORDE_CONFIG=/path/to/alt.json"
+	echo "    e.g. HORDE_CONFIG=./other-horde.json horde run )"
 	echo
 	echo "See https://github.com/benschw/horde/ for more details"
 }

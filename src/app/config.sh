@@ -1,8 +1,8 @@
 #!/bin/bash
 
 config::is_valid() {
-	[ -f ./horde.json ] || return 1
-	jq . ./horde.json 2>&1 > /dev/null || return 1
+	[ -f $(config::_get_file_path) ] || return 1
+	jq . $(config::_get_file_path) 2>&1 > /dev/null || return 1
 }
 
 config::get_driver() {
@@ -58,7 +58,8 @@ config::get_services() {
 config::_get_value() {
 	local key=$1
 	local default=$2
-	local val=$(config::_json_value ./horde.json "$key")
+	local config=$(config::_get_file_path)
+	local val=$(config::_json_value ${config} "$key")
 
 	if [ "$val" == "null" ]; then
 		if [ -z "$default" ]; then
@@ -72,7 +73,7 @@ config::_get_value() {
 }
 
 config::_get_array() {
-	config::_json_array ./horde.json "$1"
+	config::_json_array $(config::_get_file_path) "$1"
 }
 
 config::_json_value() {
@@ -91,3 +92,10 @@ config::_json_array() {
 	fi
 }
 
+config::_get_file_path() {
+	if [ -z $HORDE_CONFIG ]; then
+		echo "./horde.json"
+	else 
+		echo "$HORDE_CONFIG"
+	fi
+}
