@@ -87,6 +87,24 @@ cli::bash() {
 	container::call exec -it "$name" /bin/bash || return 1
 }
 
+cli::custom() {
+	local sub_cmd="$1"
+	if ! config::is_valid ; then
+		io::err "${FUNCNAME[0]} ./horde.json has bad format or not found"
+		return 1
+	fi
+	driver=$(config::get_driver)
+
+	if ! util::func_exists "drivers::$driver::$sub_cmd" ; then
+		io::err "Unknown subcommand: '${1}'"
+		echo
+		cli::help
+		return 1
+	fi
+	
+	drivers::$driver::$sub_cmd || return 1
+}
+
 cli::register() {
 	local name="$1"
 	local host="$2"
