@@ -45,10 +45,10 @@ main() {
 	local sub_cmd="cli::${1}"
 
 	if ! util::func_exists "$sub_cmd" ; then
-		io::err "Unknown subcommand: '${1}'"
-		echo
-		cli::help
-		return 1
+		if ! cli::custom "${1}" "${args[@]}" ; then
+			return 1
+		fi
+		return 0
 	fi
 
 	if ! cli::$1 "${args[@]}" ; then
