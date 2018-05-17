@@ -19,7 +19,6 @@ services::memcached() {
 		--name $name \
 		--dns $ip \
 		memcached:1.5.7 || return 1
-	sleep 3
 }
 
 
