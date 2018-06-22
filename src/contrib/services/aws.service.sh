@@ -8,6 +8,7 @@ services::aws::cli() {
 	local CMD="aws --endpoint-url=http://\${S3_PORT_9000_TCP_ADDR}:9000 ${args[@]}"
 
 	docker run -it \
+		--rm \
 		--link s3:s3 \
 		-e AWS_ACCESS_KEY_ID=horde \
 		-e AWS_SECRET_ACCESS_KEY=horde_secret \
