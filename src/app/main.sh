@@ -3,6 +3,25 @@ _ensure_osx_vboxnet() {
 	[ ${HORDE_ENSURE_VBOXNET+x} ] || return 1
 }
 
+_osx_check_vboxnet() {
+	# Check if HORDE_IP is assigned anywhere, return the iface name or blank.
+	local ip=$(net::bridge_ip)
+	found=""
+
+	for iface in `ifconfig -l | grep -oE "(vboxnet\d+)"`;
+	do
+		test=$(ifconfig $iface | grep inet | cut -d ' ' -f 2)
+		if [ -z "$test" ] || [ "$test" != "$ip" ]; then
+			continue
+		else
+			found=$iface
+			break
+		fi
+	done
+
+	echo $found
+}
+
 _osx_vboxnet_setup() {
 	local ip=$(net::bridge_ip)
 
@@ -11,8 +30,8 @@ _osx_vboxnet_setup() {
 		return 1
 	fi
 
-	# Check if vboxnet0 exist, if not we create it and assing bridge IP to it
-	is_bridge_ip_available=$(ifconfig | grep vboxnet0 | awk '{print $1}')
+	# Check if HORDE_IP is assigned to an interface, if not, create one and assign the ip.
+	is_bridge_ip_available=$(_osx_check_vboxnet)
 	if [ -z ${is_bridge_ip_available} ]; then
 		VBoxManage hostonlyif create
 		VBoxManage hostonlyif ipconfig vboxnet0 -ip $ip
@@ -38,7 +57,7 @@ main() {
 	if _ensure_osx_vboxnet ; then
 		_osx_vboxnet_setup || return 1
 	fi
-	
+
 	local args=("$@")
 	unset args[0]
 
@@ -57,4 +76,3 @@ main() {
 }
 
 main "$@" || exit 1
-
