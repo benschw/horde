@@ -52,7 +52,7 @@ main() {
 		return 1
 	fi
 
-	plugin_mgr::load "$HOME/.horde/plugins"
+	plugin_mgr::load $(util::get_plugin_path)
 
 	if _ensure_osx_vboxnet ; then
 		_osx_vboxnet_setup || return 1

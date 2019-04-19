@@ -1,5 +1,10 @@
 #!/bin/bash
 
+cli::init() {
+	local name=$1
+	init::run ${name} || return 1
+}
+
 cli::up() {
 	local svc_names=("$@")
 	cli::run "${svc_names[@]}"
@@ -7,7 +12,7 @@ cli::up() {
 
 cli::run() {
 	local svc_names=("$@")
-	
+
 	if [ "${#svc_names[@]}" -ne 0 ]; then
 		service::ensure_running "${svc_names[@]}" || return 1
 		return 0
@@ -75,6 +80,7 @@ cli::sh() {
 	fi
 	container::call exec -it "$name" /bin/sh || return 1
 }
+
 cli::bash() {
 	local name=$1
 	if [ -z ${1+x} ]; then
@@ -101,7 +107,7 @@ cli::custom() {
 		cli::help
 		return 1
 	fi
-	
+
 	drivers::$driver::$sub_cmd || return 1
 }
 
@@ -122,6 +128,7 @@ cli::help() {
 	echo "    horde command [options]"
 	echo
 	echo "COMMANDS:"
+	echo "    init driver_name             use driver_name.initializer.sh to initialize this directory"
 	echo "    run [name]                   start up an app or service"
 	echo "    stop [name]                  stop an app or service"
 	echo "    restart [name]               alias for stop and up"
@@ -147,4 +154,3 @@ cli::help() {
 	echo
 	echo "See https://github.com/benschw/horde/ for more details"
 }
-
