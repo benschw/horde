@@ -2,7 +2,7 @@
 
 cli::init() {
 	local name=$1
-	init::run ${name} || return 1
+	initializer::init ${name} || return 1
 }
 
 cli::up() {

@@ -15,6 +15,7 @@ build: clean
 	cp src/plugins/drivers/*.sh build/core/
 	cp src/contrib/services/*.sh build/contrib/
 	cp src/contrib/drivers/*.sh build/contrib/
+	cp -r src/contrib/initializers/ build/contrib/initializers/
 
 
 
@@ -39,7 +40,7 @@ install:
 
 contrib-install:
 	mkdir -p $(HOME)/.horde/plugins/contrib
-	cp build/contrib/*.sh $(HOME)/.horde/plugins/contrib/
+	cp -r build/contrib/ $(HOME)/.horde/plugins/contrib/
 
 
 .PHONY: build

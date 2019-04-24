@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-init::run() {
+initializer::init() {
 	local name="$1"
 
 	local initializer="initializers::${name}"

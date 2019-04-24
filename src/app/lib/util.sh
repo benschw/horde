@@ -48,23 +48,3 @@ util::get_plugin_path() {
 
 	echo ${plugin_path}
 }
-
-# util::split_and_index
-# parameters:
-#		string			-		The string to split.
-#		delimiter		-		The delimiter to split at.
-#		index				-		The index to return.
-#
-# Given parameters string, delimiter, index
-# splits string at delimiter and returns the part at
-# the zero-based index.
-util::split_and_index() {
-	local string="$1"
-	local delimiter="$2"
-	local index="$3"
-	# IFS sets the delimiter. read then splits it.
-	# Results in an array in PARTS
-  IFS=${delimiter}
-  read -ra PARTS <<< "${string}"
-  echo ${PARTS[${index}]}
-}
