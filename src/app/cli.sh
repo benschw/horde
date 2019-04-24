@@ -128,7 +128,7 @@ cli::help() {
 	echo "    horde command [options]"
 	echo
 	echo "COMMANDS:"
-	echo "    init driver_name             use driver_name.initializer.sh to initialize this directory"
+	echo "    init [driver_name]             use driver_name.initializer.sh to initialize this directory"
 	echo "    run [name]                   start up an app or service"
 	echo "    stop [name]                  stop an app or service"
 	echo "    restart [name]               alias for stop and up"
