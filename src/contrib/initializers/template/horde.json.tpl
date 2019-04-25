@@ -1,0 +1,4 @@
+{
+	"driver"       : "ex",
+	"name"         : "${name}"
+}
