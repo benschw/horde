@@ -5,7 +5,10 @@
 services::mysql() {
 	local ip=$(net::bridge_ip)
 	local name="mysql"
+	local hostname="mysql.horde"
 	local port_cfg=""
+
+	net::configure_hosts "${hostname}" || return 1
 
 	if [  -z ${HORDE_MYSQL_PUBLISH_PORT+x} ]; then
 		port_cfg="3306"
@@ -13,10 +16,10 @@ services::mysql() {
 		port_cfg="${HORDE_MYSQL_PUBLISH_PORT}:3306"
 	fi
 
-        if [[ $HORDE_MYSQL_PERSIST_DATA ]]; then
-                container::call volume create --name mysql-data
-                local mysql_volume_arg="-v mysql-data:/var/lib/mysql"
-        fi
+	if [[ $HORDE_MYSQL_PERSIST_DATA ]]; then
+		container::call volume create --name mysql-data
+		local mysql_volume_arg="-v mysql-data:/var/lib/mysql"
+	fi
 
 	container::call run \
 		-d \
