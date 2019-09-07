@@ -68,14 +68,18 @@ plugin_mgr::update() {
 }
 
 plugin_mgr::list() {
+	local pb_path=$(pb_cfg::get_pb_path)
 	local cache_path=$(pb_cfg::get_pb_repo_cache_path)
 
-	for pb in $(cat $cache_path | jq -r 'keys'[]); do
-		echo $pb
-		echo "  Drivers: $(pb::_get_pb_drivers $pb | tr '\n' ' ')"
-		echo "  Services: $(pb::_get_pb_services $pb | tr '\n' ' ')"
-		echo "  Initializers: $(pb::_get_pb_initializers $pb | tr '\n' ' ')"
-	done;
+	if [[ "$1" == "all" ]]; then
+		for pb in $(cat $cache_path | jq -r 'keys'[]); do
+			plugin_mgr::info "$pb"
+		done;
+	else
+		for lock in $(ls $pb_path/*.lock); do
+			plugin_mgr::info "$(basename $lock '.lock')"
+		done
+	fi
 }
 plugin_mgr::info() {
 	local pb="$1"
@@ -228,7 +232,7 @@ plugin_mgr::help() {
 	echo "COMMANDS:"
 	echo "    add-repo REPO_NAME           add plugin repo to horde config"
 	echo "    update                       refresh local cache of registered plugin repos"
-	echo "    list                         list all available plugins (installed or available)"
+	echo "    list [option]                list all available plugins (option 'all' for available too)"
 	echo "    info NAME                    get info about a plugin-bundle"
 	echo "    install [name [name]]        install 1 or more plugin bundles"
 	echo "    upgrade [name [name]]        upgrade 1 or more plugin bundles"
