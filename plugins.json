@@ -1,7 +1,7 @@
 {
 	"core": {
 		"drivers": ["static_web"],
-		"services": ["consul", "dnsmasq", "fabio", "registrator"]
+		"services": ["consul", "dnsmasq", "fabio", "registrator"],
 		"vcs": "git@github.com:benschw/horde.git",
 		"path": "/src/plugins"
 	},
