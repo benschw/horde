@@ -118,6 +118,8 @@ cli::pb() {
 
 	if [ -z ${1+x} ]; then
 		io::err "must specify a plugin command"
+		echo
+		cli::help
 		return 1
 	fi
 	
