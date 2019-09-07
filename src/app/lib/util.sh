@@ -39,12 +39,27 @@ util::get_plugin_path() {
 	# For backwards compatibility, only set the parameter
 	# if the caller does not provide one.
 	if [ -z ${plugin_path} ]; then
-		plugin_path="$HOME/.horde/plugins"
+		plugin_path="$(pbio::get_plugin_path)"
 	fi
 
-	if [ ${HORDE_PLUGIN_PATH+x} ]; then
-		plugin_path=$HORDE_PLUGIN_PATH
-	fi
+	echo $plugin_path
+}
 
-	echo ${plugin_path}
+util::get_horde_config() {
+	cat "$(config::get_horde_home)/config.json"
+}
+util::get_pb_path() {
+	echo "$(config::get_horde_home)/plugin-bundles"
+}
+util::get_pb_repo_path() {
+	echo "$(config::get_horde_home)/repo"
+}
+util::get_pb_repo_cache_path() {
+	echo "$(util::get_pb_repo_path)/plugins.cache"
+}
+util::get_pb_repo_config() {
+	cat "$(util::get_pb_repo_cache_path)"
+}
+util::get_pb_install_path() {
+	echo "$(util::get_plugin_path)/bundles"
 }

@@ -1,5 +1,17 @@
 #!/bin/bash
 
+service::assert_installed() {
+	local names=("$@")
+	local name=""
+
+	for name in "${names[@]}"; do
+		if ! util::func_exists "services::${name}"; then
+			io::err "Service '${name}' not installed"
+			plugin_mgr::find "$name"
+			return 1
+		fi
+	done
+}
 
 service::ensure_running() {
 	local names=("$@")
@@ -19,10 +31,7 @@ service::_load() {
 
 	local svc="services::${name}"
 
-	if ! util::func_exists "${svc}"; then
-		io::err "Service '${name}' not found"
-		return 1
-	fi
+	service::assert_installed "$name" || return 1
 
 	echo "Starting $name"
 	container::delete_stopped "$name" || return 1
