@@ -45,21 +45,3 @@ util::get_plugin_path() {
 	echo $plugin_path
 }
 
-util::get_horde_config() {
-	cat "$(config::get_horde_home)/config.json"
-}
-util::get_pb_path() {
-	echo "$(config::get_horde_home)/plugin-bundles"
-}
-util::get_pb_repo_path() {
-	echo "$(config::get_horde_home)/repo"
-}
-util::get_pb_repo_cache_path() {
-	echo "$(util::get_pb_repo_path)/plugins.cache"
-}
-util::get_pb_repo_config() {
-	cat "$(util::get_pb_repo_cache_path)"
-}
-util::get_pb_install_path() {
-	echo "$(util::get_plugin_path)/bundles"
-}
