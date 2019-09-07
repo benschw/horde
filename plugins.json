@@ -1,11 +1,13 @@
 {
 	"core": {
+		"description": "Core services relied upon by horde for networking and discovery.",
 		"drivers": ["static_web"],
 		"services": ["consul", "dnsmasq", "fabio", "registrator"],
 		"vcs": "git@github.com:benschw/horde.git",
 		"path": "/src/plugins"
 	},
 	"contrib": {
+		"description": "Common support services for your applications to integrate with.",
 		"drivers": ["ex"],
 		"services": ["aws", "awslocalstack", "memcached", "mysql", 
 			"rabbitmq", "s3", "splunk", "vault", "vaultui"],
