@@ -39,7 +39,7 @@ util::get_plugin_path() {
 	# For backwards compatibility, only set the parameter
 	# if the caller does not provide one.
 	if [ -z ${plugin_path} ]; then
-		plugin_path="$(pbio::get_plugin_path)"
+		plugin_path="$(pb_cfg::get_plugin_path)"
 	fi
 
 	echo $plugin_path

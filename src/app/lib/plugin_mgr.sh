@@ -22,7 +22,7 @@ plugin_mgr::add-repo() {
 		io::err "must provide a repo address to add"
 		return 1
 	fi
-	local cfg=$(pbio::get_horde_config)
+	local cfg=$(pb_cfg::get_horde_config)
 	
 	if [[ "$(echo $cfg | jq ".plugin_repos | index( \"$repo\" )")" != "null" ]]; then
 		io::err "Repo $repo already exists"
@@ -36,15 +36,15 @@ plugin_mgr::add-repo() {
 		cfg_str="${cfg_str}$r, "
 	done
 	local new_cfg="{\"plugin_repos\": [ ${cfg_str} \"$repo\" ]}"
-	pbio::set_horde_config "$new_cfg"
+	pb_cfg::set_horde_config "$new_cfg"
 
 	printf "$repo added. update to start using:\n  horde pb update\n"
 
 }
 plugin_mgr::update() {
-	local repo_path=$(pbio::get_pb_repo_path)
-	local cfg=$(pbio::get_horde_config)
-	local cache_path=$(pbio::get_pb_repo_cache_path)
+	local repo_path=$(pb_cfg::get_pb_repo_path)
+	local cfg=$(pb_cfg::get_horde_config)
+	local cache_path=$(pb_cfg::get_pb_repo_cache_path)
 	local current_wd=$(pwd)
 
 	rm -rf "${repo_path}"
@@ -68,7 +68,7 @@ plugin_mgr::update() {
 }
 
 plugin_mgr::list() {
-	local cache_path=$(pbio::get_pb_repo_cache_path)
+	local cache_path=$(pb_cfg::get_pb_repo_cache_path)
 
 	for pb in $(cat $cache_path | jq -r 'keys'[]); do
 		echo $pb
@@ -99,8 +99,8 @@ plugin_mgr::install() {
 	fi
 
 	local current_wd=$(pwd)
-	local install_path=$(pbio::get_pb_install_path)
-	local pb_path=$(pbio::get_pb_path)
+	local install_path=$(pb_cfg::get_pb_install_path)
+	local pb_path=$(pb_cfg::get_pb_path)
 
 	for name in "${names[@]}"; do
 		if [ -e "${pb_path}/$name" ]; then
@@ -136,8 +136,8 @@ plugin_mgr::upgrade() {
 		return 1
 	fi
 	local current_wd=$(pwd)
-	local install_path=$(pbio::get_pb_install_path)
-	local pb_path=$(pbio::get_pb_path)
+	local install_path=$(pb_cfg::get_pb_install_path)
+	local pb_path=$(pb_cfg::get_pb_path)
 
 	if [[ "$1" == "all" ]]; then
 		names=()
@@ -177,7 +177,7 @@ plugin_mgr::uninstall() {
 		return 1
 	fi
 
-	local pb_path=$(pbio::get_pb_path)
+	local pb_path=$(pb_cfg::get_pb_path)
 
 	if [[ "$1" == "all" ]]; then
 		names=()
@@ -206,7 +206,7 @@ plugin_mgr::uninstall() {
 plugin_mgr::find() {
 	local name="$1"
 
-	local cache_path=$(pbio::get_pb_repo_cache_path)
+	local cache_path=$(pb_cfg::get_pb_repo_cache_path)
 
 	for pb in $(cat $cache_path | jq -r 'keys'[]); do
 		for p in $(pb::_get_pb_plugins $pb); do
