@@ -35,9 +35,9 @@ ci: dist
 
 install-horde:
 	cp build/horde /usr/local/bin/horde
-	horde pb add-repo git@github.com:benschw/horde.git || true
 
 install-core-pb:
+	horde pb add-repo https://raw.githubusercontent.com/benschw/horde/master/plugins.json || true
 	horde pb update
 	horde pb install core || horde pb upgrade core
 
@@ -46,6 +46,6 @@ install-contrib:
 	horde pb install contrib || horde pb upgrade contrib
 
 install: install-horde install-core-pb
-
+reinstall: install-horde
 
 .PHONY: build

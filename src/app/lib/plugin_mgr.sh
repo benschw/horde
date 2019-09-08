@@ -4,6 +4,17 @@ plugin_mgr::load() {
 	# Call util::get_plugin_path to maintain backwards compatibility.
 	local plugin_path=$(util::get_plugin_path "$1")
 
+	for dup in $(find -L "${plugin_path}" -name "*.initializer.sh" -exec basename {} \; | sort -k2 | uniq -d); do
+		echo "WARNING: initializer $dup found installed multiple times in $plugin_path"
+	done
+	for dup in $(find -L "${plugin_path}" -name "*.service.sh" -exec basename {} \; | sort -k2 | uniq -d); do
+		echo "WARNING: service $dup found installed multiple times in $plugin_path"
+	done
+	for dup in $(find -L "${plugin_path}" -name "*.driver.sh" -exec basename {} \; | sort -k2 | uniq -d); do
+		echo "WARNING: driver $dup found installed multiple times in $plugin_path"
+	done
+
+
 	for f in $(find -L "${plugin_path}" -name "*.initializer.sh"); do
 		source $f
 	done
@@ -23,10 +34,12 @@ plugin_mgr::add-repo() {
 		return 1
 	fi
 	local cfg=$(pb_cfg::get_horde_config)
-	
-	if [[ "$(echo $cfg | jq ".plugin_repos | index( \"$repo\" )")" != "null" ]]; then
-		io::err "Repo $repo already exists"
-		return 1
+
+	if [ -e "$(pb_cfg::get_horde_config_path)" ]; then
+		if [[ "$(echo $cfg | jq ".plugin_repos | index( \"$repo\" )")" != "null" ]]; then
+			io::err "Repo $repo already exists"
+			return 1
+		fi
 	fi
 
 
@@ -45,23 +58,23 @@ plugin_mgr::update() {
 	local repo_path=$(pb_cfg::get_pb_repo_path)
 	local cfg=$(pb_cfg::get_horde_config)
 	local cache_path=$(pb_cfg::get_pb_repo_cache_path)
-	local current_wd=$(pwd)
 
-	rm -rf "${repo_path}"
-	mkdir -p "${repo_path}"
+	local repos=()
 
-	cd "${repo_path}"
-	
 	for repo in $(echo $cfg | jq -r .plugin_repos[]); do
-		if ! git clone "${repo}"; then
+		local repo_json=$(curl -s "$repo")
+		if [ ! "$?" ]; then
 			io::err "problem updating horde plugin repo $repo. Aborting."
 			return 1
 		fi
+		repos+=( "$repo_json" )
 	done;
 	
-	cd $current_wd
+	rm -rf "${repo_path}"
+	mkdir -p "${repo_path}"
 
-	jq -s 'reduce .[] as $item ({}; . * $item)' \
+	echo "${repos[@]}" |\
+		jq -s 'reduce .[] as $item ({}; . * $item)' \
 		$(find -L "${repo_path}" -name "plugins.json") \
 		> "${cache_path}"
 
