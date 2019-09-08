@@ -44,7 +44,7 @@ pb::_install_pb() {
 	local install_path="$(pb_cfg::get_pb_install_path)/${name}"
 	local lock="$(pb_cfg::get_pb_path)/${name}.lock"
 
-	ln -sfh "${src_path}" "${install_path}"
+	ln -sf "${src_path}" "${install_path}"
 
 	echo "${install_path}" > "${lock}"
 }
