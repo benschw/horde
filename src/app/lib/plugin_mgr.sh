@@ -116,34 +116,48 @@ plugin_mgr::install() {
 	fi
 
 	local current_wd=$(pwd)
+	local cfg=$(pb_cfg::get_pb_repo_config)
 	local install_path=$(pb_cfg::get_pb_install_path)
 	local pb_path=$(pb_cfg::get_pb_path)
 
+	if [[ "$1" == "all" ]]; then
+		names=()
+		for lock in $(echo "$cfg" | jq -r 'keys'[]); do
+			names+=( $(basename $lock '.lock') )
+		done
+	fi
+
+	mkdir -p "${pb_path}"
+	mkdir -p "${install_path}"
+
+	local ret="0"
 	for name in "${names[@]}"; do
 		if [ -e "${pb_path}/$name" ]; then
 			io::err "Plugin-bundle ${name} already installed. Upgrade with \`horde pb upgrade ${name}\`"
-			return 1
+			ret="1"
 		fi
 	done	
 
 	for name in "${names[@]}"; do
-		local pb_vcs=$(pb::_get_pb_vcs "${name}")
+		if [ ! -e "${pb_path}/$name" ]; then
+			local pb_vcs=$(pb::_get_pb_vcs "${name}")
 
-		printf "\n"
-		mkdir -p "${pb_path}"
-		mkdir -p "${install_path}"
+			printf "\n"
 
-		cd $pb_path
-		if ! git clone $pb_vcs $name; then
-			io::err "Problem installing $name. Aborting"
-			return 1
+			cd $pb_path
+			if ! git clone $pb_vcs $name; then
+				io::err "Problem installing $name. Aborting"
+				return 1
+			fi
+			cd $current_wd
+
+			pb::_install_pb "$name"
+
+			printf "> ${name} installed\n"
 		fi
-		cd $current_wd
-
-		pb::_install_pb "$name"
-
-		printf "> ${name} installed\n"
 	done
+	
+	return "$ret"
 }
 
 plugin_mgr::upgrade() {
