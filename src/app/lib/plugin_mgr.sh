@@ -4,6 +4,8 @@ plugin_mgr::load() {
 	# Call util::get_plugin_path to maintain backwards compatibility.
 	local plugin_path=$(util::get_plugin_path "$1")
 
+	mkdir -p "${plugin_path}"
+
 	for dup in $(find -L "${plugin_path}" -name "*.initializer.sh" -exec basename {} \; | sort -k2 | uniq -d); do
 		echo "WARNING: initializer $dup found installed multiple times in $plugin_path"
 	done
