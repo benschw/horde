@@ -108,7 +108,11 @@ cli::custom() {
 		return 1
 	fi
 
-	drivers::$driver::$sub_cmd || return 1
+	# remove first arg 'custom' from $@ to capture additional args
+	shift
+
+	# pass all remaing args to sub_cmd using $@
+	drivers::$driver::$sub_cmd $@ || return 1
 }
 
 cli::register() {
