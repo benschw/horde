@@ -108,11 +108,11 @@ cli::custom() {
 		return 1
 	fi
 
-	# remove first arg 'custom' from $@ to capture additional args
-	shift
+	local args=("$@")
+	unset args[0]
 
-	# pass all remaing args to sub_cmd using $@
-	drivers::$driver::$sub_cmd $@ || return 1
+	# Calling sub command and passing all remaing args
+	drivers::$driver::$sub_cmd "${args[@]}" || return 1
 }
 
 cli::register() {
