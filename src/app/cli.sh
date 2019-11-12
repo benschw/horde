@@ -95,6 +95,9 @@ cli::bash() {
 
 cli::custom() {
 	local sub_cmd="$1"
+	local args=("$@")
+	unset args[0]
+	
 	if ! config::is_valid ; then
 		io::err "${FUNCNAME[0]} ./horde.json has bad format or not found"
 		return 1
@@ -108,7 +111,8 @@ cli::custom() {
 		return 1
 	fi
 
-	drivers::$driver::$sub_cmd || return 1
+	# Calling sub command and passing all remaing args
+	drivers::$driver::$sub_cmd "${args[@]}" || return 1
 }
 
 cli::register() {
