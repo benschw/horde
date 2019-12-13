@@ -62,7 +62,7 @@ container::build_host_tags() {
 
 	for var in "${hosts[@]}"; do
 		if [ ${#hostsCsv} -gt 0 ]; then 
-			hostsCsv="${hostsCsv}, urlprefix-${var}${postfix}"
+			hostsCsv="${hostsCsv},urlprefix-${var}${postfix}"
 		else 
 			hostsCsv="urlprefix-${var}${postfix}"
 		fi
