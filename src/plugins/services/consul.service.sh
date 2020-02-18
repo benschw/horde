@@ -10,6 +10,7 @@ services::consul() {
 
 	container::call run \
 		-d \
+		--net=host \
 		-p 8500:8500 \
 		-p "$ip:8600:8600/udp" \
 		--name=consul \
