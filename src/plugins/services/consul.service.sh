@@ -10,7 +10,8 @@ services::consul() {
 
 	container::call run \
 		-d \
-		--net=host \
+		# this seems to fix newed docker for mac builds, but breaks older ones as it stops publishing ports
+		#--net=host \
 		-p 8500:8500 \
 		-p "$ip:8600:8600/udp" \
 		--name=consul \
