@@ -115,6 +115,29 @@ cli::custom() {
 	drivers::$driver::$sub_cmd "${args[@]}" || return 1
 }
 
+cli::pb() {
+	local sub_cmd="$1"
+	local names=("$@")
+	unset names[0]
+
+	if [ -z ${1+x} ]; then
+		io::err "must specify a plugin command"
+		echo
+		cli::help
+		return 1
+	fi
+	
+	if ! util::func_exists "plugin_mgr::$sub_cmd" ; then
+		io::err "Unknown subcommand: '${1}'"
+		echo
+		cli::help
+		return 1
+	fi
+
+	plugin_mgr::$sub_cmd "${names[@]}" || return 1
+}
+
+#deprecated
 cli::register() {
 	local name="$1"
 	local host="$2"
@@ -122,6 +145,7 @@ cli::register() {
 	consul::register "$name" "$host" "$port"
 }
 
+#deprecated
 cli::deregister() {
 	local name="$1"
 	consul::deregister "$name"
@@ -132,7 +156,7 @@ cli::help() {
 	echo "    horde command [options]"
 	echo
 	echo "COMMANDS:"
-	echo "    init [driver_name]             use driver_name.initializer.sh to initialize this directory"
+	echo "    init [driver_name]           use driver_name.initializer.sh to initialize this directory"
 	echo "    run [name]                   start up an app or service"
 	echo "    stop [name]                  stop an app or service"
 	echo "    restart [name]               alias for stop and up"
@@ -140,8 +164,7 @@ cli::help() {
 	echo "    logs [name]                  follow the logs for a container"
 	echo "    bash [name]                  exec a bash shell in a running app or container"
 	echo "    sh [name]                    exec as sh shell in a running app or container"
-	echo "    register name domain port    register an external service with consul"
-	echo "    deregister name              deregister an external service"
+	echo "    pb CMD [name]                manage horde plugin bundles. 'horde pb help' for details"
 	echo "    help                         display this help text and exit"
 	echo
 	echo "    (name can refer to a service or an app. if omitted, the value in"

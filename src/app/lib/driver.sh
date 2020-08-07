@@ -1,5 +1,17 @@
 #!/bin/bash
 
+driver::assert_installed() {
+	local names=("$@")
+	local name=""
+
+	for name in "${names[@]}"; do
+		if ! util::func_exists "drivers::${name}"; then
+			io::err "Driver '${name}' not installed"
+			plugin_mgr::find "$name"
+			return 1
+		fi
+	done
+}
 
 driver::run() {
 	local driver="$1"
@@ -12,11 +24,7 @@ driver::run() {
 	
 	local app="drivers::${driver}"
 
-	
-	if ! util::func_exists "${app}" ; then
-		io::err "Driver $driver not found"
-		return 1
-	fi
+	driver::assert_installed "$driver" || return 1
 
 	container::delete_stopped $name || return 1
 	drivers::${driver} || return 1

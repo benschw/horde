@@ -33,14 +33,19 @@ ci: dist
 	mv build/dist/*latest* build/latest/
 	mv build/dist/* build/release/
 
-install:
+install-horde:
 	cp build/horde /usr/local/bin/horde
-	mkdir -p $(HOME)/.horde/plugins/core/
-	cp build/core/*.sh $(HOME)/.horde/plugins/core/
 
-contrib-install:
-	mkdir -p $(HOME)/.horde/plugins/contrib
-	cp -r build/contrib/ $(HOME)/.horde/plugins/contrib/
+install-core-pb:
+	horde pb add-repo https://raw.githubusercontent.com/benschw/horde/master/plugins.json || true
+	horde pb update
+	horde pb install core || horde pb upgrade core
 
+install-contrib:
+	horde pb update
+	horde pb install contrib || horde pb upgrade contrib
+
+install: install-horde install-core-pb
+reinstall: install-horde
 
 .PHONY: build

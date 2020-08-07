@@ -1,4 +1,12 @@
 #!/bin/bash
+config::get_horde_home() {
+	if [ ${HORDE_HOME+x} ]; then
+		echo $HORDE_HOME
+		return
+	fi
+
+	echo "$HOME/.horde"
+}
 
 config::is_valid() {
 	[ -f $(config::_get_file_path) ] || return 1

@@ -39,12 +39,9 @@ util::get_plugin_path() {
 	# For backwards compatibility, only set the parameter
 	# if the caller does not provide one.
 	if [ -z ${plugin_path} ]; then
-		plugin_path="$HOME/.horde/plugins"
+		plugin_path="$(pb_cfg::get_plugin_path)"
 	fi
 
-	if [ ${HORDE_PLUGIN_PATH+x} ]; then
-		plugin_path=$HORDE_PLUGIN_PATH
-	fi
-
-	echo ${plugin_path}
+	echo $plugin_path
 }
+
